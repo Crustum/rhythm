@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    colors="true"
+    processIsolation="false"
+    stopOnFailure="false"
+    displayDetailsOnTestsThatTriggerDeprecations="true"
+    beStrictAboutOutputDuringTests="true"
+    bootstrap="tests/bootstrap.php"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd">
+  <php>
+    <ini name="memory_limit" value="-1"/>
+    <ini name="apc.enable_cli" value="1"/>
+    <!-- Database connection will be set via environment variable in CI -->
+    <!-- For local testing, you can uncomment one of these: -->
+    <!--
+    <env name="db_dsn" value="mysql://root:root@127.0.0.1:3306/rhythm_test?encoding=utf8mb4&amp;timezone=UTC&amp;cacheMetadata=true&amp;quoteIdentifiers=true&amp;persistent=false" force="true"/>
+    <env name="db_dsn" value="postgres://postgres:postgres@127.0.0.1:5432/rhythm_test?encoding=utf8&amp;timezone=UTC&amp;cacheMetadata=true&amp;quoteIdentifiers=true&amp;persistent=false" force="true"/>
+    -->
+  </php>
+
+  <testsuites>
+    <testsuite name="Rhythm Plugin">
+      <directory>tests/TestCase</directory>
+    </testsuite>
+  </testsuites>
+
+  <groups>
+    <exclude>
+      <group>performance</group>
+    </exclude>
+  </groups>
+
+  <source>
+    <include>
+      <directory suffix=".php">src/</directory>
+    </include>
+    <exclude>
+      <directory suffix=".php">src/Plugin.php</directory>
+    </exclude>
+  </source>
+</phpunit>

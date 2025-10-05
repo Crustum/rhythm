@@ -1,0 +1,855 @@
+/*
+ * Rhythm Design System CSS
+ *
+ * Generic, customizable CSS system using CSS variables for theming.
+ * All components use these variables for consistent, customizable styling.
+ */
+
+/* ============================================================================
+   CSS CUSTOM PROPERTIES (VARIABLES)
+   ============================================================================ */
+
+:root {
+  /* Color Palette */
+  --rhythm-primary: #3b82f6;
+  --rhythm-primary-hover: #2563eb;
+  --rhythm-secondary: #6b7280;
+  --rhythm-secondary-hover: #4b5563;
+
+  /* Background Colors */
+  --rhythm-bg-primary: #ffffff;
+  --rhythm-bg-secondary: #f9fafb;
+  --rhythm-bg-tertiary: #f3f4f6;
+  --rhythm-bg-accent: #eff6ff;
+  --rhythm-bg-subtle: #f8fafc;
+
+  /* Card & Surface Colors */
+  --rhythm-card-bg: #ffffff;
+  --rhythm-card-border: rgba(0, 0, 0, 0.05);
+  --rhythm-card-hover-bg: #fafafa;
+
+  /* Text Colors */
+  --rhythm-text-primary: #111827;
+  --rhythm-text-secondary: #6b7280;
+  --rhythm-text-tertiary: #9ca3af;
+  --rhythm-text-inverse: #ffffff;
+
+  /* Status Colors */
+  --rhythm-success: #10b981;
+  --rhythm-success-bg: #dcfce7;
+  --rhythm-success-text: #166534;
+
+  --rhythm-warning: #f59e0b;
+  --rhythm-warning-bg: #fef3c7;
+  --rhythm-warning-text: #92400e;
+
+  --rhythm-critical: #ef4444;
+  --rhythm-critical-bg: #fecaca;
+  --rhythm-critical-text: #991b1b;
+
+  --rhythm-info: #3b82f6;
+  --rhythm-info-bg: #dbeafe;
+  --rhythm-info-text: #1e40af;
+
+  /* Borders & Dividers */
+  --rhythm-border-color: #e5e7eb;
+  --rhythm-border-light: #f3f4f6;
+  --rhythm-border-focus: #3b82f6;
+
+  /* Focus Ring */
+  --rhythm-focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  --rhythm-focus-ring-color: rgba(59, 130, 246, 0.1);
+
+  /* Shadows */
+  --rhythm-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --rhythm-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --rhythm-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  /* Spacing Scale */
+  --rhythm-space-xs: 0.25rem;
+  --rhythm-space-sm: 0.5rem;
+  --rhythm-space-md: 1rem;
+  --rhythm-space-lg: 1.5rem;
+  --rhythm-space-xl: 2rem;
+  --rhythm-space-2xl: 3rem;
+
+  /* Additional Spacing for Components */
+  --rhythm-space-3xs: 0.125rem;
+  --rhythm-space-2xs: 0.1875rem;
+  --rhythm-space-3xl: 4rem;
+  --rhythm-space-4xl: 6rem;
+
+  /* Typography */
+  --rhythm-font-size-xs: 0.75rem;
+  --rhythm-font-size-sm: 0.875rem;
+  --rhythm-font-size-base: 1rem;
+  --rhythm-font-size-lg: 1.125rem;
+  --rhythm-font-size-xl: 1.25rem;
+  --rhythm-font-size-2xl: 1.5rem;
+  --rhythm-font-size-3xl: 2rem;
+
+  --rhythm-font-weight-normal: 400;
+  --rhythm-font-weight-medium: 500;
+  --rhythm-font-weight-semibold: 600;
+  --rhythm-font-weight-bold: 700;
+
+  --rhythm-line-height-tight: 1.25;
+  --rhythm-line-height-normal: 1.5;
+  --rhythm-line-height-relaxed: 1.75;
+
+  /* Border Radius */
+  --rhythm-border-radius: 0.75rem;
+  --rhythm-border-radius-sm: 0.375rem;
+  --rhythm-border-radius-lg: 1rem;
+  --rhythm-border-radius-full: 9999px;
+
+  /* Transitions */
+  --rhythm-transition: all 0.2s ease;
+  --rhythm-transition-fast: all 0.15s ease;
+  --rhythm-transition-slow: all 0.3s ease;
+
+  /* Transform Values */
+  --rhythm-transform-hover: translateY(-1px);
+  --rhythm-transform-hover-strong: translateY(-2px);
+  --rhythm-transform-scale-hover: scale(1.02);
+
+  /* Z-Index Scale */
+  --rhythm-z-dropdown: 1000;
+  --rhythm-z-sticky: 1020;
+  --rhythm-z-fixed: 1030;
+  --rhythm-z-modal: 1040;
+  --rhythm-z-popover: 1050;
+  --rhythm-z-tooltip: 1060;
+
+  /* Component Specific */
+  --rhythm-loading-size: 1rem;
+  --rhythm-loading-border-width: 2px;
+
+  /* Overlay and Transparency */
+  --rhythm-overlay-bg: rgba(255, 255, 255, 0.8);
+  --rhythm-overlay-bg-dark: rgba(0, 0, 0, 0.8);
+
+  /* Form Control Colors */
+  --rhythm-form-control-border: rgba(255, 255, 255, 0.3);
+  --rhythm-form-control-bg: rgba(255, 255, 255, 0.1);
+  --rhythm-form-control-bg-hover: rgba(255, 255, 255, 0.2);
+  --rhythm-form-control-bg-active: rgba(255, 255, 255, 0.3);
+
+  /* Button Colors */
+  --rhythm-btn-overlay-bg: rgba(255, 255, 255, 0.2);
+  --rhythm-btn-overlay-bg-hover: rgba(255, 255, 255, 0.3);
+  --rhythm-btn-overlay-border: rgba(255, 255, 255, 0.3);
+
+  /* Opacity Values */
+  --rhythm-opacity-subtle: 0.9;
+  --rhythm-opacity-medium: 0.7;
+  --rhythm-opacity-light: 0.5;
+
+  /* Additional Colors for Enhanced Theming */
+  --rhythm-gray-50: #f9fafb;
+  --rhythm-gray-100: #f3f4f6;
+  --rhythm-gray-200: #e5e7eb;
+  --rhythm-gray-300: #d1d5db;
+  --rhythm-gray-400: #9ca3af;
+  --rhythm-gray-500: #6b7280;
+  --rhythm-gray-600: #4b5563;
+  --rhythm-gray-700: #374151;
+  --rhythm-gray-800: #1f2937;
+  --rhythm-gray-900: #111827;
+
+  /* Chart Colors */
+  --rhythm-chart-bg: #ffffff;
+  --rhythm-chart-border: #e5e7eb;
+  --rhythm-chart-text: #374151;
+  --rhythm-chart-grid: #f3f4f6;
+
+  /* Theme Toggle */
+  --rhythm-theme-toggle-bg: #f3f4f6;
+  --rhythm-theme-toggle-border: #d1d5db;
+  --rhythm-theme-toggle-active: #3b82f6;
+
+  /* Header Colors */
+  --rhythm-header-bg: linear-gradient(135deg, var(--rhythm-primary) 0%, var(--rhythm-primary-hover) 100%);
+  --rhythm-header-text: var(--rhythm-text-inverse);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  /* Background Colors */
+  --rhythm-bg-primary: #0f172a;
+  --rhythm-bg-secondary: #1e293b;
+  --rhythm-bg-tertiary: #334155;
+  --rhythm-bg-accent: #1e3a8a;
+  --rhythm-bg-subtle: #1e293b;
+
+  /* Card & Surface Colors */
+  --rhythm-card-bg: #1e293b;
+  --rhythm-card-border: rgba(255, 255, 255, 0.1);
+  --rhythm-card-hover-bg: #334155;
+
+  /* Text Colors */
+  --rhythm-text-primary: #f8fafc;
+  --rhythm-text-secondary: #cbd5e1;
+  --rhythm-text-tertiary: #94a3b8;
+
+  /* Status Colors - Dark Theme Adjusted */
+  --rhythm-success-bg: #064e3b;
+  --rhythm-success-text: #6ee7b7;
+
+  --rhythm-warning-bg: #78350f;
+  --rhythm-warning-text: #fbbf24;
+
+  --rhythm-critical-bg: #7f1d1d;
+  --rhythm-critical-text: #fca5a5;
+
+  --rhythm-info-bg: #1e3a8a;
+  --rhythm-info-text: #93c5fd;
+
+  /* Borders & Dividers */
+  --rhythm-border-color: #334155;
+  --rhythm-border-light: #475569;
+
+  /* Focus Ring - Dark Theme */
+  --rhythm-focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  --rhythm-focus-ring-color: rgba(59, 130, 246, 0.3);
+
+  /* Shadows - Dark Theme */
+  --rhythm-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  --rhythm-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --rhythm-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+
+  /* Dark theme overlay adjustments */
+  --rhythm-overlay-bg: rgba(15, 23, 42, 0.8);
+  --rhythm-overlay-bg-dark: rgba(0, 0, 0, 0.9);
+
+  /* Dark theme form controls */
+  --rhythm-form-control-border: rgba(255, 255, 255, 0.2);
+  --rhythm-form-control-bg: rgba(255, 255, 255, 0.05);
+  --rhythm-form-control-bg-hover: rgba(255, 255, 255, 0.1);
+  --rhythm-form-control-bg-active: rgba(255, 255, 255, 0.15);
+
+  /* Dark theme button colors */
+  --rhythm-btn-overlay-bg: rgba(255, 255, 255, 0.1);
+  --rhythm-btn-overlay-bg-hover: rgba(255, 255, 255, 0.2);
+  --rhythm-btn-overlay-border: rgba(255, 255, 255, 0.2);
+
+  /* Chart Colors - Dark Theme */
+  --rhythm-chart-bg: #1e293b;
+  --rhythm-chart-border: #334155;
+  --rhythm-chart-text: #cbd5e1;
+  --rhythm-chart-grid: #334155;
+
+  /* Theme Toggle - Dark Theme */
+  --rhythm-theme-toggle-bg: #334155;
+  --rhythm-theme-toggle-border: #475569;
+  --rhythm-theme-toggle-active: #60a5fa;
+
+  /* Header Colors - Dark Theme */
+  --rhythm-header-bg: linear-gradient(135deg, #06041f 0%, #050226 100%);
+  --rhythm-header-text: var(--rhythm-text-inverse);
+}
+
+/* System Theme Detection - Only apply when no manual theme is set */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    /* Auto-apply dark theme when system preference is dark and no manual theme is set */
+    --rhythm-bg-primary: #0f172a;
+    --rhythm-bg-secondary: #1e293b;
+    --rhythm-bg-tertiary: #334155;
+    --rhythm-bg-accent: #1e3a8a;
+    --rhythm-bg-subtle: #1e293b;
+    --rhythm-card-bg: #1e293b;
+    --rhythm-card-border: rgba(255, 255, 255, 0.1);
+    --rhythm-card-hover-bg: #334155;
+    --rhythm-text-primary: #f8fafc;
+    --rhythm-text-secondary: #cbd5e1;
+    --rhythm-text-tertiary: #94a3b8;
+    --rhythm-border-color: #334155;
+    --rhythm-border-light: #475569;
+    --rhythm-focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    --rhythm-focus-ring-color: rgba(59, 130, 246, 0.3);
+    --rhythm-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+    --rhythm-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    --rhythm-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    --rhythm-overlay-bg: rgba(15, 23, 42, 0.8);
+    --rhythm-overlay-bg-dark: rgba(0, 0, 0, 0.9);
+    --rhythm-form-control-border: rgba(255, 255, 255, 0.2);
+    --rhythm-form-control-bg: rgba(255, 255, 255, 0.05);
+    --rhythm-form-control-bg-hover: rgba(255, 255, 255, 0.1);
+    --rhythm-form-control-bg-active: rgba(255, 255, 255, 0.15);
+    --rhythm-btn-overlay-bg: rgba(255, 255, 255, 0.1);
+    --rhythm-btn-overlay-bg-hover: rgba(255, 255, 255, 0.2);
+    --rhythm-btn-overlay-border: rgba(255, 255, 255, 0.2);
+    --rhythm-chart-bg: #1e293b;
+    --rhythm-chart-border: #334155;
+    --rhythm-chart-text: #cbd5e1;
+    --rhythm-chart-grid: #334155;
+    --rhythm-theme-toggle-bg: #334155;
+    --rhythm-theme-toggle-border: #475569;
+    --rhythm-theme-toggle-active: #60a5fa;
+  }
+}
+
+/* Ensure manual theme selection takes precedence over system preference */
+:root[data-theme="light"] {
+  /* Force light theme variables when manually set to light */
+  --rhythm-bg-primary: #ffffff;
+  --rhythm-bg-secondary: #f9fafb;
+  --rhythm-bg-tertiary: #f3f4f6;
+  --rhythm-bg-accent: #eff6ff;
+  --rhythm-bg-subtle: #f8fafc;
+  --rhythm-card-bg: #ffffff;
+  --rhythm-card-border: rgba(0, 0, 0, 0.05);
+  --rhythm-card-hover-bg: #fafafa;
+  --rhythm-text-primary: #111827;
+  --rhythm-text-secondary: #6b7280;
+  --rhythm-text-tertiary: #9ca3af;
+  --rhythm-border-color: #e5e7eb;
+  --rhythm-border-light: #f3f4f6;
+  --rhythm-focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  --rhythm-focus-ring-color: rgba(59, 130, 246, 0.1);
+  --rhythm-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --rhythm-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --rhythm-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --rhythm-overlay-bg: rgba(255, 255, 255, 0.8);
+  --rhythm-overlay-bg-dark: rgba(0, 0, 0, 0.8);
+  --rhythm-form-control-border: rgba(255, 255, 255, 0.3);
+  --rhythm-form-control-bg: rgba(255, 255, 255, 0.1);
+  --rhythm-form-control-bg-hover: rgba(255, 255, 255, 0.2);
+  --rhythm-form-control-bg-active: rgba(255, 255, 255, 0.3);
+  --rhythm-btn-overlay-bg: rgba(255, 255, 255, 0.2);
+  --rhythm-btn-overlay-bg-hover: rgba(255, 255, 255, 0.3);
+  --rhythm-btn-overlay-border: rgba(255, 255, 255, 0.3);
+  --rhythm-chart-bg: #ffffff;
+  --rhythm-chart-border: #e5e7eb;
+  --rhythm-chart-text: #374151;
+  --rhythm-chart-grid: #f3f4f6;
+  --rhythm-theme-toggle-bg: #f3f4f6;
+  --rhythm-theme-toggle-border: #d1d5db;
+  --rhythm-theme-toggle-active: #3b82f6;
+
+  /* Header Colors - Light Theme */
+  --rhythm-header-bg: linear-gradient(135deg, var(--rhythm-primary) 0%, var(--rhythm-primary-hover) 100%);
+  --rhythm-header-text: var(--rhythm-text-inverse);
+}
+
+/* ============================================================================
+   UTILITY CLASSES
+   ============================================================================ */
+
+/* Spacing Utilities */
+.rhythm-p-0 { padding: 0; }
+.rhythm-p-3xs { padding: var(--rhythm-space-3xs); }
+.rhythm-p-2xs { padding: var(--rhythm-space-2xs); }
+.rhythm-p-xs { padding: var(--rhythm-space-xs); }
+.rhythm-p-sm { padding: var(--rhythm-space-sm); }
+.rhythm-p-md { padding: var(--rhythm-space-md); }
+.rhythm-p-lg { padding: var(--rhythm-space-lg); }
+.rhythm-p-xl { padding: var(--rhythm-space-xl); }
+.rhythm-p-2xl { padding: var(--rhythm-space-2xl); }
+.rhythm-p-3xl { padding: var(--rhythm-space-3xl); }
+.rhythm-p-4xl { padding: var(--rhythm-space-4xl); }
+
+.rhythm-m-0 { margin: 0; }
+.rhythm-m-3xs { margin: var(--rhythm-space-3xs); }
+.rhythm-m-2xs { margin: var(--rhythm-space-2xs); }
+.rhythm-m-xs { margin: var(--rhythm-space-xs); }
+.rhythm-m-sm { margin: var(--rhythm-space-sm); }
+.rhythm-m-md { margin: var(--rhythm-space-md); }
+.rhythm-m-lg { margin: var(--rhythm-space-lg); }
+.rhythm-m-xl { margin: var(--rhythm-space-xl); }
+.rhythm-m-2xl { margin: var(--rhythm-space-2xl); }
+.rhythm-m-3xl { margin: var(--rhythm-space-3xl); }
+.rhythm-m-4xl { margin: var(--rhythm-space-4xl); }
+
+.rhythm-mx-0 { margin-left: 0; margin-right: 0; }
+.rhythm-mx-sm { margin-left: var(--rhythm-space-sm); margin-right: var(--rhythm-space-sm); }
+.rhythm-mx-md { margin-left: var(--rhythm-space-md); margin-right: var(--rhythm-space-md); }
+.rhythm-mx-lg { margin-left: var(--rhythm-space-lg); margin-right: var(--rhythm-space-lg); }
+.rhythm-mx-xl { margin-left: var(--rhythm-space-xl); margin-right: var(--rhythm-space-xl); }
+.rhythm-mx-2xl { margin-left: var(--rhythm-space-2xl); margin-right: var(--rhythm-space-2xl); }
+
+.rhythm-my-0 { margin-top: 0; margin-bottom: 0; }
+.rhythm-my-sm { margin-top: var(--rhythm-space-sm); margin-bottom: var(--rhythm-space-sm); }
+.rhythm-my-md { margin-top: var(--rhythm-space-md); margin-bottom: var(--rhythm-space-md); }
+.rhythm-my-lg { margin-top: var(--rhythm-space-lg); margin-bottom: var(--rhythm-space-lg); }
+.rhythm-my-xl { margin-top: var(--rhythm-space-xl); margin-bottom: var(--rhythm-space-xl); }
+.rhythm-my-2xl { margin-top: var(--rhythm-space-2xl); margin-bottom: var(--rhythm-space-2xl); }
+
+/* Text Utilities */
+.rhythm-text-xs { font-size: var(--rhythm-font-size-xs); }
+.rhythm-text-sm { font-size: var(--rhythm-font-size-sm); }
+.rhythm-text-base { font-size: var(--rhythm-font-size-base); }
+.rhythm-text-lg { font-size: var(--rhythm-font-size-lg); }
+.rhythm-text-xl { font-size: var(--rhythm-font-size-xl); }
+
+.rhythm-font-normal { font-weight: var(--rhythm-font-weight-normal); }
+.rhythm-font-medium { font-weight: var(--rhythm-font-weight-medium); }
+.rhythm-font-semibold { font-weight: var(--rhythm-font-weight-semibold); }
+.rhythm-font-bold { font-weight: var(--rhythm-font-weight-bold); }
+
+.rhythm-text-primary { color: var(--rhythm-text-primary); }
+.rhythm-text-secondary { color: var(--rhythm-text-secondary); }
+.rhythm-text-tertiary { color: var(--rhythm-text-tertiary); }
+
+/* Background Utilities */
+.rhythm-bg-primary { background-color: var(--rhythm-bg-primary); }
+.rhythm-bg-secondary { background-color: var(--rhythm-bg-secondary); }
+.rhythm-bg-tertiary { background-color: var(--rhythm-bg-tertiary); }
+.rhythm-bg-card { background-color: var(--rhythm-card-bg); }
+
+/* Border Utilities */
+.rhythm-border { border: 1px solid var(--rhythm-border-color); }
+.rhythm-border-light { border: 1px solid var(--rhythm-border-light); }
+.rhythm-border-none { border: none; }
+
+.rhythm-rounded { border-radius: var(--rhythm-border-radius-sm); }
+.rhythm-rounded-md { border-radius: var(--rhythm-border-radius); }
+.rhythm-rounded-lg { border-radius: var(--rhythm-border-radius-lg); }
+.rhythm-rounded-full { border-radius: var(--rhythm-border-radius-full); }
+
+/* Shadow Utilities */
+.rhythm-shadow { box-shadow: var(--rhythm-shadow); }
+.rhythm-shadow-md { box-shadow: var(--rhythm-shadow-md); }
+.rhythm-shadow-lg { box-shadow: var(--rhythm-shadow-lg); }
+.rhythm-shadow-none { box-shadow: none; }
+
+/* Display Utilities */
+.rhythm-hidden { display: none; }
+.rhythm-block { display: block; }
+.rhythm-inline { display: inline; }
+.rhythm-inline-block { display: inline-block; }
+.rhythm-flex { display: flex; }
+.rhythm-inline-flex { display: inline-flex; }
+.rhythm-grid { display: grid; }
+
+/* Flexbox Utilities */
+.rhythm-flex-col { flex-direction: column; }
+.rhythm-flex-row { flex-direction: row; }
+.rhythm-items-center { align-items: center; }
+.rhythm-items-start { align-items: flex-start; }
+.rhythm-items-end { align-items: flex-end; }
+.rhythm-justify-center { justify-content: center; }
+.rhythm-justify-between { justify-content: space-between; }
+.rhythm-justify-around { justify-content: space-around; }
+.rhythm-flex-1 { flex: 1; }
+.rhythm-flex-auto { flex: auto; }
+.rhythm-flex-none { flex: none; }
+
+/* Grid Utilities */
+.rhythm-grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.rhythm-grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.rhythm-grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.rhythm-grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.rhythm-grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.rhythm-grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+
+.rhythm-gap-3xs { gap: var(--rhythm-space-3xs); }
+.rhythm-gap-2xs { gap: var(--rhythm-space-2xs); }
+.rhythm-gap-xs { gap: var(--rhythm-space-xs); }
+.rhythm-gap-sm { gap: var(--rhythm-space-sm); }
+.rhythm-gap-md { gap: var(--rhythm-space-md); }
+.rhythm-gap-lg { gap: var(--rhythm-space-lg); }
+.rhythm-gap-xl { gap: var(--rhythm-space-xl); }
+.rhythm-gap-2xl { gap: var(--rhythm-space-2xl); }
+.rhythm-gap-3xl { gap: var(--rhythm-space-3xl); }
+.rhythm-gap-4xl { gap: var(--rhythm-space-4xl); }
+
+/* Grid System Enhancements */
+.rhythm-grid {
+    display: grid;
+    gap: var(--rhythm-space-md);
+}
+
+@media (max-width: 768px) {
+    .rhythm-grid-cols-2,
+    .rhythm-grid-cols-3,
+    .rhythm-grid-cols-4 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Grid Column Span Utilities */
+.rhythm-col-span-1 { grid-column: span 1 / span 1; }
+.rhythm-col-span-2 { grid-column: span 2 / span 2; }
+.rhythm-col-span-3 { grid-column: span 3 / span 3; }
+.rhythm-col-span-4 { grid-column: span 4 / span 4; }
+.rhythm-col-span-5 { grid-column: span 5 / span 5; }
+.rhythm-col-span-6 { grid-column: span 6 / span 6; }
+.rhythm-col-span-7 { grid-column: span 7 / span 7; }
+.rhythm-col-span-8 { grid-column: span 8 / span 8; }
+.rhythm-col-span-9 { grid-column: span 9 / span 9; }
+.rhythm-col-span-10 { grid-column: span 10 / span 10; }
+.rhythm-col-span-11 { grid-column: span 11 / span 11; }
+.rhythm-col-span-12 { grid-column: span 12 / span 12; }
+.rhythm-col-span-full { grid-column: 1 / -1; }
+
+/* Responsive Grid Utilities (Large Screens) */
+@media (min-width: 1024px) {
+    .lg\:rhythm-col-span-1 { grid-column: span 1 / span 1; }
+    .lg\:rhythm-col-span-2 { grid-column: span 2 / span 2; }
+    .lg\:rhythm-col-span-3 { grid-column: span 3 / span 3; }
+    .lg\:rhythm-col-span-4 { grid-column: span 4 / span 4; }
+    .lg\:rhythm-col-span-5 { grid-column: span 5 / span 5; }
+    .lg\:rhythm-col-span-6 { grid-column: span 6 / span 6; }
+    .lg\:rhythm-col-span-7 { grid-column: span 7 / span 7; }
+    .lg\:rhythm-col-span-8 { grid-column: span 8 / span 8; }
+    .lg\:rhythm-col-span-9 { grid-column: span 9 / span 9; }
+    .lg\:rhythm-col-span-10 { grid-column: span 10 / span 10; }
+    .lg\:rhythm-col-span-11 { grid-column: span 11 / span 11; }
+    .lg\:rhythm-col-span-12 { grid-column: span 12 / span 12; }
+}
+
+/* Position Utilities */
+.rhythm-relative { position: relative; }
+.rhythm-absolute { position: absolute; }
+.rhythm-fixed { position: fixed; }
+.rhythm-sticky { position: sticky; }
+
+/* Overflow Utilities */
+.rhythm-overflow-hidden { overflow: hidden; }
+.rhythm-overflow-auto { overflow: auto; }
+.rhythm-overflow-x-auto { overflow-x: auto; }
+.rhythm-overflow-y-auto { overflow-y: auto; }
+
+/* Transition Utilities */
+.rhythm-transition { transition: var(--rhythm-transition); }
+.rhythm-transition-fast { transition: var(--rhythm-transition-fast); }
+.rhythm-transition-slow { transition: var(--rhythm-transition-slow); }
+
+/* Focus Utilities */
+.rhythm-focus-ring { box-shadow: var(--rhythm-focus-ring); }
+.rhythm-focus-ring-none { box-shadow: none; }
+
+/* Background Utilities (Extended) */
+.rhythm-bg-subtle { background-color: var(--rhythm-bg-subtle); }
+.rhythm-bg-accent { background-color: var(--rhythm-bg-accent); }
+
+/* Border Utilities (Extended) */
+.rhythm-border-focus { border-color: var(--rhythm-border-focus); }
+
+/* Opacity Utilities */
+.rhythm-opacity-subtle { opacity: var(--rhythm-opacity-subtle); }
+.rhythm-opacity-medium { opacity: var(--rhythm-opacity-medium); }
+.rhythm-opacity-light { opacity: var(--rhythm-opacity-light); }
+
+/* Overlay Utilities */
+.rhythm-overlay-bg { background-color: var(--rhythm-overlay-bg); }
+.rhythm-overlay-bg-dark { background-color: var(--rhythm-overlay-bg-dark); }
+
+/* Transform Utilities */
+.rhythm-transform-hover { transform: var(--rhythm-transform-hover); }
+.rhythm-transform-hover-strong { transform: var(--rhythm-transform-hover-strong); }
+.rhythm-transform-scale-hover { transform: var(--rhythm-transform-scale-hover); }
+
+/* ============================================================================
+   COMPONENT STYLES USING VARIABLES
+   ============================================================================ */
+
+/* Base Body Styles */
+body {
+  background-color: var(--rhythm-bg-primary);
+  color: var(--rhythm-text-primary);
+  font-size: var(--rhythm-font-size-base);
+  line-height: var(--rhythm-line-height-normal);
+  transition: var(--rhythm-transition);
+}
+
+/* Button Component */
+.rhythm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rhythm-space-sm);
+  padding: var(--rhythm-space-sm) var(--rhythm-space-md);
+  font-size: var(--rhythm-font-size-sm);
+  font-weight: var(--rhythm-font-weight-medium);
+  border-radius: var(--rhythm-border-radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--rhythm-transition);
+  text-decoration: none;
+}
+
+.rhythm-btn:hover {
+  transform: var(--rhythm-transform-hover);
+  box-shadow: var(--rhythm-shadow-md);
+}
+
+.rhythm-btn-primary {
+  background-color: var(--rhythm-primary);
+  color: var(--rhythm-text-inverse);
+}
+
+.rhythm-btn-primary:hover {
+  background-color: var(--rhythm-primary-hover);
+}
+
+.rhythm-btn-secondary {
+  background-color: transparent;
+  color: var(--rhythm-text-secondary);
+  border-color: var(--rhythm-border-color);
+}
+
+.rhythm-btn-secondary:hover {
+  background-color: var(--rhythm-bg-secondary);
+  border-color: var(--rhythm-border-color);
+}
+
+.rhythm-btn-sm {
+  padding: var(--rhythm-space-xs) var(--rhythm-space-sm);
+  font-size: var(--rhythm-font-size-xs);
+}
+
+.rhythm-btn-lg {
+  padding: var(--rhythm-space-md) var(--rhythm-space-lg);
+  font-size: var(--rhythm-font-size-lg);
+}
+
+/* Input Component */
+.rhythm-input {
+  width: 100%;
+  padding: var(--rhythm-space-sm) var(--rhythm-space-md);
+  font-size: var(--rhythm-font-size-sm);
+  background-color: var(--rhythm-card-bg);
+  border: 1px solid var(--rhythm-border-color);
+  border-radius: var(--rhythm-border-radius-sm);
+  color: var(--rhythm-text-primary);
+  transition: var(--rhythm-transition);
+}
+
+.rhythm-input:focus {
+  outline: none;
+  border-color: var(--rhythm-border-focus);
+  box-shadow: var(--rhythm-focus-ring);
+}
+
+/* Select Component */
+.rhythm-select {
+  width: 100%;
+  padding: var(--rhythm-space-sm) var(--rhythm-space-md);
+  font-size: var(--rhythm-font-size-sm);
+  background-color: var(--rhythm-card-bg);
+  border: 1px solid var(--rhythm-border-color);
+  border-radius: var(--rhythm-border-radius-sm);
+  color: var(--rhythm-text-primary);
+  cursor: pointer;
+  transition: var(--rhythm-transition);
+}
+
+.rhythm-select:focus {
+  outline: none;
+  border-color: var(--rhythm-border-focus);
+  box-shadow: var(--rhythm-focus-ring);
+}
+
+/* Alert Component */
+.rhythm-alert {
+  padding: var(--rhythm-space-md);
+  border-radius: var(--rhythm-border-radius);
+  border: 1px solid transparent;
+  margin-bottom: var(--rhythm-space-md);
+}
+
+.rhythm-alert-success {
+  background-color: var(--rhythm-success-bg);
+  color: var(--rhythm-success-text);
+  border-color: var(--rhythm-success);
+}
+
+.rhythm-alert-warning {
+  background-color: var(--rhythm-warning-bg);
+  color: var(--rhythm-warning-text);
+  border-color: var(--rhythm-warning);
+}
+
+.rhythm-alert-critical {
+  background-color: var(--rhythm-critical-bg);
+  color: var(--rhythm-critical-text);
+  border-color: var(--rhythm-critical);
+}
+
+.rhythm-alert-info {
+  background-color: var(--rhythm-info-bg);
+  color: var(--rhythm-info-text);
+  border-color: var(--rhythm-info);
+}
+
+/* Loading Component */
+.rhythm-loading {
+  display: inline-block;
+  width: var(--rhythm-loading-size);
+  height: var(--rhythm-loading-size);
+  border: var(--rhythm-loading-border-width) solid var(--rhythm-border-light);
+  border-top-color: var(--rhythm-primary);
+  border-radius: var(--rhythm-border-radius-full);
+  animation: rhythm-spin 1s linear infinite;
+}
+
+@keyframes rhythm-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  :root {
+    --rhythm-space-md: 0.75rem;
+    --rhythm-space-lg: 1rem;
+    --rhythm-space-xl: 1.5rem;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .rhythm-btn,
+  .rhythm-shadow,
+  .rhythm-shadow-md,
+  .rhythm-shadow-lg {
+    box-shadow: none !important;
+  }
+
+  .rhythm-btn {
+    border: 1px solid var(--rhythm-border-color) !important;
+  }
+}
+
+/* Summary Stats Component */
+.rhythm-summary-stats {
+  display: flex;
+  gap: var(--rhythm-space-md);
+  padding: var(--rhythm-space-sm) var(--rhythm-space-md);
+  border-bottom: 1px solid var(--rhythm-border-color);
+  background-color: var(--rhythm-bg-subtle);
+}
+
+.rhythm-summary-stats .stat-item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--rhythm-space-sm);
+}
+
+.rhythm-summary-stats .stat-label {
+  font-size: var(--rhythm-font-size-sm);
+  color: var(--rhythm-text-secondary);
+}
+
+.rhythm-summary-stats .stat-value {
+  font-size: var(--rhythm-font-size-base);
+  font-weight: var(--rhythm-font-weight-semibold);
+  color: var(--rhythm-text-primary);
+}
+
+/* Card Component */
+.rhythm-card {
+  background-color: var(--rhythm-card-bg);
+  border: 1px solid var(--rhythm-border-color);
+  border-radius: var(--rhythm-border-radius);
+  box-shadow: var(--rhythm-shadow);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.form-control option {
+  background: initial;
+  color: initial;
+}
+
+.form-control option:checked {
+    background: initial;
+    color: initial;
+}
+
+/* Ticket number highlighting */
+.ticket-number {
+  background-color: var(--rhythm-primary);
+  color: var(--rhythm-text-inverse);
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--rhythm-border-radius-sm);
+  font-weight: var(--rhythm-font-weight-semibold);
+  font-size: 0.875rem;
+  text-decoration: none;
+  display: inline-block;
+  margin: 0 0.125rem;
+  transition: var(--rhythm-transition);
+}
+
+.ticket-number:hover {
+  background-color: var(--rhythm-primary-hover);
+  transform: var(--rhythm-transform-hover);
+}
+
+/* Merge commit styling */
+.merge-commit {
+  background-color: var(--rhythm-bg-accent);
+  border: 1px solid var(--rhythm-border-color);
+  border-radius: var(--rhythm-border-radius-sm);
+  padding: var(--rhythm-space-sm);
+  margin: var(--rhythm-space-xs) 0;
+}
+
+.merge-indicator {
+  color: var(--rhythm-primary);
+  font-weight: var(--rhythm-font-weight-semibold);
+  font-size: var(--rhythm-font-size-sm);
+}
+
+.merge-details {
+  color: var(--rhythm-text-secondary);
+  font-size: var(--rhythm-font-size-xs);
+  font-family: monospace;
+  background-color: var(--rhythm-bg-subtle);
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--rhythm-border-radius-sm);
+  margin-left: var(--rhythm-space-xs);
+}
+
+.merge-message {
+  color: var(--rhythm-text-primary);
+  font-size: var(--rhythm-font-size-sm);
+  margin-top: var(--rhythm-space-xs);
+  display: block;
+}
+
+/* Commit tags styling */
+.commit-tags {
+  margin-top: var(--rhythm-space-xs);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rhythm-space-xs);
+}
+
+.tag {
+  background-color: var(--rhythm-info-bg);
+  color: var(--rhythm-info-text);
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--rhythm-border-radius-sm);
+  font-size: 0.75rem;
+  font-weight: var(--rhythm-font-weight-medium);
+  border: 1px solid var(--rhythm-info);
+  font-family: monospace;
+}
+
+/* Dark theme adjustments for Git widget */
+[data-theme="dark"] .ticket-number {
+  background-color: var(--rhythm-primary);
+  color: var(--rhythm-text-inverse);
+}
+
+[data-theme="dark"] .merge-commit {
+  background-color: var(--rhythm-bg-accent);
+  border-color: var(--rhythm-border-color);
+}
+
+[data-theme="dark"] .merge-details {
+  background-color: var(--rhythm-bg-subtle);
+  color: var(--rhythm-text-secondary);
+}
+
+[data-theme="dark"] .tag {
+  background-color: var(--rhythm-info-bg);
+  color: var(--rhythm-info-text);
+  border-color: var(--rhythm-info);
+}

@@ -1,0 +1,64 @@
+# User specific & automatically generated files #
+#################################################
+/build
+/dist
+/tags
+/composer.lock
+/tools
+/vendor
+/node_modules/
+/tmp
+*.mo
+debug.log
+error.log
+.phpunit.cache
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+/logs/
+*.log
+
+# Runtime data
+/tmp/
+/cache/
+*.cache
+
+# Test coverage
+/coverage/
+.phpunit.cache/
+clover.xml
+*.coverage
+
+# Build artifacts
+/build/
+/dist/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Composer
+composer.lock
+/composer.phar
+
+# Lock files
+package-lock.json
+yarn.lock
+redis.stub.php
+/junit.xml
+/phpunit.xml.bak

@@ -1,0 +1,73 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Cannot unset property Rhythm\\Test\\TestCase\\Middleware\\SlowQueryMiddlewareTest\:\:\$queryLogger because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: tests/TestCase/Middleware/SlowQueryMiddlewareTest.php
+
+		-
+			message: '#^Cannot unset property Rhythm\\Test\\TestCase\\Middleware\\SlowQueryMiddlewareTest\:\:\$rhythm because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: tests/TestCase/Middleware/SlowQueryMiddlewareTest.php
+
+		-
+			message: '#^Cannot unset property Rhythm\\Test\\TestCase\\Recorder\\Trait\\GroupsTraitTest\:\:\$groupsClass because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: tests/TestCase/Recorder/Trait/GroupsTraitTest.php
+
+		-
+			message: '#^Cannot unset property Rhythm\\Test\\TestCase\\Recorder\\Trait\\IgnoresTraitTest\:\:\$ignoresClass because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: tests/TestCase/Recorder/Trait/IgnoresTraitTest.php
+
+		-
+			message: '#^Cannot unset property Rhythm\\Test\\TestCase\\Recorder\\Trait\\QueueNameTraitTest\:\:\$queueNameClass because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: tests/TestCase/Recorder/Trait/QueueNameTraitTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertFalse\(\) with bool and ''Should never sample…'' will always evaluate to false\.$#'
+			identifier: method.impossibleType
+			count: 1
+			path: tests/TestCase/Recorder/Trait/SamplingTraitTest.php
+
+		-
+			message: '#^Cannot unset property Rhythm\\Test\\TestCase\\Recorder\\Trait\\SamplingTraitTest\:\:\$samplingClass because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: tests/TestCase/Recorder/Trait/SamplingTraitTest.php
+
+		-
+			message: '#^Cannot unset property Rhythm\\Test\\TestCase\\Storage\\DatabaseStorageTest\:\:\$aggregatesTable because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: tests/TestCase/Storage/DatabaseStorageTest.php
+
+		-
+			message: '#^Cannot unset property Rhythm\\Test\\TestCase\\Storage\\DatabaseStorageTest\:\:\$entriesTable because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: tests/TestCase/Storage/DatabaseStorageTest.php
+
+		-
+			message: '#^Cannot unset property Rhythm\\Test\\TestCase\\Storage\\DatabaseStorageTest\:\:\$storage because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: tests/TestCase/Storage/DatabaseStorageTest.php
+
+		-
+			message: '#^Cannot unset property Rhythm\\Test\\TestCase\\Storage\\DigestStorageTest\:\:\$storage because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: tests/TestCase/Storage/DigestStorageTest.php
+
+		-
+			message: '#^Cannot unset property Rhythm\\Test\\TestCase\\Storage\\RhythmAggregateDigestTest\:\:\$digest because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: tests/TestCase/Storage/RhythmAggregateDigestTest.php

@@ -1,0 +1,72 @@
+<?php
+/**
+ * Slow Queries Widget
+ *
+ * This template fetches its own data and then extends the base widget
+ * to handle the presentation.
+ *
+ * @var \App\View\AppView $this
+ * @var mixed $config
+ * @var object $widget
+ * @var mixed $widgetName
+ */
+$this->set('widget', $widget);
+$this->set('config', $config);
+$this->set('widgetName', $widgetName);
+
+$period = (int) $this->getRequest()->getQuery('period', 60);
+$options = ['period' => $period];
+$sort = $this->get('sort');
+if ($sort !== null) {
+    $options['sort'] = $sort;
+}
+$data = $widget->getData($options);
+$this->set('data', $data);
+
+$this->extend('Rhythm.widgets/widget_base');
+
+$this->start('widget_body');
+
+$queriesData = $data['queries'] ?? [];
+
+if (empty($queriesData)) {
+    echo $this->element('Rhythm.components/widget_placeholder', [
+        'message' => 'No slow queries recorded in the selected period.'
+    ]);
+} else {
+    $totalCountDisplay = $this->Sampling->formatMagnifiedValue(
+        $data['total_count'] ?? 0,
+        $data['raw_total_count'] ?? $data['total_count'] ?? 0,
+        $data['sample_rate'] ?? 1.0
+    );
+
+    $summaryStats = [
+        ['label' => 'Total Queries', 'value' => $totalCountDisplay, 'escape' => false],
+        ['label' => 'Max Duration', 'value' => ($data['max_duration'] ?? 0) . 'ms'],
+    ];
+
+    $head = ['Query', 'Duration', 'Count'];
+    $body = [];
+    foreach ($queriesData as $query) {
+        $sql = '<code>' . h(substr($query['sql'] ?? '', 0, 1000)) . '...</code>';
+        if (!empty($query['location'])) {
+            $sql .= '<br><small class="text-muted">' . h($query['location']) . '</small>';
+        }
+        $duration = round($query['max_duration'] ?? 0, 1) . 'ms';
+
+        $countDisplay = $this->Sampling->formatMagnifiedValue(
+            $query['count'] ?? 0,
+            $query['raw_count'] ?? $query['count'] ?? 0,
+            $query['sample_rate'] ?? 1.0
+        );
+
+        $body[] = [$sql, $duration, $countDisplay];
+    }
+?>
+    <div class="widget-content">
+        <?= $this->Rhythm->summaryStats($summaryStats) ?>
+        <?= $this->Rhythm->scroll($this->Rhythm->table($head, $body)) ?>
+    </div>
+<?php
+}
+$this->end();

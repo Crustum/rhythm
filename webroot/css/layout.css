@@ -1,0 +1,409 @@
+/* Rhythm Dashboard Layout CSS */
+
+/* Dashboard Layout */
+.dashboard-body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--rhythm-bg-primary);
+    color: var(--rhythm-text-primary);
+    transition: var(--rhythm-transition);
+}
+
+.dashboard-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--rhythm-z-sticky);
+    background: var(--rhythm-header-bg);
+    color: var(--rhythm-header-text);
+    padding: var(--rhythm-space-sm) var(--rhythm-space-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--rhythm-shadow-md);
+}
+
+.dashboard-title {
+    display: flex;
+    align-items: baseline;
+    gap: var(--rhythm-space-sm);
+}
+
+.dashboard-title h1 {
+    margin: 0;
+    font-size: var(--rhythm-font-size-xl);
+    font-weight: var(--rhythm-font-weight-bold);
+}
+
+.dashboard-subtitle {
+    margin: 0;
+    opacity: var(--rhythm-opacity-subtle);
+    font-size: var(--rhythm-font-size-sm);
+    font-weight: var(--rhythm-font-weight-normal);
+}
+
+.dashboard-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--rhythm-space-sm);
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: var(--rhythm-space-xs);
+}
+
+.control-group label {
+    font-size: var(--rhythm-font-size-sm);
+    font-weight: var(--rhythm-font-weight-medium);
+    color: var(--rhythm-header-text);
+}
+
+.form-control {
+    padding: var(--rhythm-space-sm);
+    border: 1px solid var(--rhythm-form-control-border);
+    border-radius: var(--rhythm-border-radius-sm);
+    background: var(--rhythm-form-control-bg);
+    color: var(--rhythm-text-inverse);
+    font-size: var(--rhythm-font-size-sm);
+    transition: var(--rhythm-transition);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--rhythm-border-focus);
+    box-shadow: var(--rhythm-focus-ring);
+}
+
+.form-control option {
+    background: var(--rhythm-bg-secondary);
+    color: var(--rhythm-text-primary);
+}
+
+[data-theme="dark"] .form-control option {
+    background: var(--rhythm-bg-tertiary);
+    color: var(--rhythm-text-primary);
+}
+
+[data-theme="dark"] .form-control {
+    background: var(--rhythm-bg-tertiary);
+    color: var(--rhythm-text-primary);
+    border-color: var(--rhythm-border-color);
+}
+
+[data-theme="dark"] .form-control option:checked,
+[data-theme="dark"] .form-control option:hover {
+    background: var(--rhythm-bg-secondary);
+    color: var(--rhythm-text-primary);
+}
+
+.btn {
+    padding: var(--rhythm-space-sm) var(--rhythm-space-md);
+    border: none;
+    border-radius: var(--rhythm-border-radius-sm);
+    cursor: pointer;
+    font-size: var(--rhythm-font-size-sm);
+    font-weight: var(--rhythm-font-weight-medium);
+    transition: var(--rhythm-transition);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--rhythm-space-sm);
+}
+
+.btn-primary {
+    background: var(--rhythm-btn-overlay-bg);
+    color: var(--rhythm-text-inverse);
+    border: 1px solid var(--rhythm-btn-overlay-border);
+}
+
+.btn-primary:hover {
+    background: var(--rhythm-btn-overlay-bg-hover);
+    transform: var(--rhythm-transform-hover);
+}
+
+[data-theme="dark"] .btn-primary {
+    background: var(--rhythm-btn-overlay-bg);
+    color: var(--rhythm-text-inverse);
+    border: 1px solid var(--rhythm-btn-overlay-border);
+}
+[data-theme="dark"] .btn-primary:hover {
+    background: var(--rhythm-btn-overlay-bg-hover);
+    color: var(--rhythm-text-inverse);
+}
+
+.btn-sm {
+    padding: var(--rhythm-space-xs) var(--rhythm-space-sm);
+    font-size: var(--rhythm-font-size-xs);
+}
+
+.btn-outline-secondary {
+    background: transparent;
+    color: var(--rhythm-secondary);
+    border: 1px solid var(--rhythm-secondary);
+}
+
+.btn-outline-secondary:hover {
+    background: var(--rhythm-secondary);
+    color: var(--rhythm-text-inverse);
+}
+
+/* Dashboard Grid */
+.dashboard-container {
+    padding: var(--rhythm-space-sm);
+    background-color: var(--rhythm-bg-primary);
+    min-height: 100vh;
+}
+
+/* Dashboard Grid - Updated to use new system */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--rhythm-space-sm);
+    padding: var(--rhythm-space-sm);
+}
+
+/* Responsive grid breakpoints */
+@media (max-width: 1200px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(8, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--rhythm-space-md);
+        padding: var(--rhythm-space-lg);
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: var(--rhythm-space-sm);
+        padding: var(--rhythm-space-md);
+    }
+}
+
+/* Widget Structure - Keep for compatibility with existing templates */
+.widget-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--rhythm-card-bg);
+    border: 1px solid var(--rhythm-card-border);
+    border-radius: var(--rhythm-border-radius);
+    box-shadow: var(--rhythm-shadow);
+    transition: var(--rhythm-transition);
+}
+
+.widget-wrapper:hover {
+    box-shadow: var(--rhythm-shadow-md);
+    background: var(--rhythm-card-hover-bg);
+}
+
+.widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--rhythm-space-md);
+    border-bottom: 1px solid var(--rhythm-border-color);
+    background: var(--rhythm-bg-secondary);
+    border-radius: var(--rhythm-border-radius) var(--rhythm-border-radius) 0 0;
+}
+
+.widget-header h3 {
+    margin: 0;
+    font-size: var(--rhythm-font-size-lg);
+    font-weight: var(--rhythm-font-weight-semibold);
+    color: var(--rhythm-text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--rhythm-space-sm);
+}
+
+.widget-content {
+    flex: 1;
+    padding: var(--rhythm-space-md);
+    position: relative;
+    background: var(--rhythm-card-bg);
+}
+
+.widget-footer {
+    padding: var(--rhythm-space-sm) var(--rhythm-space-md);
+    border-top: 1px solid var(--rhythm-border-color);
+    background: var(--rhythm-bg-secondary);
+    text-align: center;
+    border-radius: 0 0 var(--rhythm-border-radius) var(--rhythm-border-radius);
+}
+
+.widget-error {
+    text-align: center;
+    color: var(--rhythm-critical);
+    padding: var(--rhythm-space-xl);
+    background: var(--rhythm-critical-bg);
+    border-radius: var(--rhythm-border-radius);
+    margin: var(--rhythm-space-md);
+}
+
+.widget-error i {
+    font-size: var(--rhythm-font-size-3xl);
+    margin-bottom: var(--rhythm-space-md);
+}
+
+.widget-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--rhythm-overlay-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--rhythm-z-modal);
+    border-radius: var(--rhythm-border-radius);
+}
+
+/* Dashboard Footer */
+.dashboard-footer {
+    background: var(--rhythm-bg-secondary);
+    color: var(--rhythm-text-secondary);
+    text-align: center;
+    padding: var(--rhythm-space-md);
+    margin-top: var(--rhythm-space-xl);
+    border-top: 1px solid var(--rhythm-border-color);
+}
+
+/* Theme Toggle in Header */
+.dashboard-controls .rhythm-theme-toggle {
+    margin-left: var(--rhythm-space-sm);
+}
+
+/* Center the moon icon in the toggle */
+.rhythm-theme-toggle .icon {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    color: var(--rhythm-text-inverse);
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    position: static;
+    transform: none;
+}
+
+.rhythm-theme-toggle .icon.sun {
+    justify-content: center;
+}
+
+.rhythm-theme-toggle .icon.moon {
+    justify-content: flex-end;
+}
+
+.rhythm-theme-toggle .icon.moon i {
+    margin-right: -3px;
+    margin-left: auto;
+    display: block;
+}
+
+/* Ensure the toggle circle uses the dark gray in dark mode */
+[data-theme="dark"] .rhythm-theme-toggle::before {
+    background: var(--rhythm-theme-toggle-active);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        gap: var(--rhythm-space-sm);
+        text-align: center;
+    }
+
+    .dashboard-controls {
+        flex-direction: column;
+        gap: var(--rhythm-space-xs);
+    }
+
+    .dashboard-controls .rhythm-theme-toggle {
+        margin-left: 0;
+        margin-top: var(--rhythm-space-xs);
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-container {
+        padding: var(--rhythm-space-md);
+    }
+
+    .widget-header {
+        flex-direction: column;
+        gap: var(--rhythm-space-sm);
+        text-align: center;
+    }
+
+    .widget-actions {
+        width: 100%;
+    }
+
+    .refresh-widget {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Chart.js Dark Theme Overrides */
+[data-theme="dark"] .chart-wrapper {
+    background: var(--rhythm-chart-bg);
+    border-color: var(--rhythm-chart-border);
+}
+
+[data-theme="dark"] .chart-container {
+    background: var(--rhythm-chart-bg);
+}
+
+/* Smooth theme transitions */
+* {
+    transition: background-color var(--rhythm-transition),
+                color var(--rhythm-transition),
+                border-color var(--rhythm-transition),
+                box-shadow var(--rhythm-transition);
+}
+
+/* Disable transitions for performance-critical elements */
+.widget-wrapper,
+.chart-container,
+canvas {
+    transition: none;
+}
+
+[data-theme="dark"] #refresh-all {
+    background: var(--rhythm-bg-tertiary) !important;
+    color: var(--rhythm-text-inverse) !important;
+    border: 1px solid var(--rhythm-border-color) !important;
+    box-shadow: none !important;
+}
+[data-theme="dark"] #refresh-all:hover {
+    background: var(--rhythm-bg-secondary) !important;
+}
+
+[data-theme="dark"] .refresh-widget {
+    color: var(--rhythm-text-inverse) !important;
+}
+[data-theme="dark"] .refresh-widget i {
+    color: var(--rhythm-text-inverse) !important;
+}
+
+[data-theme="dark"] {
+    --rhythm-theme-toggle-active: #64748b; /* or another dark gray */
+}
+
+[data-theme="dark"] .widget-placeholder i {
+    color: var(--rhythm-text-primary);
+    border-radius: 50%;
+    padding: 0.25em;
+}

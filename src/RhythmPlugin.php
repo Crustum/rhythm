@@ -28,7 +28,7 @@ use Rhythm\Storage\StorageInterface;
 /**
  * Plugin for Rhythm performance monitoring
  */
-class Plugin extends BasePlugin
+class RhythmPlugin extends BasePlugin
 {
     /**
      * Load all the plugin configuration and bootstrap logic.

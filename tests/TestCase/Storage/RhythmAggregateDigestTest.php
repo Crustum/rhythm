@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase\Storage;
+namespace Crustum\Rhythm\Test\TestCase\Storage;
 
 use Cake\TestSuite\TestCase;
+use Crustum\Rhythm\Storage\RhythmAggregateDigest;
 use ReflectionClass;
-use Rhythm\Storage\RhythmAggregateDigest;
 
 /**
  * RhythmAggregateDigest Test Case

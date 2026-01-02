@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Model\Table;
+namespace Crustum\Rhythm\Model\Table;
 
 use Cake\Chronos\Chronos;
 use Cake\Collection\Collection;
@@ -96,9 +96,9 @@ class RhythmAggregatesTable extends Table
     /**
      * Find aggregates by type and period.
      *
-     * @param \Cake\ORM\Query\SelectQuery<\Rhythm\Model\Entity\MetricAggregate> $query Query object
+     * @param \Cake\ORM\Query\SelectQuery<\Crustum\Rhythm\Model\Entity\MetricAggregate> $query Query object
      * @param array<string, mixed> $options Options array
-     * @return \Cake\ORM\Query\SelectQuery<\Rhythm\Model\Entity\MetricAggregate>
+     * @return \Cake\ORM\Query\SelectQuery<\Crustum\Rhythm\Model\Entity\MetricAggregate>
      */
     public function findByTypeAndPeriod(SelectQuery $query, array $options): SelectQuery
     {
@@ -111,9 +111,9 @@ class RhythmAggregatesTable extends Table
     /**
      * Find aggregates by bucket.
      *
-     * @param \Cake\ORM\Query\SelectQuery<\Rhythm\Model\Entity\MetricAggregate> $query Query object
+     * @param \Cake\ORM\Query\SelectQuery<\Crustum\Rhythm\Model\Entity\MetricAggregate> $query Query object
      * @param array<string, mixed> $options Options array
-     * @return \Cake\ORM\Query\SelectQuery<\Rhythm\Model\Entity\MetricAggregate>
+     * @return \Cake\ORM\Query\SelectQuery<\Crustum\Rhythm\Model\Entity\MetricAggregate>
      */
     public function findByBucket(SelectQuery $query, array $options): SelectQuery
     {
@@ -143,8 +143,8 @@ class RhythmAggregatesTable extends Table
     ): Collection {
         $this->_validateAggregates($aggregate);
 
-        /** @var \Rhythm\Model\Table\RhythmEntriesTable $RhythmEntries */
-        $RhythmEntries = $this->fetchTable('Rhythm.RhythmEntries');
+        /** @var \Crustum\Rhythm\Model\Table\RhythmEntriesTable $RhythmEntries */
+        $RhythmEntries = $this->fetchTable('Crustum/Rhythm.RhythmEntries');
 
         $types = is_array($types) ? $types : [$types];
         $orderBy = $orderBy ?: $types[0];
@@ -261,8 +261,8 @@ class RhythmAggregatesTable extends Table
     ): float|Collection {
         $this->_validateAggregates($aggregate);
 
-        /** @var \Rhythm\Model\Table\RhythmEntriesTable $RhythmEntries */
-        $RhythmEntries = $this->fetchTable('Rhythm.RhythmEntries');
+        /** @var \Crustum\Rhythm\Model\Table\RhythmEntriesTable $RhythmEntries */
+        $RhythmEntries = $this->fetchTable('Crustum/Rhythm.RhythmEntries');
 
         $isArray = is_array($types);
         $types = $isArray ? $types : [$types];
@@ -461,7 +461,7 @@ class RhythmAggregatesTable extends Table
             'oldestBucket' => $oldestBucket,
         ] = $this->_getTimeScope($intervalMinutes);
 
-        $entriesTable = TableRegistry::getTableLocator()->get('Rhythm.RhythmEntries');
+        $entriesTable = TableRegistry::getTableLocator()->get('Crustum/Rhythm.RhythmEntries');
         $tailQuery = $entriesTable->find();
 
         $tailSelectFields = ['key_hash' => $entriesTable->aliasField('key_hash')];

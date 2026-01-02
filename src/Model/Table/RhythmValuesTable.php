@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Model\Table;
+namespace Crustum\Rhythm\Model\Table;
 
 use Cake\Collection\CollectionInterface;
 use Cake\ORM\Table;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\View\Helper;
+namespace Crustum\Rhythm\View\Helper;
 
 use Cake\View\Helper;
 use Exception;
@@ -99,7 +99,7 @@ class RhythmHelper extends Helper
      */
     public function cardHeader(string $name, array $options = []): string
     {
-        return $this->getView()->element('Rhythm.components/card-header', array_merge($options, [
+        return $this->getView()->element('Crustum/Rhythm.components/card-header', array_merge($options, [
             'name' => $name,
         ]));
     }
@@ -115,7 +115,7 @@ class RhythmHelper extends Helper
      */
     public function stat(string $label, mixed $value, string $unit = '', array $options = []): string
     {
-        return $this->getView()->element('Rhythm.components/stat', array_merge($options, [
+        return $this->getView()->element('Crustum/Rhythm.components/stat', array_merge($options, [
             'label' => $label,
             'value' => $value,
             'unit' => $unit,
@@ -136,7 +136,7 @@ class RhythmHelper extends Helper
             'size' => 'md',
         ];
 
-        return $this->getView()->element('Rhythm.components/badge', compact('text', 'variant', 'options'));
+        return $this->getView()->element('Crustum/Rhythm.components/badge', compact('text', 'variant', 'options'));
     }
 
     /**
@@ -148,7 +148,7 @@ class RhythmHelper extends Helper
      */
     public function scroll(string $content, array $options = []): string
     {
-        return $this->getView()->element('Rhythm.components/scroll', array_merge($options, [
+        return $this->getView()->element('Crustum/Rhythm.components/scroll', array_merge($options, [
             'content' => $content,
         ]));
     }
@@ -215,7 +215,7 @@ class RhythmHelper extends Helper
      */
     public function table(array $head, array $body, array $options = []): string
     {
-        return $this->getView()->element('Rhythm.components/table', [
+        return $this->getView()->element('Crustum/Rhythm.components/table', [
             'head' => $head,
             'body' => $body,
         ] + $options);
@@ -229,7 +229,7 @@ class RhythmHelper extends Helper
      */
     public function summaryStats(array $stats): string
     {
-        return $this->getView()->element('Rhythm.components/summary_stats', compact('stats'));
+        return $this->getView()->element('Crustum/Rhythm.components/summary_stats', compact('stats'));
     }
 
     /**

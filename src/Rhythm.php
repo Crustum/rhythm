@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm;
+namespace Crustum\Rhythm;
 
 use Cake\Collection\Collection;
 use Cake\Core\Configure;
@@ -9,11 +9,11 @@ use Cake\Core\ContainerInterface;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
 use Cake\I18n\DateTime;
+use Crustum\Rhythm\Ingest\IngestInterface;
+use Crustum\Rhythm\Recorder\RecorderInterface;
+use Crustum\Rhythm\Recorder\RecorderResolver;
+use Crustum\Rhythm\Storage\StorageInterface;
 use InvalidArgumentException;
-use Rhythm\Ingest\IngestInterface;
-use Rhythm\Recorder\RecorderInterface;
-use Rhythm\Recorder\RecorderResolver;
-use Rhythm\Storage\StorageInterface;
 use Throwable;
 
 /**
@@ -26,14 +26,14 @@ class Rhythm
     /**
      * The registered recorders.
      *
-     * @var array<string, \Rhythm\Recorder\RecorderInterface>
+     * @var array<string, \Crustum\Rhythm\Recorder\RecorderInterface>
      */
     protected array $recorders = [];
 
     /**
      * The queued metric entries.
      *
-     * @var array<int, \Rhythm\RhythmEntry|\Rhythm\RhythmValue>
+     * @var array<int, \Crustum\Rhythm\RhythmEntry|\Crustum\Rhythm\RhythmValue>
      */
     protected array $entries = [];
 
@@ -89,14 +89,14 @@ class Rhythm
     /**
      * Storage interface.
      *
-     * @var \Rhythm\Storage\StorageInterface
+     * @var \Crustum\Rhythm\Storage\StorageInterface
      */
     protected StorageInterface $storage;
 
     /**
      * Ingest interface.
      *
-     * @var \Rhythm\Ingest\IngestInterface
+     * @var \Crustum\Rhythm\Ingest\IngestInterface
      */
     protected IngestInterface $ingest;
 
@@ -117,15 +117,15 @@ class Rhythm
     /**
      * Recorder resolver for dependency injection.
      *
-     * @var \Rhythm\Recorder\RecorderResolver
+     * @var \Crustum\Rhythm\Recorder\RecorderResolver
      */
     protected RecorderResolver $recorderResolver;
 
     /**
      * Constructor.
      *
-     * @param \Rhythm\Storage\StorageInterface $storage Storage interface
-     * @param \Rhythm\Ingest\IngestInterface $ingest Ingest interface
+     * @param \Crustum\Rhythm\Storage\StorageInterface $storage Storage interface
+     * @param \Crustum\Rhythm\Ingest\IngestInterface $ingest Ingest interface
      * @param \Cake\Core\ContainerInterface $container Container interface
      * @param array<string, mixed> $config Configuration array
      */
@@ -151,7 +151,7 @@ class Rhythm
      * @param string $key Metric key
      * @param int|null $value Metric value
      * @param int|null $timestamp Timestamp
-     * @return \Rhythm\RhythmEntry
+     * @return \Crustum\Rhythm\RhythmEntry
      */
     public function record(string $type, string $key, ?int $value = null, ?int $timestamp = null): RhythmEntry
     {
@@ -174,7 +174,7 @@ class Rhythm
      * @param string $key Metric key
      * @param string $value Metric value
      * @param int|null $timestamp Timestamp
-     * @return \Rhythm\RhythmValue
+     * @return \Crustum\Rhythm\RhythmValue
      */
     public function set(string $type, string $key, string $value, ?int $timestamp = null): RhythmValue
     {
@@ -302,7 +302,7 @@ class Rhythm
     /**
      * Determine if the given entry should be recorded.
      *
-     * @param \Rhythm\RhythmEntry|\Rhythm\RhythmValue $entry Entry to check
+     * @param \Crustum\Rhythm\RhythmEntry|\Crustum\Rhythm\RhythmValue $entry Entry to check
      * @return bool
      */
     protected function shouldRecordEntry(RhythmEntry|RhythmValue $entry): bool
@@ -398,7 +398,7 @@ class Rhythm
      * Register a single recorder.
      *
      * @param string $name Recorder name
-     * @param \Rhythm\Recorder\RecorderInterface $recorder Recorder instance
+     * @param \Crustum\Rhythm\Recorder\RecorderInterface $recorder Recorder instance
      * @return void
      */
     public function registerRecorder(string $name, RecorderInterface $recorder): void
@@ -410,7 +410,7 @@ class Rhythm
      * Get a recorder by name.
      *
      * @param string $name Recorder name
-     * @return \Rhythm\Recorder\RecorderInterface|null
+     * @return \Crustum\Rhythm\Recorder\RecorderInterface|null
      */
     public function getRecorder(string $name): ?RecorderInterface
     {
@@ -522,7 +522,7 @@ class Rhythm
     /**
      * Get all registered recorders.
      *
-     * @return array<string, \Rhythm\Recorder\RecorderInterface>
+     * @return array<string, \Crustum\Rhythm\Recorder\RecorderInterface>
      */
     public function getRecorders(): array
     {
@@ -543,7 +543,7 @@ class Rhythm
     /**
      * Get storage interface.
      *
-     * @return \Rhythm\Storage\StorageInterface
+     * @return \Crustum\Rhythm\Storage\StorageInterface
      */
     public function getStorage(): StorageInterface
     {
@@ -605,7 +605,7 @@ class Rhythm
     /**
      * Get the queued entries.
      *
-     * @return \Cake\Collection\Collection<int, \Rhythm\RhythmEntry|\Rhythm\RhythmValue>
+     * @return \Cake\Collection\Collection<int, \Crustum\Rhythm\RhythmEntry|\Crustum\Rhythm\RhythmValue>
      */
     public function entries(): Collection
     {

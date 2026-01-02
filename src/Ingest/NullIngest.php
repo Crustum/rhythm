@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Ingest;
+namespace Crustum\Rhythm\Ingest;
 
 use Cake\Collection\CollectionInterface;
 

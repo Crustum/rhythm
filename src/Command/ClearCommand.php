@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Command;
+namespace Crustum\Rhythm\Command;
 
 use Cake\Command\Command;
 use Cake\Console\Arguments;
@@ -9,7 +9,7 @@ use Cake\Console\CommandFactoryInterface;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\Configure;
-use Rhythm\Rhythm;
+use Crustum\Rhythm\Rhythm;
 
 /**
  * Command to clear Rhythm data.
@@ -21,14 +21,14 @@ class ClearCommand extends Command
     /**
      * Rhythm instance.
      *
-     * @var \Rhythm\Rhythm
+     * @var \Crustum\Rhythm\Rhythm
      */
     protected Rhythm $rhythm;
 
     /**
      * Constructor.
      *
-     * @param \Rhythm\Rhythm $rhythm Rhythm instance
+     * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm instance
      * @param \Cake\Console\CommandFactoryInterface $factory Command factory instance
      */
     public function __construct(Rhythm $rhythm, ?CommandFactoryInterface $factory = null)

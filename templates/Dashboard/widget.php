@@ -9,6 +9,6 @@
  * @var mixed $data
  * @var mixed $widgetName
  */
-$this->loadHelper('Rhythm.Rhythm');
-$this->loadHelper('Rhythm.Chart');
+$this->loadHelper('Crustum/Rhythm.Rhythm');
+$this->loadHelper('Crustum/Rhythm.Chart');
 echo $this->Rhythm->widget($widgetName, $data);

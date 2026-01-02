@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Widget;
+namespace Crustum\Rhythm\Widget;
 
 use Cake\I18n\DateTime;
 use Exception;
@@ -104,7 +104,7 @@ class ServerStateWidget extends BaseWidget
      */
     public function getTemplate(): string
     {
-        return 'Rhythm.widgets/server_state';
+        return 'Crustum/Rhythm.widgets/server_state';
     }
 
     /**

@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Recorder;
+namespace Crustum\Rhythm\Recorder;
 
 use Cake\Core\Configure;
 use Cake\Event\EventListenerInterface;
-use Rhythm\Event\SlowRequestEvent;
-use Rhythm\Recorder\Trait\IgnoresTrait;
-use Rhythm\Recorder\Trait\SamplingTrait;
-use Rhythm\Recorder\Trait\ThresholdsTrait;
-use Rhythm\Rhythm;
+use Crustum\Rhythm\Event\SlowRequestEvent;
+use Crustum\Rhythm\Recorder\Trait\IgnoresTrait;
+use Crustum\Rhythm\Recorder\Trait\SamplingTrait;
+use Crustum\Rhythm\Recorder\Trait\ThresholdsTrait;
+use Crustum\Rhythm\Rhythm;
 
 /**
  * Slow Requests Recorder
@@ -23,7 +23,7 @@ class SlowRequestsRecorder extends BaseRecorder implements EventListenerInterfac
     use ThresholdsTrait;
 
     /**
-     * @param \Rhythm\Rhythm $rhythm Rhythm instance
+     * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm instance
      * @param array $config Configuration array
      */
     public function __construct(Rhythm $rhythm, array $config = [])
@@ -43,7 +43,7 @@ class SlowRequestsRecorder extends BaseRecorder implements EventListenerInterfac
     }
 
     /**
-     * @param \Rhythm\Event\SlowRequestEvent $event Slow request event
+     * @param \Crustum\Rhythm\Event\SlowRequestEvent $event Slow request event
      * @return void
      */
     public function handleSlowRequest(SlowRequestEvent $event): void

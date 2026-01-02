@@ -23,12 +23,12 @@ if ($sort !== null) {
 $data = $widget->getData($options);
 $this->set('data', $data);
 
-$this->extend('Rhythm.widgets/widget_base');
+$this->extend('Crustum/Rhythm.widgets/widget_base');
 
 $this->start('widget_body');
 
 if (empty($data['requests'])) {
-    echo $this->element('Rhythm.components/widget_placeholder', ['message' => 'No usage data recorded.']);
+    echo $this->element('Crustum/Rhythm.components/widget_placeholder', ['message' => 'No usage data recorded.']);
 } else {
     $requestCountDisplay = $this->Sampling->formatMagnifiedValue(
         $data['requests']['count'] ?? 0,
@@ -68,9 +68,9 @@ if (empty($data['requests'])) {
 ?>
     <div class="widget-content">
         <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
-            <?= $this->element('Rhythm.components/stat', $requestsStats) ?>
-            <?= $this->element('Rhythm.components/stat', $responseTimeStats) ?>
-            <?= $this->element('Rhythm.components/stat', $memoryStats) ?>
+            <?= $this->element('Crustum/Rhythm.components/stat', $requestsStats) ?>
+            <?= $this->element('Crustum/Rhythm.components/stat', $responseTimeStats) ?>
+            <?= $this->element('Crustum/Rhythm.components/stat', $memoryStats) ?>
         </div>
     </div>
 <?php

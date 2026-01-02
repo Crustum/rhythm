@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Recorder;
+namespace Crustum\Rhythm\Recorder;
 
-use Rhythm\Rhythm;
+use Crustum\Rhythm\Rhythm;
 
 /**
  * Base Recorder Abstract Class
@@ -18,7 +18,7 @@ abstract class BaseRecorder implements RecorderInterface
     /**
      * Rhythm instance.
      *
-     * @var \Rhythm\Rhythm
+     * @var \Crustum\Rhythm\Rhythm
      */
     protected Rhythm $rhythm;
 
@@ -32,7 +32,7 @@ abstract class BaseRecorder implements RecorderInterface
     /**
      * Constructor.
      *
-     * @param \Rhythm\Rhythm $rhythm Rhythm instance
+     * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm instance
      * @param array<string, mixed> $config Configuration array
      */
     public function __construct(Rhythm $rhythm, array $config = [])

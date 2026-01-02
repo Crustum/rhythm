@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase\Utility;
+namespace Crustum\Rhythm\Test\TestCase\Utility;
 
 use Cake\TestSuite\TestCase;
-use Rhythm\Utility\Chance;
+use Crustum\Rhythm\Utility\Chance;
 use RuntimeException;
 
 /**

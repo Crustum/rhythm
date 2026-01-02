@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase\Storage;
+namespace Crustum\Rhythm\Test\TestCase\Storage;
 
 use Cake\Collection\Collection;
 use Cake\I18n\DateTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Crustum\Rhythm\Model\Table\RhythmAggregatesTable;
+use Crustum\Rhythm\Model\Table\RhythmEntriesTable;
+use Crustum\Rhythm\Storage\DigestStorage;
 use InvalidArgumentException;
 use ReflectionClass;
-use Rhythm\Model\Table\RhythmAggregatesTable;
-use Rhythm\Model\Table\RhythmEntriesTable;
-use Rhythm\Storage\DigestStorage;
 
 /**
  * Test case for aggregate methods in Storage
@@ -25,21 +25,21 @@ class DatabaseStorageTest extends TestCase
     /**
      * Database storage instance
      *
-     * @var \Rhythm\Storage\DigestStorage
+     * @var \Crustum\Rhythm\Storage\DigestStorage
      */
     protected DigestStorage $storage;
 
     /**
      * Entries table instance
      *
-     * @var \Rhythm\Model\Table\RhythmEntriesTable
+     * @var \Crustum\Rhythm\Model\Table\RhythmEntriesTable
      */
     protected RhythmEntriesTable $entriesTable;
 
     /**
      * Aggregates table instance
      *
-     * @var \Rhythm\Model\Table\RhythmAggregatesTable
+     * @var \Crustum\Rhythm\Model\Table\RhythmAggregatesTable
      */
     protected RhythmAggregatesTable $aggregatesTable;
 
@@ -62,11 +62,11 @@ class DatabaseStorageTest extends TestCase
         DateTime::setTestNow('2025-01-15 12:30:00');
 
         $this->storage = new DigestStorage();
-        /** @var \Rhythm\Model\Table\RhythmEntriesTable $entriesTable */
-        $entriesTable = TableRegistry::getTableLocator()->get('Rhythm.RhythmEntries');
+        /** @var \Crustum\Rhythm\Model\Table\RhythmEntriesTable $entriesTable */
+        $entriesTable = TableRegistry::getTableLocator()->get('Crustum/Rhythm.RhythmEntries');
         $this->entriesTable = $entriesTable;
-        /** @var \Rhythm\Model\Table\RhythmAggregatesTable $aggregatesTable */
-        $aggregatesTable = TableRegistry::getTableLocator()->get('Rhythm.RhythmAggregates');
+        /** @var \Crustum\Rhythm\Model\Table\RhythmAggregatesTable $aggregatesTable */
+        $aggregatesTable = TableRegistry::getTableLocator()->get('Crustum/Rhythm.RhythmAggregates');
         $this->aggregatesTable = $aggregatesTable;
 
         $this->storage->purge();

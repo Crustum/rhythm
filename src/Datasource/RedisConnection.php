@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Datasource;
+namespace Crustum\Rhythm\Datasource;
 
 use Redis;
 

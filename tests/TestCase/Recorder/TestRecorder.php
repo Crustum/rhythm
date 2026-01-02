@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase\Recorder;
+namespace Crustum\Rhythm\Test\TestCase\Recorder;
 
-use Rhythm\Recorder\RecorderInterface;
+use Crustum\Rhythm\Recorder\RecorderInterface;
 
 /**
  * Test recorder class for testing

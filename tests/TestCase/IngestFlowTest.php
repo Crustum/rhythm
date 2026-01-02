@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase;
+namespace Crustum\Rhythm\Test\TestCase;
 
 use Cake\Collection\Collection;
+use Crustum\Rhythm\Ingest\RedisIngest;
 use ReflectionClass;
-use Rhythm\Ingest\RedisIngest;
 
 /**
  * Ingest Flow Test

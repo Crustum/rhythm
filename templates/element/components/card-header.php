@@ -66,7 +66,7 @@ $headerClasses = [
 
             <?php if ($sortable && !empty($sortConfig)): ?>
                 <div class="sort-controls">
-                    <?= $this->element('Rhythm.components/sortable-select', [
+                    <?= $this->element('Crustum/Rhythm.components/sortable-select', [
                         'name' => 'sort',
                         'label' => 'Sort',
                         'options' => $sortConfig['options'] ?? [],

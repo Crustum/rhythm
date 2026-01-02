@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Event;
+namespace Crustum\Rhythm\Event;
 
 use Cake\Event\EventInterface;
 use Cake\Event\EventListenerInterface;
@@ -22,7 +22,7 @@ class RhythmExceptionListener implements EventListenerInterface
     /**
      * Handles the Exception.beforeRender event to record exceptions in Rhythm.
      *
-     * @param \Cake\Event\EventInterface<\Rhythm\Rhythm> $event The event instance.
+     * @param \Cake\Event\EventInterface<\Crustum\Rhythm\Rhythm> $event The event instance.
      * @param \Throwable $exception The exception that was thrown.
      * @return void
      */
@@ -34,7 +34,7 @@ class RhythmExceptionListener implements EventListenerInterface
                 return;
             }
 
-            /** @var \Rhythm\Rhythm $rhythm */
+            /** @var \Crustum\Rhythm\Rhythm $rhythm */
             $rhythm = $request->getAttribute('rhythm');
             $rhythm->report($exception);
         } catch (Throwable) {

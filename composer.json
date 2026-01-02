@@ -5,6 +5,7 @@
     "license": "MIT",
     "require": {
         "php": ">=8.1",
+        "crustum/plugin-manifest": "^1.0",
         "skie/signal_handler": "^1.0"
     },
     "require-dev": {

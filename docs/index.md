@@ -25,29 +25,56 @@ Real-time application performance monitoring for CakePHP 5.x applications with c
 
 ## Installation
 
-1. Install the plugin via Composer:
+Install the plugin via Composer:
 ```bash
-composer require skie/rhythm
+composer require crustum/rhythm
 ```
 
-2. Load the plugin in your `Application.php`:
+> [!NOTE]
+> This plugin should be registered in your `config/plugins.php` file.
+
+```bash
+bin/cake plugin load Crustum/Rhythm
+```
+
+Or load the plugin in your `Application.php`:
 ```php
 public function bootstrap(): void
 {
     parent::bootstrap();
 
-    $this->addPlugin('Rhythm', ['bootstrap' => true, 'routes' => true]);
+    $this->addPlugin('Crustum/Rhythm', ['bootstrap' => true, 'routes' => true]);
 }
 ```
 
-3. Run the database migrations:
+> [!TIP]
+> **After the plugin registers itself**, it's recommended to install the configuration with the manifest system:
+
 ```bash
-bin/cake migrations migrate -p Rhythm
+bin/cake manifest install --plugin Crustum/Rhythm
 ```
-4. Database Configuration
+
+The Rhythm plugin will create the `config/rhythm.php` configuration file and the `config/rhythm_layouts.php` file where you may register your application's widgets and layouts. Additionally, it will copy the migrations to the application's migrations directory and append the loading of the Rhythm configuration to the `config/bootstrap.php` file.
+
+### Database Migrations
+
+**Without manifest installation** (plugin-level migrations):
+```bash
+bin/cake migrations migrate -p Crustum/Rhythm
+```
+
+**With manifest installation** (migrations copied to application):
+```bash
+bin/cake migrations migrate
+```
 
 > [!NOTE]
-> Rhythm's storage implementation currently requires a MySQL, MariaDB, PostgreSQL. It is important to note that `quoteIdentifiers` should be set to true in your database configuration for Rhythm to work properly.
+> If you used the manifest system to install the plugin, the migrations have been copied to your application's `config/Migrations` directory and should be run using the application-level command without the `-p` flag.
+
+### Database Configuration
+
+> [!NOTE]
+> Rhythm's storage implementation currently requires a MySQL, MariaDB, PostgreSQL.
 
 By default, `Rhythm.storage.database.connection` is set to 'default' in the database configuration but you can change it to your own database connection.
 
@@ -94,7 +121,7 @@ return [
 
         'recorders' => [
             'servers' => [
-                'className' => \Rhythm\Recorder\ServersRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\ServersRecorder::class,
                 'enabled' => env('RHYTHM_SERVER_ENABLED', true),
                 'server_name' => env('RHYTHM_SERVER_NAME', gethostname()),
                 'directories' => explode(':', env('RHYTHM_SERVER_DIRECTORIES', '/')),
@@ -106,7 +133,7 @@ return [
                 ],
             ],
             'user_requests' => [
-                'className' => \Rhythm\Recorder\UserRequestsRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\UserRequestsRecorder::class,
                 'enabled' => env('RHYTHM_USER_REQUESTS_ENABLED', true),
                 'sample_rate' => env('RHYTHM_USER_REQUESTS_SAMPLE_RATE', 1.0),
                 'ignore' => [
@@ -115,35 +142,35 @@ return [
                 ],
             ],
             'slow_queries' => [
-                'className' => \Rhythm\Recorder\SlowQueriesRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\SlowQueriesRecorder::class,
                 'enabled' => env('RHYTHM_SLOW_QUERIES_ENABLED', true),
                 'threshold' => env('RHYTHM_SLOW_QUERIES_THRESHOLD', 1000),
                 'sample_rate' => env('RHYTHM_SLOW_QUERIES_SAMPLE_RATE', 0.1),
             ],
             'exceptions' => [
-                'className' => \Rhythm\Recorder\ExceptionsRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\ExceptionsRecorder::class,
                 'enabled' => env('RHYTHM_EXCEPTIONS_ENABLED', true),
                 'sample_rate' => env('RHYTHM_EXCEPTIONS_SAMPLE_RATE', 1.0),
             ],
             'queues' => [
-                'className' => \Rhythm\Recorder\QueuesRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\QueuesRecorder::class,
                 'enabled' => env('RHYTHM_QUEUES_ENABLED', true),
                 'sample_rate' => env('RHYTHM_QUEUES_SAMPLE_RATE', 1.0),
             ],
             'slow_jobs' => [
-                'className' => \Rhythm\Recorder\SlowJobsRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\SlowJobsRecorder::class,
                 'enabled' => env('RHYTHM_SLOW_JOBS_ENABLED', true),
                 'threshold' => env('RHYTHM_SLOW_JOBS_THRESHOLD', 5000),
                 'sample_rate' => env('RHYTHM_SLOW_JOBS_SAMPLE_RATE', 0.1),
             ],
             'slow_requests' => [
-                'className' => \Rhythm\Recorder\SlowRequestsRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\SlowRequestsRecorder::class,
                 'enabled' => env('RHYTHM_SLOW_REQUESTS_ENABLED', true),
                 'threshold' => env('RHYTHM_SLOW_REQUESTS_THRESHOLD', 2000),
                 'sample_rate' => env('RHYTHM_SLOW_REQUESTS_SAMPLE_RATE', 0.1),
             ],
             'outgoing_requests' => [
-                'className' => \Rhythm\Recorder\OutgoingRequestRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\OutgoingRequestRecorder::class,
                 'enabled' => env('RHYTHM_OUTGOING_REQUESTS_ENABLED', true),
                 'threshold' => env('RHYTHM_OUTGOING_REQUESTS_THRESHOLD', 1000),
                 'sample_rate' => env('RHYTHM_OUTGOING_REQUESTS_SAMPLE_RATE', 0.1),
@@ -224,7 +251,7 @@ You can also record custom metrics:
 
 ```php
 // In a controller or service
-$rhythm = $this->getContainer()->get(\Rhythm\Rhythm::class);
+$rhythm = $this->getContainer()->get(\Crustum\Rhythm\Rhythm::class);
 
 // Record a simple metric
 $rhythm->record('custom_metric', 'user_action', 150);

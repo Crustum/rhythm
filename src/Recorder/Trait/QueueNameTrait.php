@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Recorder\Trait;
+namespace Crustum\Rhythm\Recorder\Trait;
 
 use Cake\Core\Configure;
 

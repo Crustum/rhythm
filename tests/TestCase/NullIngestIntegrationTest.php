@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase;
+namespace Crustum\Rhythm\Test\TestCase;
 
 use Cake\Core\Configure;
 use Cake\Core\Container;
 use Cake\Core\ContainerInterface;
 use Cake\TestSuite\TestCase;
-use Rhythm\Ingest\IngestInterface;
-use Rhythm\Ingest\NullIngest;
-use Rhythm\Ingest\RedisIngest;
-use Rhythm\Rhythm;
-use Rhythm\Storage\DigestStorage;
-use Rhythm\Storage\StorageInterface;
+use Crustum\Rhythm\Ingest\IngestInterface;
+use Crustum\Rhythm\Ingest\NullIngest;
+use Crustum\Rhythm\Ingest\RedisIngest;
+use Crustum\Rhythm\Rhythm;
+use Crustum\Rhythm\Storage\DigestStorage;
+use Crustum\Rhythm\Storage\StorageInterface;
 
 /**
  * NullIngest Integration Test Case

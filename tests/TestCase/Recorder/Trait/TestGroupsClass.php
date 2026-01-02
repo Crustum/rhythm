@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase\Recorder\Trait;
+namespace Crustum\Rhythm\Test\TestCase\Recorder\Trait;
 
-use Rhythm\Recorder\Trait\GroupsTrait;
+use Crustum\Rhythm\Recorder\Trait\GroupsTrait;
 
 /**
  * Test class for testing GroupsTrait

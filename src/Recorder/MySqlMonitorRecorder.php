@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Recorder;
+namespace Crustum\Rhythm\Recorder;
 
 use Cake\Datasource\ConnectionManager;
 use Cake\Event\EventListenerInterface;
+use Crustum\Rhythm\Event\SharedBeat;
+use Crustum\Rhythm\Recorder\Trait\ThrottlingTrait;
 use Exception;
-use Rhythm\Event\SharedBeat;
-use Rhythm\Recorder\Trait\ThrottlingTrait;
 
 /**
  * MySQL Monitor Recorder
@@ -48,7 +48,7 @@ class MySqlMonitorRecorder extends BaseRecorder implements EventListenerInterfac
     /**
      * Monitor all configured MySQL connections.
      *
-     * @param \Rhythm\Event\SharedBeat $event The shared beat event.
+     * @param \Crustum\Rhythm\Event\SharedBeat $event The shared beat event.
      * @return void
      */
     protected function monitorConnections(SharedBeat $event): void
@@ -68,7 +68,7 @@ class MySqlMonitorRecorder extends BaseRecorder implements EventListenerInterfac
      * Monitor a specific MySQL connection.
      *
      * @param string $connectionName Connection name
-     * @param \Rhythm\Event\SharedBeat $event The shared beat event
+     * @param \Crustum\Rhythm\Event\SharedBeat $event The shared beat event
      * @return void
      */
     protected function monitorConnection(string $connectionName, SharedBeat $event): void

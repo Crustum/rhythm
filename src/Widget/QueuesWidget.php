@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Widget;
+namespace Crustum\Rhythm\Widget;
 
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
+use Crustum\Rhythm\Widget\Trait\WidgetChartFormattingTrait;
+use Crustum\Rhythm\Widget\Trait\WidgetSamplingTrait;
 use Exception;
-use Rhythm\Widget\Trait\WidgetChartFormattingTrait;
-use Rhythm\Widget\Trait\WidgetSamplingTrait;
 
 /**
  * Queues Widget

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase\Recorder\Trait;
+namespace Crustum\Rhythm\Test\TestCase\Recorder\Trait;
 
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
@@ -14,7 +14,7 @@ class QueueNameTraitTest extends TestCase
     /**
      * Test subject
      *
-     * @var \Rhythm\Test\TestCase\Recorder\Trait\TestQueueNameClass
+     * @var \Crustum\Rhythm\Test\TestCase\Recorder\Trait\TestQueueNameClass
      */
     protected TestQueueNameClass $queueNameClass;
 

@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase\Middleware;
+namespace Crustum\Rhythm\Test\TestCase\Middleware;
 
 use Cake\Core\Container;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
 use Cake\TestSuite\TestCase;
-use Rhythm\Database\Log\RhythmQueryLogger;
-use Rhythm\Event\SlowQueryEvent;
-use Rhythm\Ingest\TransparentIngest;
-use Rhythm\Recorder\SlowQueriesRecorder;
-use Rhythm\Rhythm;
-use Rhythm\Storage\DigestStorage;
+use Crustum\Rhythm\Database\Log\RhythmQueryLogger;
+use Crustum\Rhythm\Event\SlowQueryEvent;
+use Crustum\Rhythm\Ingest\TransparentIngest;
+use Crustum\Rhythm\Recorder\SlowQueriesRecorder;
+use Crustum\Rhythm\Rhythm;
+use Crustum\Rhythm\Storage\DigestStorage;
 
 /**
  * Slow Query Recorder Test Case
@@ -25,14 +25,14 @@ class SlowQueryMiddlewareTest extends TestCase
     /**
      * Rhythm instance
      *
-     * @var \Rhythm\Rhythm
+     * @var \Crustum\Rhythm\Rhythm
      */
     protected Rhythm $rhythm;
 
     /**
      * Query logger instance
      *
-     * @var \Rhythm\Database\Log\RhythmQueryLogger
+     * @var \Crustum\Rhythm\Database\Log\RhythmQueryLogger
      */
     protected RhythmQueryLogger $queryLogger;
 

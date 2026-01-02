@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase;
+namespace Crustum\Rhythm\Test\TestCase;
 
-use Rhythm\Rhythm;
+use Crustum\Rhythm\Rhythm;
 
 /**
  * Redis Core Flow Test

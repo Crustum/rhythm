@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Ingest;
+namespace Crustum\Rhythm\Ingest;
 
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
+use Crustum\Rhythm\Datasource\RedisConnection;
 use Redis;
-use Rhythm\Datasource\RedisConnection;
 use RuntimeException;
 
 /**
@@ -132,7 +132,7 @@ class RedisIngest extends AbstractIngest
     /**
      * Process a batch of items through storage.
      *
-     * @param array<int, \Rhythm\RhythmEntry|\Rhythm\RhythmValue> $batch Batch of metric entries
+     * @param array<int, \Crustum\Rhythm\RhythmEntry|\Crustum\Rhythm\RhythmValue> $batch Batch of metric entries
      * @return void
      */
     protected function processBatch(array $batch): void

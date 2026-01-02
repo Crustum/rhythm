@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Middleware;
+namespace Crustum\Rhythm\Middleware;
 
 use Cake\Event\EventManager;
+use Crustum\Rhythm\Event\SlowRequestEvent;
+use Crustum\Rhythm\Rhythm;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Rhythm\Event\SlowRequestEvent;
-use Rhythm\Rhythm;
 
 /**
  * Rhythm Middleware
@@ -21,14 +21,14 @@ class RhythmMiddleware implements MiddlewareInterface
     /**
      * Rhythm instance.
      *
-     * @var \Rhythm\Rhythm
+     * @var \Crustum\Rhythm\Rhythm
      */
     protected Rhythm $rhythm;
 
     /**
      * Constructor.
      *
-     * @param \Rhythm\Rhythm $rhythm Rhythm instance
+     * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm instance
      */
     public function __construct(Rhythm $rhythm)
     {

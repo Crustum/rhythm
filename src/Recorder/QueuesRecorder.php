@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Recorder;
+namespace Crustum\Rhythm\Recorder;
 
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Event\EventListenerInterface;
 use Cake\Queue\Job\Message;
-use Rhythm\Recorder\Trait\IgnoresTrait;
-use Rhythm\Recorder\Trait\QueueNameTrait;
-use Rhythm\Recorder\Trait\SamplingTrait;
-use Rhythm\Rhythm;
+use Crustum\Rhythm\Recorder\Trait\IgnoresTrait;
+use Crustum\Rhythm\Recorder\Trait\QueueNameTrait;
+use Crustum\Rhythm\Recorder\Trait\SamplingTrait;
+use Crustum\Rhythm\Rhythm;
 
 class QueuesRecorder extends BaseRecorder implements EventListenerInterface
 {
@@ -21,7 +21,7 @@ class QueuesRecorder extends BaseRecorder implements EventListenerInterface
     /**
      * Constructor.
      *
-     * @param \Rhythm\Rhythm $rhythm Rhythm instance
+     * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm instance
      * @param array $config Configuration array
      */
     public function __construct(Rhythm $rhythm, array $config = [])

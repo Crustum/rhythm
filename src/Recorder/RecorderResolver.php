@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Recorder;
+namespace Crustum\Rhythm\Recorder;
 
 use Cake\Core\ContainerInterface;
+use Crustum\Rhythm\Rhythm;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionNamedType;
-use Rhythm\Rhythm;
 
 /**
  * Recorder Resolver
@@ -26,7 +26,7 @@ class RecorderResolver
     /**
      * Rhythm instance.
      *
-     * @var \Rhythm\Rhythm
+     * @var \Crustum\Rhythm\Rhythm
      */
     protected Rhythm $rhythm;
 
@@ -34,7 +34,7 @@ class RecorderResolver
      * Constructor.
      *
      * @param \Cake\Core\ContainerInterface $container Container interface
-     * @param \Rhythm\Rhythm $rhythm Rhythm instance
+     * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm instance
      */
     public function __construct(ContainerInterface $container, Rhythm $rhythm)
     {
@@ -47,7 +47,7 @@ class RecorderResolver
      *
      * @param string $recorderClass Recorder class name
      * @param array $config Recorder configuration
-     * @return \Rhythm\Recorder\RecorderInterface
+     * @return \Crustum\Rhythm\Recorder\RecorderInterface
      * @throws \InvalidArgumentException If recorder not found or cannot be instantiated
      */
     public function resolve(string $recorderClass, array $config = []): RecorderInterface
@@ -73,7 +73,7 @@ class RecorderResolver
      *
      * @param string $recorderClass Recorder class name
      * @param array $config Recorder configuration
-     * @return \Rhythm\Recorder\RecorderInterface
+     * @return \Crustum\Rhythm\Recorder\RecorderInterface
      * @throws \InvalidArgumentException If recorder cannot be created
      */
     protected function createRecorder(string $recorderClass, array $config = []): RecorderInterface

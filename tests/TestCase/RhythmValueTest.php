@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase;
+namespace Crustum\Rhythm\Test\TestCase;
 
 use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
-use Rhythm\RhythmValue;
+use Crustum\Rhythm\RhythmValue;
 
 /**
  * RhythmValue Test Case

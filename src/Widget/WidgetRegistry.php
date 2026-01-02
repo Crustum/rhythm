@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Widget;
+namespace Crustum\Rhythm\Widget;
 
+use Crustum\Rhythm\Rhythm;
 use InvalidArgumentException;
-use Rhythm\Rhythm;
 
 /**
  * Widget Registry
@@ -16,7 +16,7 @@ class WidgetRegistry
     /**
      * Rhythm instance
      *
-     * @var \Rhythm\Rhythm
+     * @var \Crustum\Rhythm\Rhythm
      */
     protected Rhythm $rhythm;
 
@@ -30,14 +30,14 @@ class WidgetRegistry
     /**
      * Widget instances cache
      *
-     * @var array<string, \Rhythm\Widget\BaseWidget>
+     * @var array<string, \Crustum\Rhythm\Widget\BaseWidget>
      */
     protected array $instances = [];
 
     /**
      * Constructor
      *
-     * @param \Rhythm\Rhythm $rhythm Rhythm instance
+     * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm instance
      */
     public function __construct(Rhythm $rhythm)
     {
@@ -73,7 +73,7 @@ class WidgetRegistry
      * Get a widget instance
      *
      * @param string $name Widget name
-     * @return \Rhythm\Widget\BaseWidget
+     * @return \Crustum\Rhythm\Widget\BaseWidget
      * @throws \InvalidArgumentException
      */
     public function get(string $name): BaseWidget
@@ -89,7 +89,7 @@ class WidgetRegistry
 
             $config['widgetName'] = $name;
 
-            /** @var \Rhythm\Widget\BaseWidget $widget */
+            /** @var \Crustum\Rhythm\Widget\BaseWidget $widget */
             $widget = new $className($this->rhythm, $config);
             $this->instances[$name] = $widget;
         }
@@ -111,7 +111,7 @@ class WidgetRegistry
     /**
      * Get all registered widgets
      *
-     * @return array<string, \Rhythm\Widget\BaseWidget>
+     * @return array<string, \Crustum\Rhythm\Widget\BaseWidget>
      */
     public function getAll(): array
     {

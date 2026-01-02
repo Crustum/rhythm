@@ -114,18 +114,18 @@ Configure::write('Rhythm', [
     ],
     'recorders' => [
         'user_requests' => [
-            'className' => 'Rhythm\Recorder\UserRequestsRecorder',
+            'className' => 'Crustum\Rhythm\Recorder\UserRequestsRecorder',
             'enabled' => true,
             'sample_rate' => 1.0,
         ],
         'slow_queries' => [
-            'className' => 'Rhythm\Recorder\SlowQueriesRecorder',
+            'className' => 'Crustum\Rhythm\Recorder\SlowQueriesRecorder',
             'enabled' => true,
             'threshold' => 100,
             'sample_rate' => 0.1,
         ],
         'exceptions' => [
-            'className' => 'Rhythm\Recorder\ExceptionsRecorder',
+            'className' => 'Crustum\Rhythm\Recorder\ExceptionsRecorder',
             'enabled' => true,
             'sample_rate' => 1.0,
         ],

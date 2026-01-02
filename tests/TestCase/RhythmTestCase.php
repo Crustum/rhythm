@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase;
+namespace Crustum\Rhythm\Test\TestCase;
 
 use Cake\Collection\Collection;
 use Cake\Core\Configure;
@@ -10,13 +10,13 @@ use Cake\Database\Connection;
 use Cake\Datasource\ConnectionManager;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
+use Crustum\Rhythm\Ingest\RedisIngest;
+use Crustum\Rhythm\Rhythm;
+use Crustum\Rhythm\RhythmEntry;
+use Crustum\Rhythm\RhythmValue;
+use Crustum\Rhythm\Storage\BaseStorage;
+use Crustum\Rhythm\Storage\DigestStorage;
 use Exception;
-use Rhythm\Ingest\RedisIngest;
-use Rhythm\Rhythm;
-use Rhythm\RhythmEntry;
-use Rhythm\RhythmValue;
-use Rhythm\Storage\BaseStorage;
-use Rhythm\Storage\DigestStorage;
 
 /**
  * Rhythm Test Case
@@ -28,21 +28,21 @@ abstract class RhythmTestCase extends TestCase
     /**
      * Rhythm instance for testing.
      *
-     * @var \Rhythm\Rhythm
+     * @var \Crustum\Rhythm\Rhythm
      */
     protected Rhythm $rhythm;
 
     /**
      * Database storage for testing.
      *
-     * @var \Rhythm\Storage\BaseStorage
+     * @var \Crustum\Rhythm\Storage\BaseStorage
      */
     protected BaseStorage $storage;
 
     /**
      * Redis ingest for testing (if available).
      *
-     * @var \Rhythm\Ingest\RedisIngest
+     * @var \Crustum\Rhythm\Ingest\RedisIngest
      */
     protected RedisIngest $redisIngest;
 
@@ -192,7 +192,7 @@ abstract class RhythmTestCase extends TestCase
      * @param string $key Metric key
      * @param int|null $value Metric value
      * @param int|null $timestamp Timestamp
-     * @return \Rhythm\RhythmEntry
+     * @return \Crustum\Rhythm\RhythmEntry
      */
     protected function createTestEntry(string $type, string $key, ?int $value = null, ?int $timestamp = null): RhythmEntry
     {
@@ -211,7 +211,7 @@ abstract class RhythmTestCase extends TestCase
      * @param string $key Metric key
      * @param string $value Metric value
      * @param int|null $timestamp Timestamp
-     * @return \Rhythm\RhythmValue
+     * @return \Crustum\Rhythm\RhythmValue
      */
     protected function createTestValue(string $type, string $key, string $value, ?int $timestamp = null): RhythmValue
     {

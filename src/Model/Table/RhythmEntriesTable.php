@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Model\Table;
+namespace Crustum\Rhythm\Model\Table;
 
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
@@ -78,9 +78,9 @@ class RhythmEntriesTable extends Table
     /**
      * Find entries by type and key.
      *
-     * @param \Cake\ORM\Query\SelectQuery<\Rhythm\Model\Entity\MetricEntry> $query Query object
+     * @param \Cake\ORM\Query\SelectQuery<\Crustum\Rhythm\Model\Entity\MetricEntry> $query Query object
      * @param array<string, mixed> $options Options array
-     * @return \Cake\ORM\Query\SelectQuery<\Rhythm\Model\Entity\MetricEntry>
+     * @return \Cake\ORM\Query\SelectQuery<\Crustum\Rhythm\Model\Entity\MetricEntry>
      */
     public function findByTypeAndKey(SelectQuery $query, array $options): SelectQuery
     {

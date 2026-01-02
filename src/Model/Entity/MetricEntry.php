@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Model\Entity;
+namespace Crustum\Rhythm\Model\Entity;
 
 use Cake\ORM\Entity;
 

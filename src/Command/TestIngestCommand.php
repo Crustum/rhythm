@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Command;
+namespace Crustum\Rhythm\Command;
 
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\CommandFactoryInterface;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
-use Rhythm\Rhythm;
+use Crustum\Rhythm\Rhythm;
 
 /**
  * Test Ingest Command
@@ -21,14 +21,14 @@ class TestIngestCommand extends Command
     /**
      * Rhythm instance.
      *
-     * @var \Rhythm\Rhythm
+     * @var \Crustum\Rhythm\Rhythm
      */
     protected Rhythm $rhythm;
 
     /**
      * Constructor
      *
-     * @param \Rhythm\Rhythm $rhythm Rhythm instance
+     * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm instance
      * @param \Cake\Console\CommandFactoryInterface|null $factory Command factory
      */
     public function __construct(Rhythm $rhythm, ?CommandFactoryInterface $factory = null)
@@ -70,7 +70,7 @@ class TestIngestCommand extends Command
         $io->info('Testing automatic ingest functionality...');
         $io->info("Recording {$metricCount} metrics...");
 
-        /** @var \Rhythm\Rhythm $rhythm */
+        /** @var \Crustum\Rhythm\Rhythm $rhythm */
         $rhythm = $this->rhythm;
 
         for ($i = 1; $i <= $metricCount; $i++) {

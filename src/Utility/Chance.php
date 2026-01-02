@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Utility;
+namespace Crustum\Rhythm\Utility;
 
 use RuntimeException;
 

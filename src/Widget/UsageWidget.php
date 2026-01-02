@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Widget;
+namespace Crustum\Rhythm\Widget;
 
+use Crustum\Rhythm\Widget\Trait\WidgetSamplingTrait;
 use Exception;
-use Rhythm\Widget\Trait\WidgetSamplingTrait;
 
 /**
  * Usage Widget

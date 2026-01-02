@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Controller;
+namespace Crustum\Rhythm\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\NotFoundException;
+use Crustum\Rhythm\Rhythm;
+use Crustum\Rhythm\Widget\WidgetRegistry;
 use Exception;
-use Rhythm\Rhythm;
-use Rhythm\Widget\WidgetRegistry;
 
 /**
  * Dashboard Controller
@@ -19,14 +19,14 @@ class DashboardController extends Controller
     /**
      * Rhythm instance
      *
-     * @var \Rhythm\Rhythm
+     * @var \Crustum\Rhythm\Rhythm
      */
     protected Rhythm $rhythm;
 
     /**
      * Widget registry
      *
-     * @var \Rhythm\Widget\WidgetRegistry
+     * @var \Crustum\Rhythm\Widget\WidgetRegistry
      */
     protected WidgetRegistry $widgetRegistry;
 
@@ -123,7 +123,7 @@ class DashboardController extends Controller
     /**
      * Initialize widgets with Rhythm instance
      *
-     * @param \Rhythm\Rhythm $rhythm Rhythm instance
+     * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm instance
      * @return void
      */
     protected function initializeWidgets(Rhythm $rhythm): void

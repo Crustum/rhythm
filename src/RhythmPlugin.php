@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm;
+namespace Crustum\Rhythm;
 
 use Cake\Console\CommandCollection;
 use Cake\Console\CommandFactoryInterface;
@@ -13,17 +13,17 @@ use Cake\Core\PluginApplicationInterface;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\MiddlewareQueue;
-use Rhythm\Command\CheckCommand;
-use Rhythm\Command\ClearCommand;
-use Rhythm\Command\DigestCommand;
-use Rhythm\Command\RestartCommand;
-use Rhythm\Database\Log\RhythmQueryLogger;
-use Rhythm\Ingest\IngestInterface;
-use Rhythm\Ingest\NullIngest;
-use Rhythm\Ingest\RedisIngest;
-use Rhythm\Middleware\RhythmMiddleware;
-use Rhythm\Storage\DigestStorage;
-use Rhythm\Storage\StorageInterface;
+use Crustum\Rhythm\Command\CheckCommand;
+use Crustum\Rhythm\Command\ClearCommand;
+use Crustum\Rhythm\Command\DigestCommand;
+use Crustum\Rhythm\Command\RestartCommand;
+use Crustum\Rhythm\Database\Log\RhythmQueryLogger;
+use Crustum\Rhythm\Ingest\IngestInterface;
+use Crustum\Rhythm\Ingest\NullIngest;
+use Crustum\Rhythm\Ingest\RedisIngest;
+use Crustum\Rhythm\Middleware\RhythmMiddleware;
+use Crustum\Rhythm\Storage\DigestStorage;
+use Crustum\Rhythm\Storage\StorageInterface;
 
 /**
  * Plugin for Rhythm performance monitoring

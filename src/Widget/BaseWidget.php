@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Widget;
+namespace Crustum\Rhythm\Widget;
 
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\I18n\DateTime;
 use Cake\Utility\Hash;
+use Crustum\Rhythm\Rhythm;
 use InvalidArgumentException;
-use Rhythm\Rhythm;
 
 /**
  * Base Widget Class
@@ -20,7 +20,7 @@ abstract class BaseWidget
     /**
      * Rhythm instance
      *
-     * @var \Rhythm\Rhythm
+     * @var \Crustum\Rhythm\Rhythm
      */
     protected Rhythm $rhythm;
 
@@ -34,7 +34,7 @@ abstract class BaseWidget
     /**
      * Constructor
      *
-     * @param \Rhythm\Rhythm $rhythm Rhythm instance
+     * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm instance
      * @param array<string, mixed> $config Widget configuration
      */
     public function __construct(Rhythm $rhythm, array $config = [])

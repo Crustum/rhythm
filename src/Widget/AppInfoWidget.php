@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Widget;
+namespace Crustum\Rhythm\Widget;
 
 use Cake\Core\Configure;
 use Cake\Datasource\ConnectionManager;

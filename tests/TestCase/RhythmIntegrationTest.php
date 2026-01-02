@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase;
+namespace Crustum\Rhythm\Test\TestCase;
 
 use Cake\Collection\Collection;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
-use Rhythm\RhythmEntry;
-use Rhythm\RhythmValue;
+use Crustum\Rhythm\RhythmEntry;
+use Crustum\Rhythm\RhythmValue;
 
 /**
  * Rhythm Integration Test Case

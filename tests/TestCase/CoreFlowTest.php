@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase;
+namespace Crustum\Rhythm\Test\TestCase;
 
 use Cake\I18n\DateTime;
+use Crustum\Rhythm\Recorder\RecorderInterface;
+use Crustum\Rhythm\Rhythm;
+use Crustum\Rhythm\RhythmEntry;
+use Crustum\Rhythm\RhythmValue;
+use Crustum\Rhythm\Storage\DigestStorage;
 use Exception;
-use Rhythm\Recorder\RecorderInterface;
-use Rhythm\Rhythm;
-use Rhythm\RhythmEntry;
-use Rhythm\RhythmValue;
-use Rhythm\Storage\DigestStorage;
 
 /**
  * Core Flow Test
@@ -86,7 +86,7 @@ class CoreFlowTest extends RhythmTestCase
 
         if (isset($this->storageClass) && isset($this->storageConfig)) {
             $storageClass = $this->storageClass;
-            /** @var \Rhythm\Storage\BaseStorage $storage */
+            /** @var \Crustum\Rhythm\Storage\BaseStorage $storage */
             $storage = new $storageClass($this->storageConfig);
             $this->storage = $storage;
 

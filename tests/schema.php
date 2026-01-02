@@ -25,7 +25,7 @@ return [
                 'length' => 255,
                 'null' => false,
             ],
-            'key' => [
+            'metric_key' => [
                 'type' => 'text',
                 'null' => false,
             ],
@@ -68,7 +68,7 @@ return [
                 'length' => 255,
                 'null' => false,
             ],
-            'key' => [
+            'metric_key' => [
                 'type' => 'text',
                 'null' => false,
             ],
@@ -115,7 +115,7 @@ return [
                 'length' => 255,
                 'null' => false,
             ],
-            'key' => [
+            'metric_key' => [
                 'type' => 'text',
                 'null' => false,
             ],
@@ -135,7 +135,7 @@ return [
                 'precision' => 4,
                 'null' => false,
             ],
-            'count' => [
+            'entry_count' => [
                 'type' => 'integer',
                 'null' => true,
             ],

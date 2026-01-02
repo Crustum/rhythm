@@ -104,7 +104,7 @@ class ServerStateWidget extends BaseWidget
      */
     public function getTemplate(): string
     {
-        return 'Rhythm.widgets/server_state';
+        return 'Crustum/Rhythm.widgets/server_state';
     }
 
     /**
@@ -153,7 +153,7 @@ class ServerStateWidget extends BaseWidget
 
             $memoryAggregates = $this->rhythm->getStorage()->aggregate('memory', ['avg', 'max'], $period);
 
-            $serverMemory = $memoryAggregates->filter(fn($agg) => $agg['key'] === $serverName)->first();
+            $serverMemory = $memoryAggregates->filter(fn($agg) => $agg['metric_key'] === $serverName)->first();
 
             $memoryAvg = $serverMemory['avg'] ?? 0;
             $memoryMax = $serverMemory['max'] ?? 0;
@@ -191,7 +191,7 @@ class ServerStateWidget extends BaseWidget
 
             $cpuAggregates = $this->rhythm->getStorage()->aggregate('cpu', ['avg', 'max'], $period);
 
-            $serverCpu = $cpuAggregates->filter(fn($agg) => $agg['key'] === $serverName)->first();
+            $serverCpu = $cpuAggregates->filter(fn($agg) => $agg['metric_key'] === $serverName)->first();
 
             $cpuAvg = $serverCpu['avg'] ?? 0;
             $cpuMax = $serverCpu['max'] ?? 0;

@@ -254,7 +254,7 @@ abstract class BaseStorage implements StorageInterface
             ->map(fn(RhythmEntry $entry) => [
                 'timestamp' => $entry->timestamp,
                 'type' => $entry->type,
-                'key' => $entry->key,
+                'metric_key' => $entry->key,
                 'key_hash' => md5($entry->key),
                 'value' => $entry->value,
             ])
@@ -266,7 +266,7 @@ abstract class BaseStorage implements StorageInterface
             ->map(fn(RhythmValue $value) => [
                 'timestamp' => $value->timestamp,
                 'type' => $value->type,
-                'key' => $value->key,
+                'metric_key' => $value->key,
                 'key_hash' => md5($value->key),
                 'value' => $value->value,
             ])
@@ -326,7 +326,7 @@ abstract class BaseStorage implements StorageInterface
                         'bucket' => $bucket,
                         'period' => $period,
                         'type' => $entry->type,
-                        'key' => $entry->key,
+                        'metric_key' => $entry->key,
                         'key_hash' => md5($entry->key),
                         'value' => $entry->value,
                     ];

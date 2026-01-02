@@ -50,7 +50,7 @@ class DashboardController extends Controller
         $this->set('currentLayout', $layout);
         $this->set('availableLayouts', $layouts);
         $this->set('layoutConfig', $layouts[$layout] ?? []);
-        $this->viewBuilder()->setLayout('Rhythm.dashboard');
+        $this->viewBuilder()->setLayout('Crustum/Rhythm.dashboard');
     }
 
     /**

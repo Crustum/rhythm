@@ -13,7 +13,7 @@ $allChartConfigs = [];
 ?>
 
 <?php if (empty($queueStats)): ?>
-    <?= $this->element('Rhythm.components/widget_placeholder', ['message' => 'No queue statistics recorded.']) ?>
+    <?= $this->element('Crustum/Rhythm.components/widget_placeholder', ['message' => 'No queue statistics recorded.']) ?>
 <?php else: ?>
     <?php foreach ($queueStats as $queueName => $queueCollection): ?>
         <?php

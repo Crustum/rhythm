@@ -221,7 +221,7 @@ class DatabaseWidget extends BaseWidget
      */
     public function getTemplate(): string
     {
-        return 'Rhythm.widgets/database';
+        return 'Crustum/Rhythm.widgets/database';
     }
 
     /**

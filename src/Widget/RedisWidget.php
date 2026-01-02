@@ -312,7 +312,7 @@ class RedisWidget extends BaseWidget
      */
     public function getTemplate(): string
     {
-        return 'Rhythm.widgets/redis';
+        return 'Crustum/Rhythm.widgets/redis';
     }
 
     /**

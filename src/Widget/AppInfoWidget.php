@@ -48,7 +48,7 @@ class AppInfoWidget extends BaseWidget
      */
     public function getTemplate(): string
     {
-        return 'Rhythm.widgets/app_info';
+        return 'Crustum/Rhythm.widgets/app_info';
     }
 
     /**

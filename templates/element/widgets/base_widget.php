@@ -41,11 +41,11 @@ $cols = $config['cols'] ?? ['default' => 12, 'lg' => 6];
 $hasError = isset($data['error']);
 ?>
 
-<?= $this->element('Rhythm.components/card', [
+<?= $this->element('Crustum/Rhythm.components/card', [
     'cols' => $cols,
     'widget' => $widgetId,
     'content' =>
-        $this->fetch('widget_header', $this->element('Rhythm.components/card-header', [
+        $this->fetch('widget_header', $this->element('Crustum/Rhythm.components/card-header', [
             'name' => $config['name'] ?? 'Untitled Widget',
             'icon' => $widget->getIcon() ?? 'fas fa-question-circle',
             'widget' => $widgetId,
@@ -55,11 +55,11 @@ $hasError = isset($data['error']);
         ])) .
 
         ($hasError
-            ? $this->element('Rhythm.components/widget_error', ['details' => $data['error']])
+            ? $this->element('Crustum/Rhythm.components/widget_error', ['details' => $data['error']])
             : $this->fetch('widget_content')
         ) .
 
-        $this->fetch('widget_footer', $this->element('Rhythm.components/widget_footer')) .
+        $this->fetch('widget_footer', $this->element('Crustum/Rhythm.components/widget_footer')) .
 
         $this->fetch('widget_scripts')
 ]);

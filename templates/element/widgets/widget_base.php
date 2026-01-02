@@ -37,7 +37,7 @@ echo $this->Rhythm->startCard($cardOptions);
 $sortConfig = $widget->getSortConfig();
 $isSortable = !empty($sortConfig);
 
-echo $this->element('Rhythm.components/card-header', [
+echo $this->element('Crustum/Rhythm.components/card-header', [
     'name' => $config['name'] ?? $widgetName,
     'icon' => $config['icon'] ?? $widget->getIcon(),
     'details' => $config['details'] ?? null,
@@ -48,7 +48,7 @@ echo $this->element('Rhythm.components/card-header', [
 ?>
 <div class="rhythm-card-body">
     <?php if (!empty($data['error'])): ?>
-        <?= $this->element('Rhythm.components/widget_error', ['message' => is_string($data['error']) ? $data['error'] : 'An unknown error occurred.']) ?>
+        <?= $this->element('Crustum/Rhythm.components/widget_error', ['message' => is_string($data['error']) ? $data['error'] : 'An unknown error occurred.']) ?>
     <?php else: ?>
         <?= $this->fetch('widget_body') ?>
     <?php endif; ?>

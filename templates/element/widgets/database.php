@@ -20,7 +20,7 @@ if ($sort !== null) {
 $data = $widget->getData($options);
 $this->set('data', $data);
 
-$this->extend('Rhythm.widgets/widget_base');
+$this->extend('Crustum/Rhythm.widgets/widget_base');
 $this->start('widget_body');
 
 $hasError = isset($data['error']);
@@ -33,9 +33,9 @@ $values = $data['values'] ?? [];
 $graphs = $data['graphs'] ?? [];
 
 if ($hasError): ?>
-    <?= $this->element('Rhythm.components/widget_error', ['error' => $data['error']]) ?>
+    <?= $this->element('Crustum/Rhythm.components/widget_error', ['error' => $data['error']]) ?>
 <?php elseif ($empty): ?>
-    <?= $this->element('Rhythm.components/widget_placeholder', ['message' => 'No data recorded.']) ?>
+    <?= $this->element('Crustum/Rhythm.components/widget_placeholder', ['message' => 'No data recorded.']) ?>
 <?php else: ?>
     <?php $allChartConfigs = []; ?>
 

@@ -23,14 +23,14 @@ if ($sort !== null) {
 }
 $data = $widget->getData($options);
 $this->set('data', $data);
-$this->extend('Rhythm.widgets/widget_base');
+$this->extend('Crustum/Rhythm.widgets/widget_base');
 
 $this->start('widget_body');
 
 $exceptionsData = $data['exceptions'] ?? [];
 
 if (empty($exceptionsData)) {
-    echo $this->element('Rhythm.components/widget_placeholder', [
+    echo $this->element('Crustum/Rhythm.components/widget_placeholder', [
         'message' => 'No exceptions recorded in the selected period.'
     ]);
 } else {

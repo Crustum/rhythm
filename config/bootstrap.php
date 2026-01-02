@@ -11,7 +11,7 @@ use Cake\Cache\Cache;
 use Cake\Cache\Engine\FileEngine;
 use Cake\Core\Configure;
 $config = Configure::read('Rhythm.config') ?? [];
-Configure::load('Rhythm.rhythm', 'default', false);
+Configure::load('Crustum/Rhythm.rhythm', 'default', false);
 collection($config)->each(function ($merge, $file): void {
 	if (is_int($file)) {
 		$file = $merge;

@@ -242,7 +242,7 @@ class QueuesWidget extends BaseWidget
      */
     public function getTemplate(): string
     {
-        return 'Rhythm.widgets/queues';
+        return 'Crustum/Rhythm.widgets/queues';
     }
 
     /**

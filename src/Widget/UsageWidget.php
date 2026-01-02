@@ -77,7 +77,7 @@ class UsageWidget extends BaseWidget
      */
     public function getTemplate(): string
     {
-        return 'Rhythm.widgets/usage';
+        return 'Crustum/Rhythm.widgets/usage';
     }
 
     /**

@@ -64,9 +64,9 @@ class RhythmEntriesTable extends Table
             ->notEmptyString('key_hash');
 
         $validator
-            ->scalar('key')
-            ->maxLength('key', 10000)
-            ->notEmptyString('key');
+            ->scalar('metric_key')
+            ->maxLength('metric_key', 10000)
+            ->notEmptyString('metric_key');
 
         $validator
             ->numeric('value')
@@ -86,7 +86,7 @@ class RhythmEntriesTable extends Table
     {
         return $query->where([
             'type' => $options['type'],
-            'key' => $options['key'],
+            'metric_key' => $options['key'],
         ]);
     }
 

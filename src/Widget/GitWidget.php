@@ -87,7 +87,7 @@ class GitWidget extends BaseWidget
      */
     public function getTemplate(): string
     {
-        return 'Rhythm.widgets/git';
+        return 'Crustum/Rhythm.widgets/git';
     }
 
     /**

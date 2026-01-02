@@ -10,8 +10,8 @@
  */
 $this->assign('title', 'Rhythm Dashboard (New System)');
 
-$this->loadHelper('Rhythm.Rhythm');
-$this->loadHelper('Rhythm.Chart');
+$this->loadHelper('Crustum/Rhythm.Rhythm');
+$this->loadHelper('Crustum/Rhythm.Chart');
 ?>
 
 <div class="dashboard-grid rhythm-grid rhythm-grid-cols-12 rhythm-gap-md" data-dashboard="new-system">

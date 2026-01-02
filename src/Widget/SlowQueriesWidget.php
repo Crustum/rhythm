@@ -46,8 +46,8 @@ class SlowQueriesWidget extends BaseWidget
                 $totalCount = 0;
 
                 foreach ($queries as $query) {
-                    $queryData = json_decode($query['key'], true);
-                    $sql = is_array($queryData) && isset($queryData[0]) ? $queryData[0] : $query['key'];
+                    $queryData = json_decode($query['metric_key'], true);
+                    $sql = is_array($queryData) && isset($queryData[0]) ? $queryData[0] : $query['metric_key'];
                     $location = is_array($queryData) && isset($queryData[1]) ? $queryData[1] : 'Unknown';
 
                     $rawCount = $query['count'] ?? 0;
@@ -95,7 +95,7 @@ class SlowQueriesWidget extends BaseWidget
      */
     public function getTemplate(): string
     {
-        return 'Rhythm.widgets/slow_queries';
+        return 'Crustum/Rhythm.widgets/slow_queries';
     }
 
     /**

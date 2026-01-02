@@ -123,11 +123,11 @@ class RhythmAggregateDigest
             'bucket' => $entry['bucket'],
             'period' => $entry['period'],
             'type' => $entry['type'],
-            'key' => $entry['key'],
+            'metric_key' => $entry['metric_key'],
             'key_hash' => $entry['key_hash'],
             'aggregate' => $aggregateType,
             'value' => $this->getInitialValue($entry, $aggregateType),
-            'count' => 1,
+            'entry_count' => 1,
         ];
     }
 
@@ -142,7 +142,7 @@ class RhythmAggregateDigest
     protected function mergeAggregateEntry(array $aggregate, array $entry, string $aggregateType): array
     {
         $aggregate['value'] = $this->calculateAggregateValue($aggregate, $entry, $aggregateType);
-        $aggregate['count']++;
+        $aggregate['entry_count']++;
 
         return $aggregate;
     }
@@ -178,7 +178,7 @@ class RhythmAggregateDigest
             'min' => min($aggregate['value'], $entry['value']),
             'max' => max($aggregate['value'], $entry['value']),
             'sum' => $aggregate['value'] + $entry['value'],
-            'avg' => ($aggregate['value'] * $aggregate['count'] + $entry['value']) / ($aggregate['count'] + 1),
+            'avg' => ($aggregate['value'] * $aggregate['entry_count'] + $entry['value']) / ($aggregate['entry_count'] + 1),
             default => $aggregate['value']
         };
     }
@@ -278,23 +278,23 @@ class RhythmAggregateDigest
         return match ($aggregateType) {
             'count', 'sum' => [
                 '`value` = `value` + VALUES(`value`)',
-                '`count` = `count` + VALUES(`count`)',
+                '`entry_count` = `entry_count` + VALUES(`entry_count`)',
             ],
             'min' => [
                 '`value` = LEAST(`value`, VALUES(`value`))',
-                '`count` = `count` + VALUES(`count`)',
+                '`entry_count` = `entry_count` + VALUES(`entry_count`)',
             ],
             'max' => [
                 '`value` = GREATEST(`value`, VALUES(`value`))',
-                '`count` = `count` + VALUES(`count`)',
+                '`entry_count` = `entry_count` + VALUES(`entry_count`)',
             ],
             'avg' => [
-                '`value` = (`value` * `count` + (VALUES(`value`) * VALUES(`count`))) / (`count` + VALUES(`count`))',
-                '`count` = `count` + VALUES(`count`)',
+                '`value` = (`value` * `entry_count` + (VALUES(`value`) * VALUES(`entry_count`))) / (`entry_count` + VALUES(`entry_count`))',
+                '`entry_count` = `entry_count` + VALUES(`entry_count`)',
             ],
             default => [
                 '`value` = VALUES(`value`)',
-                '`count` = VALUES(`count`)',
+                '`entry_count` = VALUES(`entry_count`)',
             ]
         };
     }
@@ -310,25 +310,25 @@ class RhythmAggregateDigest
         return match ($aggregateType) {
             'count', 'sum' => [
                 '"value" = "rhythm_aggregates"."value" + excluded."value"',
-                '"count" = "rhythm_aggregates"."count" + excluded."count"',
+                '"entry_count" = "rhythm_aggregates"."entry_count" + excluded."entry_count"',
             ],
             'min' => [
                 '"value" = LEAST("rhythm_aggregates"."value", excluded."value")',
-                '"count" = "rhythm_aggregates"."count" + excluded."count"',
+                '"entry_count" = "rhythm_aggregates"."entry_count" + excluded."entry_count"',
             ],
             'max' => [
                 '"value" = GREATEST("rhythm_aggregates"."value", excluded."value")',
-                '"count" = "rhythm_aggregates"."count" + excluded."count"',
+                '"entry_count" = "rhythm_aggregates"."entry_count" + excluded."entry_count"',
             ],
             'avg' => [
-                '"value" = ("rhythm_aggregates"."value" * "rhythm_aggregates"."count"' .
-                '  + (excluded."value" * excluded."count")) / ' .
-                '  ("rhythm_aggregates"."count" + excluded."count")',
-                '"count" = "rhythm_aggregates"."count" + excluded."count"',
+                '"value" = ("rhythm_aggregates"."value" * "rhythm_aggregates"."entry_count"' .
+                '  + (excluded."value" * excluded."entry_count")) / ' .
+                '  ("rhythm_aggregates"."entry_count" + excluded."entry_count")',
+                '"entry_count" = "rhythm_aggregates"."entry_count" + excluded."entry_count"',
             ],
             default => [
                 '"value" = excluded."value"',
-                '"count" = excluded."count"',
+                '"entry_count" = excluded."entry_count"',
             ]
         };
     }
@@ -344,24 +344,24 @@ class RhythmAggregateDigest
         return match ($aggregateType) {
             'count', 'sum' => [
                 'value = value + excluded.value',
-                'count = count + excluded.count',
+                'entry_count = entry_count + excluded.entry_count',
             ],
             'min' => [
                 'value = MIN(value, excluded.value)',
-                'count = count + excluded.count',
+                'entry_count = entry_count + excluded.entry_count',
             ],
             'max' => [
                 'value = MAX(value, excluded.value)',
-                'count = count + excluded.count',
+                'entry_count = entry_count + excluded.entry_count',
             ],
             'avg' => [
-                'value = (value * count + (excluded.value * excluded.count)) / ' .
-                '(count + excluded.count)',
-                'count = count + excluded.count',
+                'value = (value * entry_count + (excluded.value * excluded.entry_count)) / ' .
+                '(entry_count + excluded.entry_count)',
+                'entry_count = entry_count + excluded.entry_count',
             ],
             default => [
                 'value = excluded.value',
-                'count = excluded.count',
+                'entry_count = excluded.entry_count',
             ]
         };
     }

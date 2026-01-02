@@ -35,6 +35,7 @@ use Crustum\Rhythm\Storage\StorageInterface;
 class RhythmPlugin extends BasePlugin implements ManifestInterface
 {
     use ManifestTrait;
+
     /**
      * Load all the plugin configuration and bootstrap logic.
      *

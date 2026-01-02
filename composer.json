@@ -24,6 +24,14 @@
         }
     },
     "scripts": {
+        "check": [
+            "@cs-check",
+            "@test",
+            "@analyse"
+        ],
+        "analyse": [
+            "@stan"
+        ],
         "cs-check": "phpcs -p --standard=phpcs.xml src/ tests/",
         "cs-fix": "phpcbf --standard=phpcs.xml src/ tests/",
         "test": "phpunit",

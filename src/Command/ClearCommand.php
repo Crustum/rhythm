@@ -111,5 +111,4 @@ class ClearCommand extends Command
     {
         return 'Delete all Rhythm data from storage';
     }
-
 }

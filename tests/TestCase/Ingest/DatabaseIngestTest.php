@@ -59,7 +59,7 @@ class DatabaseIngestTest extends TestCase
         DateTime::setTestNow('2000-01-08 00:00:05');
         $this->rhythm->trim();
 
-        $this->assertEquals(['baz'], $this->Values->find()->all()->extract('key')->toArray());
+        $this->assertEquals(['baz'], $this->Values->find()->all()->extract('metric_key')->toArray());
     }
 
     public function testTrimsEntriesAtOrAfterWeekAfterTimestamp(): void
@@ -217,7 +217,7 @@ class DatabaseIngestTest extends TestCase
         $this->rhythm->trim();
 
         $this->assertEquals(['baz'], $this->Entries->find()->all()->extract('type')->toArray());
-        $this->assertEquals(['baz'], $this->Values->find()->all()->extract('key')->toArray());
+        $this->assertEquals(['baz'], $this->Values->find()->all()->extract('metric_key')->toArray());
     }
 
     public function testRestrictsTrimDurationTo7Days(): void
@@ -246,6 +246,6 @@ class DatabaseIngestTest extends TestCase
         $this->rhythm->trim();
 
         $this->assertEquals(['baz'], $this->Entries->find()->all()->extract('type')->toArray());
-        $this->assertEquals(['baz'], $this->Values->find()->all()->extract('key')->toArray());
+        $this->assertEquals(['baz'], $this->Values->find()->all()->extract('metric_key')->toArray());
     }
 }

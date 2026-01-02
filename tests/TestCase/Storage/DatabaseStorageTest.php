@@ -105,21 +105,21 @@ class DatabaseStorageTest extends TestCase
             [
                 'timestamp' => $oneHourAgo,
                 'type' => 'request',
-                'key' => '/api/users',
+                'metric_key' => '/api/users',
                 'key_hash' => md5('/api/users'),
                 'value' => 120,
             ],
             [
                 'timestamp' => $oneHourAgo + 300,
                 'type' => 'request',
-                'key' => '/api/users',
+                'metric_key' => '/api/users',
                 'key_hash' => md5('/api/users'),
                 'value' => 95,
             ],
             [
                 'timestamp' => $oneHourAgo + 600,
                 'type' => 'request',
-                'key' => '/api/users',
+                'metric_key' => '/api/users',
                 'key_hash' => md5('/api/users'),
                 'value' => 180,
             ],
@@ -127,14 +127,14 @@ class DatabaseStorageTest extends TestCase
             [
                 'timestamp' => $oneHourAgo,
                 'type' => 'request',
-                'key' => '/api/posts',
+                'metric_key' => '/api/posts',
                 'key_hash' => md5('/api/posts'),
                 'value' => 75,
             ],
             [
                 'timestamp' => $oneHourAgo + 150,
                 'type' => 'request',
-                'key' => '/api/posts',
+                'metric_key' => '/api/posts',
                 'key_hash' => md5('/api/posts'),
                 'value' => 110,
             ],
@@ -142,21 +142,21 @@ class DatabaseStorageTest extends TestCase
             [
                 'timestamp' => $oneHourAgo,
                 'type' => 'database',
-                'key' => 'users_query',
+                'metric_key' => 'users_query',
                 'key_hash' => md5('users_query'),
                 'value' => 25,
             ],
             [
                 'timestamp' => $oneHourAgo + 200,
                 'type' => 'database',
-                'key' => 'users_query',
+                'metric_key' => 'users_query',
                 'key_hash' => md5('users_query'),
                 'value' => 30,
             ],
             [
                 'timestamp' => $oneHourAgo + 400,
                 'type' => 'database',
-                'key' => 'users_query',
+                'metric_key' => 'users_query',
                 'key_hash' => md5('users_query'),
                 'value' => 22,
             ],
@@ -164,7 +164,7 @@ class DatabaseStorageTest extends TestCase
             [
                 'timestamp' => $twoHoursAgo,
                 'type' => 'cache',
-                'key' => 'user_profile',
+                'metric_key' => 'user_profile',
                 'key_hash' => md5('user_profile'),
                 'value' => 5,
             ],
@@ -183,50 +183,50 @@ class DatabaseStorageTest extends TestCase
                 'period' => 60,
                 'type' => 'request',
                 'aggregate' => 'count',
-                'key' => '/api/users',
+                'metric_key' => '/api/users',
                 'key_hash' => md5('/api/users'),
                 'value' => 15,
-                'count' => 15,
+                'entry_count' => 15,
             ],
             [
                 'bucket' => $bucketTime60,
                 'period' => 60,
                 'type' => 'request',
                 'aggregate' => 'sum',
-                'key' => '/api/users',
+                'metric_key' => '/api/users',
                 'key_hash' => md5('/api/users'),
                 'value' => 1800,
-                'count' => 15,
+                'entry_count' => 15,
             ],
             [
                 'bucket' => $bucketTime60,
                 'period' => 60,
                 'type' => 'request',
                 'aggregate' => 'min',
-                'key' => '/api/users',
+                'metric_key' => '/api/users',
                 'key_hash' => md5('/api/users'),
                 'value' => 50,
-                'count' => 15,
+                'entry_count' => 15,
             ],
             [
                 'bucket' => $bucketTime60,
                 'period' => 60,
                 'type' => 'request',
                 'aggregate' => 'max',
-                'key' => '/api/users',
+                'metric_key' => '/api/users',
                 'key_hash' => md5('/api/users'),
                 'value' => 200,
-                'count' => 15,
+                'entry_count' => 15,
             ],
             [
                 'bucket' => $bucketTime60,
                 'period' => 60,
                 'type' => 'request',
                 'aggregate' => 'avg',
-                'key' => '/api/users',
+                'metric_key' => '/api/users',
                 'key_hash' => md5('/api/users'),
                 'value' => 120,
-                'count' => 15,
+                'entry_count' => 15,
             ],
 
             [
@@ -234,50 +234,50 @@ class DatabaseStorageTest extends TestCase
                 'period' => 360,
                 'type' => 'request',
                 'aggregate' => 'count',
-                'key' => '/api/users',
+                'metric_key' => '/api/users',
                 'key_hash' => md5('/api/users'),
                 'value' => 15,
-                'count' => 15,
+                'entry_count' => 15,
             ],
             [
                 'bucket' => $bucketTime360,
                 'period' => 360,
                 'type' => 'request',
                 'aggregate' => 'sum',
-                'key' => '/api/users',
+                'metric_key' => '/api/users',
                 'key_hash' => md5('/api/users'),
                 'value' => 1800,
-                'count' => 15,
+                'entry_count' => 15,
             ],
             [
                 'bucket' => $bucketTime360,
                 'period' => 360,
                 'type' => 'request',
                 'aggregate' => 'min',
-                'key' => '/api/users',
+                'metric_key' => '/api/users',
                 'key_hash' => md5('/api/users'),
                 'value' => 50,
-                'count' => 15,
+                'entry_count' => 15,
             ],
             [
                 'bucket' => $bucketTime360,
                 'period' => 360,
                 'type' => 'request',
                 'aggregate' => 'max',
-                'key' => '/api/users',
+                'metric_key' => '/api/users',
                 'key_hash' => md5('/api/users'),
                 'value' => 200,
-                'count' => 15,
+                'entry_count' => 15,
             ],
             [
                 'bucket' => $bucketTime360,
                 'period' => 360,
                 'type' => 'request',
                 'aggregate' => 'avg',
-                'key' => '/api/users',
+                'metric_key' => '/api/users',
                 'key_hash' => md5('/api/users'),
                 'value' => 120,
-                'count' => 15,
+                'entry_count' => 15,
             ],
 
             [
@@ -285,20 +285,20 @@ class DatabaseStorageTest extends TestCase
                 'period' => 60,
                 'type' => 'database',
                 'aggregate' => 'count',
-                'key' => 'users_query',
+                'metric_key' => 'users_query',
                 'key_hash' => md5('users_query'),
                 'value' => 8,
-                'count' => 8,
+                'entry_count' => 8,
             ],
             [
                 'bucket' => $bucketTime60,
                 'period' => 60,
                 'type' => 'database',
                 'aggregate' => 'avg',
-                'key' => 'users_query',
+                'metric_key' => 'users_query',
                 'key_hash' => md5('users_query'),
                 'value' => 27.5,
-                'count' => 8,
+                'entry_count' => 8,
             ],
 
             [
@@ -306,20 +306,20 @@ class DatabaseStorageTest extends TestCase
                 'period' => 360,
                 'type' => 'database',
                 'aggregate' => 'count',
-                'key' => 'users_query',
+                'metric_key' => 'users_query',
                 'key_hash' => md5('users_query'),
                 'value' => 8,
-                'count' => 8,
+                'entry_count' => 8,
             ],
             [
                 'bucket' => $bucketTime360,
                 'period' => 360,
                 'type' => 'database',
                 'aggregate' => 'avg',
-                'key' => 'users_query',
+                'metric_key' => 'users_query',
                 'key_hash' => md5('users_query'),
                 'value' => 27.5,
-                'count' => 8,
+                'entry_count' => 8,
             ],
         ];
 
@@ -352,14 +352,14 @@ class DatabaseStorageTest extends TestCase
         $data = $result->toArray();
 
         $this->assertNotEmpty($data);
-        $this->assertArrayHasKey('key', $data[0]);
+        $this->assertArrayHasKey('metric_key', $data[0]);
         $this->assertArrayHasKey('count', $data[0]);
 
-        $usersData = array_filter($data, fn(array $item) => $item['key'] === '/api/users');
+        $usersData = array_filter($data, fn(array $item) => $item['metric_key'] === '/api/users');
         $this->assertNotEmpty($usersData);
 
         $usersEntry = array_values($usersData)[0];
-        $this->assertEquals('/api/users', $usersEntry['key']);
+        $this->assertEquals('/api/users', $usersEntry['metric_key']);
         $this->assertGreaterThan(0, $usersEntry['count']);
     }
 
@@ -377,13 +377,13 @@ class DatabaseStorageTest extends TestCase
 
         $this->assertNotEmpty($data);
         foreach ($data as $item) {
-            $this->assertArrayHasKey('key', $item);
+            $this->assertArrayHasKey('metric_key', $item);
             $this->assertArrayHasKey('count', $item);
             $this->assertArrayHasKey('sum', $item);
             $this->assertArrayHasKey('avg', $item);
         }
 
-        $usersData = array_filter($data, fn(array $item) => $item['key'] === '/api/users');
+        $usersData = array_filter($data, fn(array $item) => $item['metric_key'] === '/api/users');
         if ($usersData !== []) {
             $usersEntry = array_values($usersData)[0];
             $this->assertEquals(17, $usersEntry['count']);
@@ -429,19 +429,19 @@ class DatabaseStorageTest extends TestCase
         $this->assertNotEmpty($data);
 
         foreach ($data as $item) {
-            $this->assertArrayHasKey('key', $item);
+            $this->assertArrayHasKey('metric_key', $item);
             $this->assertArrayHasKey('request', $item);
             $this->assertArrayHasKey('database', $item);
         }
 
-        $usersData = array_filter($data, fn(array $item) => $item['key'] === '/api/users');
+        $usersData = array_filter($data, fn(array $item) => $item['metric_key'] === '/api/users');
         if ($usersData !== []) {
             $usersEntry = array_values($usersData)[0];
             $this->assertEquals(3, $usersEntry['request']);
             $this->assertEquals(0, $usersEntry['database']);
         }
 
-        $queryData = array_filter($data, fn(array $item) => $item['key'] === 'users_query');
+        $queryData = array_filter($data, fn(array $item) => $item['metric_key'] === 'users_query');
         if ($queryData !== []) {
             $queryEntry = array_values($queryData)[0];
             $this->assertEquals(0, $queryEntry['request']);
@@ -464,7 +464,7 @@ class DatabaseStorageTest extends TestCase
         $this->assertNotEmpty($data);
 
         foreach ($data as $item) {
-            $this->assertArrayHasKey('key', $item);
+            $this->assertArrayHasKey('metric_key', $item);
             $this->assertArrayHasKey('request', $item);
         }
     }
@@ -598,12 +598,12 @@ class DatabaseStorageTest extends TestCase
     {
         $this->aggregatesTable->updateAll(
             ['bucket' => (new DateTime())->getTimestamp() - 100],
-            ['type' => 'request', 'key' => '/api/users'],
+            ['type' => 'request', 'metric_key' => '/api/users'],
         );
 
         $result = $this->storage->aggregate('request', ['avg', 'max', 'min', 'count', 'sum'], 60);
 
-        $apiUsers = $result->filter(fn($r) => $r['key'] === '/api/users')->first();
+        $apiUsers = $result->filter(fn($r) => $r['metric_key'] === '/api/users')->first();
         $this->assertEquals(200, $apiUsers['max']);
         $this->assertEquals(50, $apiUsers['min']);
         $this->assertEqualsWithDelta(122.06, $apiUsers['avg'], 0.01);
@@ -620,12 +620,12 @@ class DatabaseStorageTest extends TestCase
     {
         $this->aggregatesTable->updateAll(
             ['bucket' => (new DateTime())->getTimestamp() - 100],
-            ['type' => 'request', 'key' => '/api/users'],
+            ['type' => 'request', 'metric_key' => '/api/users'],
         );
 
         $result = $this->storage->aggregate('request', ['avg', 'max'], 60);
 
-        $apiUsers = $result->filter(fn($r) => $r['key'] === '/api/users')->first();
+        $apiUsers = $result->filter(fn($r) => $r['metric_key'] === '/api/users')->first();
         $this->assertEquals(200, $apiUsers['max']);
         $this->assertGreaterThan(0, $apiUsers['avg']);
     }

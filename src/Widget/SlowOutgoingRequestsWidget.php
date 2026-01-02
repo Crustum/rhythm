@@ -38,9 +38,9 @@ class SlowOutgoingRequestsWidget extends BaseWidget
                 $totalCount = 0;
 
                 foreach ($requests as $request) {
-                    $requestData = json_decode($request['key'], true);
+                    $requestData = json_decode($request['metric_key'], true);
                     $method = is_array($requestData) && isset($requestData[0]) ? $requestData[0] : 'GET';
-                    $url = is_array($requestData) && isset($requestData[1]) ? $requestData[1] : $request['key'];
+                    $url = is_array($requestData) && isset($requestData[1]) ? $requestData[1] : $request['metric_key'];
 
                     $rawCount = $request['count'] ?? 0;
                     $magnifiedCount = $this->magnifyValue($rawCount);

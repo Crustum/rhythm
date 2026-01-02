@@ -4,12 +4,11 @@ declare(strict_types=1);
 use Migrations\AbstractMigration;
 
 /**
- * Create Rhythm Values Table Migration
+ * Create Rhythm Tables Migration
  *
- * Creates the values table for storing string-based metrics.
- * This table stores RhythmValue objects with string values.
+ * Creates the main tables for the Rhythm performance monitoring system.
  */
-class CreateRhythmValues extends AbstractMigration
+class CreateRhythmEntries extends AbstractMigration
 {
     /**
      * Change Method.
@@ -20,38 +19,41 @@ class CreateRhythmValues extends AbstractMigration
      */
     public function change(): void
     {
-        $this->table('rhythm_values')
+        // Create rhythm_entries table for raw metric entries
+        $this->table('rhythm_entries')
             ->addColumn('timestamp', 'integer', [
                 'null' => false,
-                'comment' => 'Unix timestamp of the metric value',
+                'comment' => 'Unix timestamp of the metric entry',
             ])
             ->addColumn('type', 'string', [
                 'limit' => 255,
                 'null' => false,
-                'comment' => 'Type of metric (e.g., config_value, user_agent, status)',
+                'comment' => 'Type of metric (e.g., user_request, slow_query, exception)',
             ])
             ->addColumn('key_hash', 'string', [
                 'limit' => 32,
                 'null' => false,
                 'comment' => 'MD5 hash of the metric key for efficient lookups',
             ])
-            ->addColumn('key', 'text', [
+            ->addColumn('metric_key', 'text', [
                 'null' => false,
                 'comment' => 'The actual metric key value',
             ])
-            ->addColumn('value', 'text', [
-                'null' => false,
-                'comment' => 'String value of the metric',
+            ->addColumn('value', 'biginteger', [
+                'null' => true,
+                'comment' => 'Numeric value of the metric (optional)',
             ])
             ->addIndex(['timestamp'], [
-                'name' => 'idx_rhythm_values_timestamp',
+                'name' => 'idx_rhythm_entries_timestamp',
             ])
             ->addIndex(['type'], [
-                'name' => 'idx_rhythm_values_type',
+                'name' => 'idx_rhythm_entries_type',
             ])
-            ->addIndex(['type', 'key_hash'], [
-                'name' => 'unique_rhythm_values',
-                'unique' => true,
+            ->addIndex(['key_hash'], [
+                'name' => 'idx_rhythm_entries_key_hash',
+            ])
+            ->addIndex(['timestamp', 'type', 'key_hash', 'value'], [
+                'name' => 'idx_rhythm_entries_composite',
             ])
             ->create();
     }

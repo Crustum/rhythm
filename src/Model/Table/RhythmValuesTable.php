@@ -57,9 +57,9 @@ class RhythmValuesTable extends Table
             ->requirePresence('type', 'create');
 
         $validator
-            ->scalar('key')
-            ->notEmptyString('key')
-            ->requirePresence('key', 'create');
+            ->scalar('metric_key')
+            ->notEmptyString('metric_key')
+            ->requirePresence('metric_key', 'create');
 
         $validator
             ->scalar('key_hash')
@@ -84,13 +84,13 @@ class RhythmValuesTable extends Table
     public function values(string $type, ?array $keys = null): CollectionInterface
     {
         $query = $this->find()
-            ->select(['timestamp', 'key', 'value'])
+            ->select(['timestamp', 'metric_key', 'value'])
             ->where(['type' => $type]);
 
         if ($keys !== null) {
-            $query->whereInList('key', $keys);
+            $query->whereInList('metric_key', $keys);
         }
 
-        return $query->all()->indexBy('key');
+        return $query->all()->indexBy('metric_key');
     }
 }

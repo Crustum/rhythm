@@ -149,23 +149,23 @@ class CoreFlowTest extends RhythmTestCase
         $aggregatedEntries = $this->storage->aggregate('user_requests', 'count', 60);
         $this->assertGreaterThan(0, $aggregatedEntries->count(), 'User request metric not found in storage');
 
-        $userRequestsAggregate = $aggregatedEntries->firstMatch(['key' => 'GET /users']);
+        $userRequestsAggregate = $aggregatedEntries->firstMatch(['metric_key' => 'GET /users']);
         $this->assertNotEmpty($userRequestsAggregate, 'GET /users aggregate not found');
         $this->assertEquals(1, $userRequestsAggregate['count'], 'GET /users count should be 1');
 
-        $userRequestsAggregate = $aggregatedEntries->firstMatch(['key' => 'POST /users']);
+        $userRequestsAggregate = $aggregatedEntries->firstMatch(['metric_key' => 'POST /users']);
         $this->assertNotEmpty($userRequestsAggregate, 'POST /users aggregate not found');
         $this->assertEquals(1, $userRequestsAggregate['count'], 'POST /users count should be 1');
 
         $slowQueries = $this->connection->selectQuery()
-            ->select(['key', 'value'])
+            ->select(['metric_key', 'value'])
             ->from('rhythm_values')
             ->where(['type' => 'slow_queries'])
             ->execute()
             ->fetchAll('assoc');
 
         $this->assertCount(1, $slowQueries, 'Expected 1 slow query entry');
-        $this->assertEquals('SELECT * FROM users', $slowQueries[0]['key']);
+        $this->assertEquals('SELECT * FROM users', $slowQueries[0]['metric_key']);
         $this->assertEquals('250ms', $slowQueries[0]['value']);
     }
 
@@ -209,11 +209,11 @@ class CoreFlowTest extends RhythmTestCase
         $aggregates = $this->storage->aggregate('agg_test', 'sum', 60);
         $this->assertGreaterThan(0, $aggregates->count(), 'No aggregates generated');
 
-        $key1Aggregate = $aggregates->firstMatch(['key' => 'key_1']);
+        $key1Aggregate = $aggregates->firstMatch(['metric_key' => 'key_1']);
         $this->assertNotEmpty($key1Aggregate, 'Aggregate for key_1 not found');
         $this->assertEquals(30, (int)$key1Aggregate['sum'], 'Sum for key_1 should be 30');
 
-        $key2Aggregate = $aggregates->firstMatch(['key' => 'key_2']);
+        $key2Aggregate = $aggregates->firstMatch(['metric_key' => 'key_2']);
         $this->assertNotEmpty($key2Aggregate, 'Aggregate for key_2 not found');
         $this->assertEquals(30, (int)$key2Aggregate['sum'], 'Sum for key_2 should be 30');
     }
@@ -338,17 +338,17 @@ class CoreFlowTest extends RhythmTestCase
         $this->rhythm->ingest();
         $this->rhythm->digest();
         $row = $this->connection->selectQuery()
-            ->select(['key', 'value'])
+            ->select(['metric_key', 'value'])
             ->from('rhythm_entries')
             ->where([
                 'type' => 'debug_type',
-                'key' => 'minimal_key',
+                'metric_key' => 'minimal_key',
             ])
             ->execute()
             ->fetch('assoc');
 
         $this->assertNotEmpty($row, 'Row should be present in DB');
         $this->assertEquals(123, (int)$row['value'], 'Value should be 123');
-        $this->assertEquals('minimal_key', $row['key'], 'Key value should be minimal_key');
+        $this->assertEquals('minimal_key', $row['metric_key'], 'Key value should be minimal_key');
     }
 }

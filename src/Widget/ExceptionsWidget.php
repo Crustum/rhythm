@@ -45,7 +45,7 @@ class ExceptionsWidget extends BaseWidget
                 $totalCount = 0;
 
                 foreach ($exceptions as $exception) {
-                    $keyData = json_decode($exception['key'] ?? '', true);
+                    $keyData = json_decode($exception['metric_key'] ?? '', true);
 
                     $rawCount = $exception['count'] ?? 0;
                     $magnifiedCount = $this->magnifyValue($rawCount);

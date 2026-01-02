@@ -237,7 +237,7 @@ abstract class RhythmTestCase extends TestCase
 
         $conditions = [
             'type' => $type,
-            'key' => $key,
+            'metric_key' => $key,
         ];
 
         if ($value !== null) {
@@ -262,7 +262,7 @@ abstract class RhythmTestCase extends TestCase
 
         $count = $valuesTable->find()->where([
             'type' => $type,
-            'key' => $key,
+            'metric_key' => $key,
             'value' => $value,
         ])->count();
 
@@ -283,7 +283,7 @@ abstract class RhythmTestCase extends TestCase
 
         $count = $aggregatesTable->find()->where([
             'type' => $type,
-            'key' => $key,
+            'metric_key' => $key,
             'aggregate' => $aggregate,
         ])->count();
 

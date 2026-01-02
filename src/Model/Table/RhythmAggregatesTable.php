@@ -73,9 +73,9 @@ class RhythmAggregatesTable extends Table
             ->notEmptyString('key_hash');
 
         $validator
-            ->scalar('key')
-            ->maxLength('key', 10000)
-            ->notEmptyString('key');
+            ->scalar('metric_key')
+            ->maxLength('metric_key', 10000)
+            ->notEmptyString('metric_key');
 
         $validator
             ->scalar('aggregate')
@@ -87,8 +87,8 @@ class RhythmAggregatesTable extends Table
             ->notEmptyString('value');
 
         $validator
-            ->integer('count')
-            ->notEmptyString('count');
+            ->integer('entry_count')
+            ->notEmptyString('entry_count');
 
         return $validator;
     }
@@ -158,7 +158,7 @@ class RhythmAggregatesTable extends Table
 
         $query = $this->find()
             ->select([
-                'key',
+                'metric_key',
                 'key_hash',
                 'type',
                 'total' => 'SUM(value)',
@@ -169,14 +169,14 @@ class RhythmAggregatesTable extends Table
                 'period' => $period,
                 'bucket >=' => $oldestBucket,
             ])
-            ->groupBy(['key_hash', 'key', 'type'])
+            ->groupBy(['key_hash', 'metric_key', 'type'])
             ->limit($limit * count($types));
 
         foreach ($query->all() as $row) {
             $keyHash = $row->key_hash;
             if (!isset($aggregatedResults[$keyHash])) {
                 $aggregatedResults[$keyHash] = [
-                    'key' => $row->key,
+                    'metric_key' => $row->metric_key,
                 ];
 
                 foreach ($types as $type) {
@@ -187,7 +187,7 @@ class RhythmAggregatesTable extends Table
         }
 
         $tailQuery = $RhythmEntries->find()
-            ->select(['key', 'key_hash', 'type', 'value'])
+            ->select(['metric_key', 'key_hash', 'type', 'value'])
             ->where([
                 'type IN' => $types,
                 'timestamp >=' => $windowStart,
@@ -200,7 +200,7 @@ class RhythmAggregatesTable extends Table
 
             if (!isset($tailData[$keyHash])) {
                 $tailData[$keyHash] = [
-                    'key' => $entry->key,
+                    'metric_key' => $entry->metric_key,
                     'values' => [],
                 ];
                 foreach ($types as $t) {
@@ -212,7 +212,7 @@ class RhythmAggregatesTable extends Table
 
         foreach ($tailData as $keyHash => $data) {
             if (!isset($aggregatedResults[$keyHash])) {
-                $aggregatedResults[$keyHash] = ['key' => $data['key']];
+                $aggregatedResults[$keyHash] = ['metric_key' => $data['metric_key']];
                 foreach ($types as $type) {
                     $aggregatedResults[$keyHash][$type] = 0;
                 }
@@ -377,7 +377,7 @@ class RhythmAggregatesTable extends Table
         }
 
         $queryResults = $this->find()
-            ->select(['bucket', 'type', 'key', 'value'])
+            ->select(['bucket', 'type', 'metric_key', 'value'])
             ->where([
                 'type IN' => $types,
                 'aggregate' => $aggregate,
@@ -388,7 +388,7 @@ class RhythmAggregatesTable extends Table
             ->orderBy(['bucket'])
             ->all();
 
-        $groupedByKey = (new Collection($queryResults))->groupBy('key')->toArray();
+        $groupedByKey = (new Collection($queryResults))->groupBy('metric_key')->toArray();
 
         $finalResult = [];
         foreach ($groupedByKey as $key => $readings) {
@@ -547,13 +547,13 @@ class RhythmAggregatesTable extends Table
         $outerSelectFields = [];
 
         $keySubquery = $this->find()
-            ->select(['key'])
+            ->select(['metric_key'])
             ->where(function ($exp, $q) {
                 return $exp->equalFields('key_hash', 'aggregated.key_hash');
             })
             ->limit(1);
 
-        $outerSelectFields['key'] = $keySubquery;
+        $outerSelectFields['metric_key'] = $keySubquery;
         foreach ($aggregates as $aggregate) {
             $outerSelectFields[$aggregate] = $finalQuery->newExpr($aggregate);
         }
@@ -564,6 +564,18 @@ class RhythmAggregatesTable extends Table
             ->enableHydration(false);
 
         $results = $finalQuery->toArray();
+
+        foreach ($results as &$result) {
+            foreach ($aggregates as $aggregate) {
+                if (isset($result[$aggregate])) {
+                    $result[$aggregate] = match ($aggregate) {
+                        'count' => (int)$result[$aggregate],
+                        'min', 'max', 'sum', 'avg' => (float)$result[$aggregate],
+                        default => $result[$aggregate],
+                    };
+                }
+            }
+        }
 
         if (
             in_array('avg', $aggregates) && in_array('count', $aggregates) &&

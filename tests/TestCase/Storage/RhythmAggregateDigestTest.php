@@ -75,7 +75,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 100,
             ],
@@ -96,7 +96,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 100,
             ],
@@ -104,7 +104,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 200,
             ],
@@ -112,7 +112,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 300,
             ],
@@ -133,7 +133,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 100,
             ],
@@ -141,7 +141,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:456',
+                'metric_key' => 'user:456',
                 'key_hash' => md5('user:456'),
                 'value' => 200,
             ],
@@ -149,7 +149,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:789',
+                'metric_key' => 'user:789',
                 'key_hash' => md5('user:789'),
                 'value' => 300,
             ],
@@ -170,7 +170,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 100,
             ],
@@ -178,7 +178,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 200,
             ],
@@ -186,7 +186,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 300,
             ],
@@ -207,7 +207,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 300,
             ],
@@ -215,7 +215,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 100,
             ],
@@ -223,7 +223,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 200,
             ],
@@ -244,7 +244,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 100,
             ],
@@ -252,7 +252,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 300,
             ],
@@ -260,7 +260,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 200,
             ],
@@ -281,7 +281,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 100,
             ],
@@ -289,7 +289,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 200,
             ],
@@ -297,7 +297,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 300,
             ],
@@ -318,7 +318,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 100,
             ],
@@ -326,7 +326,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 200,
             ],
@@ -353,7 +353,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 100,
             ],
@@ -361,7 +361,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609462800,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 200,
             ],
@@ -382,7 +382,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 100,
             ],
@@ -390,7 +390,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 86400,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 200,
             ],
@@ -411,7 +411,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 100,
             ],
@@ -419,7 +419,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'memory',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 200,
             ],
@@ -440,7 +440,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 100,
             ],
@@ -448,7 +448,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 200,
             ],
@@ -462,7 +462,7 @@ class RhythmAggregateDigestTest extends TestCase
         $this->assertIsArray($result);
         $this->assertCount(1, $result);
         $this->assertEquals(2, $result[0]['value']);
-        $this->assertEquals(2, $result[0]['count']);
+        $this->assertEquals(2, $result[0]['entry_count']);
         $this->assertEquals('count', $result[0]['aggregate']);
     }
 
@@ -476,7 +476,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 100,
             ],
@@ -484,7 +484,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 200,
             ],
@@ -498,7 +498,7 @@ class RhythmAggregateDigestTest extends TestCase
         $this->assertIsArray($result);
         $this->assertCount(1, $result);
         $this->assertEquals(300, $result[0]['value']);
-        $this->assertEquals(2, $result[0]['count']);
+        $this->assertEquals(2, $result[0]['entry_count']);
         $this->assertEquals('sum', $result[0]['aggregate']);
     }
 
@@ -512,7 +512,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 300,
             ],
@@ -520,7 +520,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 100,
             ],
@@ -528,7 +528,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 200,
             ],
@@ -542,7 +542,7 @@ class RhythmAggregateDigestTest extends TestCase
         $this->assertIsArray($result);
         $this->assertCount(1, $result);
         $this->assertEquals(100, $result[0]['value']);
-        $this->assertEquals(3, $result[0]['count']);
+        $this->assertEquals(3, $result[0]['entry_count']);
         $this->assertEquals('min', $result[0]['aggregate']);
     }
 
@@ -556,7 +556,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 100,
             ],
@@ -564,7 +564,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 300,
             ],
@@ -572,7 +572,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 200,
             ],
@@ -586,7 +586,7 @@ class RhythmAggregateDigestTest extends TestCase
         $this->assertIsArray($result);
         $this->assertCount(1, $result);
         $this->assertEquals(300, $result[0]['value']);
-        $this->assertEquals(3, $result[0]['count']);
+        $this->assertEquals(3, $result[0]['entry_count']);
         $this->assertEquals('max', $result[0]['aggregate']);
     }
 
@@ -600,7 +600,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 100,
             ],
@@ -608,7 +608,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 200,
             ],
@@ -616,7 +616,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 300,
             ],
@@ -630,7 +630,7 @@ class RhythmAggregateDigestTest extends TestCase
         $this->assertIsArray($result);
         $this->assertCount(1, $result);
         $this->assertEquals(200, $result[0]['value']);
-        $this->assertEquals(3, $result[0]['count']);
+        $this->assertEquals(3, $result[0]['entry_count']);
         $this->assertEquals('avg', $result[0]['aggregate']);
     }
 
@@ -678,7 +678,7 @@ class RhythmAggregateDigestTest extends TestCase
      */
     public function testCalculateAggregateValue(): void
     {
-        $aggregate = ['value' => 100, 'count' => 2];
+        $aggregate = ['value' => 100, 'entry_count' => 2];
         $entry = ['value' => 50];
 
         $reflection = new ReflectionClass($this->digest);
@@ -703,7 +703,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:' . ($i % 10),
+                'metric_key' => 'user:' . ($i % 10),
                 'key_hash' => md5('user:' . ($i % 10)),
                 'value' => $i,
             ];
@@ -724,7 +724,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 0,
             ],
@@ -732,7 +732,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 0,
             ],
@@ -759,7 +759,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => -100,
             ],
@@ -767,7 +767,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => -50,
             ],
@@ -793,7 +793,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 999999999,
             ],
@@ -801,7 +801,7 @@ class RhythmAggregateDigestTest extends TestCase
                 'bucket' => 1609459200,
                 'period' => 3600,
                 'type' => 'request',
-                'key' => 'user:123',
+                'metric_key' => 'user:123',
                 'key_hash' => md5('user:123'),
                 'value' => 888888888,
             ],

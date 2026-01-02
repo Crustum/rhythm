@@ -39,7 +39,7 @@ class CreateRhythmAggregates extends AbstractMigration
                 'null' => false,
                 'comment' => 'MD5 hash of the metric key',
             ])
-            ->addColumn('key', 'text', [
+            ->addColumn('metric_key', 'text', [
                 'null' => false,
                 'comment' => 'The actual metric key value',
             ])
@@ -54,7 +54,7 @@ class CreateRhythmAggregates extends AbstractMigration
                 'null' => false,
                 'comment' => 'Aggregated value',
             ])
-            ->addColumn('count', 'integer', [
+            ->addColumn('entry_count', 'integer', [
                 'null' => true,
                 'comment' => 'Number of entries in this aggregation (for avg calculations)',
             ])

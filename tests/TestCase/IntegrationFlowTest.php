@@ -159,7 +159,7 @@ class IntegrationFlowTest extends RhythmTestCase
                 );
 
                 foreach ($aggregates as $aggregate) {
-                    $this->assertArrayHasKey('key', $aggregate);
+                    $this->assertArrayHasKey('metric_key', $aggregate);
                     $this->assertArrayHasKey($aggType, $aggregate);
                     $this->assertIsNumeric($aggregate[$aggType]);
                     if ($aggType === 'count') {

@@ -1,0 +1,26 @@
+<?php
+declare(strict_types=1);
+
+/**
+ * Rhythm Plugin Layouts Configuration
+ *
+ * Default layouts configuration for the Rhythm dashboard.
+ * This file will be copied to config/rhythm_layouts.php during plugin installation.
+ */
+
+return [
+    'Rhythm' => [
+        'layouts' => [
+            'default' => [
+                'server-state' => ['cols' => ['default' => 12, 'lg' => 12]],
+                'slow-queries' => ['cols' => ['default' => 12, 'lg' => 6]],
+                'exceptions' => ['cols' => ['default' => 12, 'lg' => 6]],
+                'slow-requests' => ['cols' => ['default' => 12, 'lg' => 6]],
+                'slow-outgoing-requests' => ['cols' => ['default' => 12, 'lg' => 6]],
+                'queues' => ['cols' => ['default' => 12, 'lg' => 12]],
+                'slow-jobs' => ['cols' => ['default' => 12, 'lg' => 12]],
+            ],
+        ],
+    ],
+];
+

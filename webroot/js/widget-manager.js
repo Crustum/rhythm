@@ -78,7 +78,8 @@ class RhythmWidgetManager {
 
         try {
             const period = document.getElementById('period-selector')?.value || '60';
-            const url = new URL(`${this.config.baseUrl}widget/${widgetName}`, window.location.origin);
+            const encodedWidgetName = encodeURIComponent(widgetName);
+            const url = new URL(`${this.config.baseUrl}widget/${encodedWidgetName}`, window.location.origin);
             url.searchParams.append('period', period);
 
             const currentSort = new URLSearchParams(window.location.search).get('sort');

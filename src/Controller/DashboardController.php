@@ -63,7 +63,8 @@ class DashboardController extends Controller
         $this->initializeWidgets($rhythm);
         $this->set('widgetRegistry', $this->widgetRegistry);
 
-        $widgetName = $this->request->getParam('pass.0');
+        $pass = $this->request->getParam('pass', []);
+        $widgetName = !empty($pass) ? implode('/', $pass) : null;
         $period = (int)$this->request->getQuery('period', 60);
         $sort = $this->request->getQuery('sort');
 

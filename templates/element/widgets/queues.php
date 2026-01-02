@@ -18,7 +18,7 @@
 $this->set('widget', $widget);
 $this->set('config', $config);
 $this->set('widgetName', $widgetName);
-$this->loadHelper('Rhythm.Chart');
+$this->loadHelper('Crustum/Rhythm.Chart');
 
 $period = (int) $this->getRequest()->getQuery('period', 60);
 $options = ['period' => $period];
@@ -29,7 +29,7 @@ if ($sort !== null) {
 $data = $widget->getData($options);
 $this->set('data', $data);
 
-$this->extend('Rhythm.widgets/widget_base');
+$this->extend('Crustum/Rhythm.widgets/widget_base');
 
 $queues = $data['queues'] ?? [];
 $queueStats = $data['queueStats'] ?? [];
@@ -40,7 +40,7 @@ $this->start('widget_body');
 ?>
 
 <?php if (empty($queues) && empty($queueStats)): ?>
-    <?= $this->element('Rhythm.components/widget_placeholder', ['message' => 'No queue data recorded.']) ?>
+    <?= $this->element('Crustum/Rhythm.components/widget_placeholder', ['message' => 'No queue data recorded.']) ?>
 <?php else: ?>
     <!-- Summary Statistics -->
     <?php
@@ -102,7 +102,7 @@ $this->start('widget_body');
                     );
                     $allChartConfigs[] = $chartConfig;
                 }
-                echo $this->element('Rhythm.widgets/queue_activity_card', [
+                echo $this->element('Crustum/Rhythm.widgets/queue_activity_card', [
                     'queueName' => $queueName,
                     'chartData' => $activityData,
                     'legendColors' => $activityColors ?? []
@@ -124,7 +124,7 @@ $this->start('widget_body');
                     );
                     $allChartConfigs[] = $chartConfig;
                 }
-                echo $this->element('Rhythm.widgets/queue_statistics_card', [
+                echo $this->element('Crustum/Rhythm.widgets/queue_statistics_card', [
                     'queueName' => $queueName,
                     'chartData' => $statsData,
                     'legendColors' => $statisticsColors ?? []

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Widget;
+namespace Crustum\Rhythm\Widget;
 
+use Crustum\Rhythm\Widget\Trait\SortableTrait;
+use Crustum\Rhythm\Widget\Trait\WidgetSamplingTrait;
 use Exception;
-use Rhythm\Widget\Trait\SortableTrait;
-use Rhythm\Widget\Trait\WidgetSamplingTrait;
 
 /**
  * Exceptions Widget
@@ -45,7 +45,7 @@ class ExceptionsWidget extends BaseWidget
                 $totalCount = 0;
 
                 foreach ($exceptions as $exception) {
-                    $keyData = json_decode($exception['key'] ?? '', true);
+                    $keyData = json_decode($exception['metric_key'] ?? '', true);
 
                     $rawCount = $exception['count'] ?? 0;
                     $magnifiedCount = $this->magnifyValue($rawCount);
@@ -92,7 +92,7 @@ class ExceptionsWidget extends BaseWidget
      */
     public function getTemplate(): string
     {
-        return 'Rhythm.widgets/exceptions';
+        return 'Crustum/Rhythm.widgets/exceptions';
     }
 
     /**

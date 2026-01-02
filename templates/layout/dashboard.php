@@ -12,8 +12,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rhythm Dashboard (New System)</title>
-    <?= $this->AssetCompress->css('Rhythm.rhythm-dashboard.css', ['raw' => \Cake\Core\Configure::read('debug')]) ?>
-    <?= $this->AssetCompress->script('Rhythm.rhythm-dashboard.js', ['raw' => \Cake\Core\Configure::read('debug')]) ?>
+    <?= $this->AssetCompress->css('Crustum/Rhythm.rhythm-dashboard.css', ['raw' => \Cake\Core\Configure::read('debug')]) ?>
+    <?= $this->AssetCompress->script('Crustum/Rhythm.rhythm-dashboard.js', ['raw' => \Cake\Core\Configure::read('debug')]) ?>
 </head>
 <body class="dashboard-body">
     <div class="dashboard-header">

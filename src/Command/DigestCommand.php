@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Command;
+namespace Crustum\Rhythm\Command;
 
 use Cake\Cache\Cache;
 use Cake\Command\Command;
@@ -10,7 +10,7 @@ use Cake\Console\CommandFactoryInterface;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\DateTime;
-use Rhythm\Rhythm;
+use Crustum\Rhythm\Rhythm;
 use SignalHandler\Command\Trait\SignalHandlerTrait;
 
 /**
@@ -26,7 +26,7 @@ class DigestCommand extends Command
     /**
      * Rhythm instance.
      *
-     * @var \Rhythm\Rhythm
+     * @var \Crustum\Rhythm\Rhythm
      */
     protected Rhythm $rhythm;
 
@@ -40,7 +40,7 @@ class DigestCommand extends Command
     /**
      * Constructor
      *
-     * @param \Rhythm\Rhythm $rhythm Rhythm instance
+     * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm instance
      * @param \Cake\Console\CommandFactoryInterface|null $factory Command factory
      */
     public function __construct(Rhythm $rhythm, ?CommandFactoryInterface $factory = null)

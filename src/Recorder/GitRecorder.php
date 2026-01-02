@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Recorder;
+namespace Crustum\Rhythm\Recorder;
 
 use Cake\Event\EventListenerInterface;
 use Cake\I18n\DateTime;
+use Crustum\Rhythm\Event\SharedBeat;
+use Crustum\Rhythm\Recorder\Trait\ThrottlingTrait;
 use Exception;
-use Rhythm\Event\SharedBeat;
-use Rhythm\Recorder\Trait\ThrottlingTrait;
 
 /**
  * Records Git repository metrics.

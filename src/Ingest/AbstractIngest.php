@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Ingest;
+namespace Crustum\Rhythm\Ingest;
 
 use Cake\Collection\CollectionInterface;
 use Cake\I18n\DateTime;
-use Rhythm\RhythmEntry;
-use Rhythm\RhythmValue;
-use Rhythm\Storage\StorageInterface;
+use Crustum\Rhythm\RhythmEntry;
+use Crustum\Rhythm\RhythmValue;
+use Crustum\Rhythm\Storage\StorageInterface;
 
 /**
  * Abstract Ingest Base Class
@@ -27,14 +27,14 @@ abstract class AbstractIngest implements IngestInterface
     /**
      * Storage interface.
      *
-     * @var \Rhythm\Storage\StorageInterface
+     * @var \Crustum\Rhythm\Storage\StorageInterface
      */
     protected StorageInterface $storage;
 
     /**
      * Constructor.
      *
-     * @param \Rhythm\Storage\StorageInterface $storage Storage interface
+     * @param \Crustum\Rhythm\Storage\StorageInterface $storage Storage interface
      * @param array<string, mixed> $config Configuration array
      */
     public function __construct(StorageInterface $storage, array $config = [])
@@ -148,7 +148,7 @@ abstract class AbstractIngest implements IngestInterface
      * Create metric entity from array data.
      *
      * @param array<string, mixed> $data Metric data
-     * @return \Rhythm\RhythmEntry|\Rhythm\RhythmValue
+     * @return \Crustum\Rhythm\RhythmEntry|\Crustum\Rhythm\RhythmValue
      */
     protected function createMetricEntity(array $data): RhythmEntry|RhythmValue
     {

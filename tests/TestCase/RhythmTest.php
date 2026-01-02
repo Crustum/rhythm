@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase;
+namespace Crustum\Rhythm\Test\TestCase;
 
 use Cake\Core\ContainerInterface;
 use Cake\TestSuite\TestCase;
+use Crustum\Rhythm\Ingest\TransparentIngest;
+use Crustum\Rhythm\Rhythm;
+use Crustum\Rhythm\RhythmEntry;
+use Crustum\Rhythm\RhythmValue;
+use Crustum\Rhythm\Storage\DigestStorage;
 use Exception;
-use Rhythm\Ingest\TransparentIngest;
-use Rhythm\Rhythm;
-use Rhythm\RhythmEntry;
-use Rhythm\RhythmValue;
-use Rhythm\Storage\DigestStorage;
 
 /**
  * Rhythm Test Case
@@ -20,7 +20,7 @@ class RhythmTest extends TestCase
     /**
      * Rhythm instance.
      *
-     * @var \Rhythm\Rhythm
+     * @var \Crustum\Rhythm\Rhythm
      */
     protected Rhythm $rhythm;
 

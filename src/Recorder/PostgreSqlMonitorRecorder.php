@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Recorder;
+namespace Crustum\Rhythm\Recorder;
 
 use Cake\Database\Connection;
 use Cake\Datasource\ConnectionManager;
 use Cake\Event\EventListenerInterface;
+use Crustum\Rhythm\Event\SharedBeat;
+use Crustum\Rhythm\Recorder\Trait\ThrottlingTrait;
 use Exception;
-use Rhythm\Event\SharedBeat;
-use Rhythm\Recorder\Trait\ThrottlingTrait;
 
 /**
  * PostgreSQL Monitor Recorder
@@ -49,7 +49,7 @@ class PostgreSqlMonitorRecorder extends BaseRecorder implements EventListenerInt
     /**
      * Monitor all configured PostgreSQL connections.
      *
-     * @param \Rhythm\Event\SharedBeat $event The shared beat event.
+     * @param \Crustum\Rhythm\Event\SharedBeat $event The shared beat event.
      * @return void
      */
     protected function monitorConnections(SharedBeat $event): void
@@ -69,7 +69,7 @@ class PostgreSqlMonitorRecorder extends BaseRecorder implements EventListenerInt
      * Monitor a specific PostgreSQL connection.
      *
      * @param string $connectionName Connection name
-     * @param \Rhythm\Event\SharedBeat $event The shared beat event
+     * @param \Crustum\Rhythm\Event\SharedBeat $event The shared beat event
      * @return void
      */
     protected function monitorConnection(string $connectionName, SharedBeat $event): void

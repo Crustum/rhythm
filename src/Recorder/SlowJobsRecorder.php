@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Recorder;
+namespace Crustum\Rhythm\Recorder;
 
 use Cake\Event\EventInterface;
 use Cake\Event\EventListenerInterface;
 use Cake\Queue\Job\Message;
-use Rhythm\Recorder\Trait\IgnoresTrait;
-use Rhythm\Recorder\Trait\SamplingTrait;
-use Rhythm\Recorder\Trait\ThresholdsTrait;
+use Crustum\Rhythm\Recorder\Trait\IgnoresTrait;
+use Crustum\Rhythm\Recorder\Trait\SamplingTrait;
+use Crustum\Rhythm\Recorder\Trait\ThresholdsTrait;
 
 /**
  * Slow Jobs Recorder

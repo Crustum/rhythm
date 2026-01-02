@@ -23,7 +23,7 @@ if ($sort !== null) {
 $data = $widget->getData($options);
 $this->set('data', $data);
 
-$this->extend('Rhythm.widgets/widget_base');
+$this->extend('Crustum/Rhythm.widgets/widget_base');
 
 $this->start('widget_body');
 

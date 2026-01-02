@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase\Storage;
+namespace Crustum\Rhythm\Test\TestCase\Storage;
 
 use Cake\Collection\Collection;
 use Cake\Core\Container;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
-use Rhythm\Ingest\TransparentIngest;
-use Rhythm\Model\Table\RhythmAggregatesTable;
-use Rhythm\Model\Table\RhythmEntriesTable;
-use Rhythm\Model\Table\RhythmValuesTable;
-use Rhythm\Rhythm;
-use Rhythm\Storage\DigestStorage;
+use Crustum\Rhythm\Ingest\TransparentIngest;
+use Crustum\Rhythm\Model\Table\RhythmAggregatesTable;
+use Crustum\Rhythm\Model\Table\RhythmEntriesTable;
+use Crustum\Rhythm\Model\Table\RhythmValuesTable;
+use Crustum\Rhythm\Rhythm;
+use Crustum\Rhythm\Storage\DigestStorage;
 
 /**
  * Aggregation logic test
@@ -33,9 +33,9 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->storage = new DigestStorage();
         $this->ingest = new TransparentIngest($this->storage);
         $this->rhythm = new Rhythm($this->storage, $this->ingest, $container);
-        $this->Entries = $this->getTableLocator()->get('Rhythm.RhythmEntries');
-        $this->Aggregates = $this->getTableLocator()->get('Rhythm.RhythmAggregates');
-        $this->Values = $this->getTableLocator()->get('Rhythm.RhythmValues');
+        $this->Entries = $this->getTableLocator()->get('Crustum/Rhythm.RhythmEntries');
+        $this->Aggregates = $this->getTableLocator()->get('Crustum/Rhythm.RhythmAggregates');
+        $this->Values = $this->getTableLocator()->get('Crustum/Rhythm.RhythmValues');
         $this->ingest->clear();
         $this->storage->purge();
     }
@@ -61,114 +61,114 @@ class DatabaseStorageFeatureTest extends TestCase
 
         $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
         $this->assertCount(3, $entries);
-        $this->assertEquals(['type' => 'type', 'key' => 'key1', 'value' => 200], $entries->first()->extract(['type', 'key', 'value']));
-        $this->assertEquals(['type' => 'type', 'key' => 'key1', 'value' => 100], $entries->skip(1)->first()->extract(['type', 'key', 'value']));
-        $this->assertEquals(['type' => 'type', 'key' => 'key2', 'value' => 400], $entries->skip(2)->first()->extract(['type', 'key', 'value']));
+        $this->assertEquals(['type' => 'type', 'metric_key' => 'key1', 'value' => 200], $entries->first()->extract(['type', 'metric_key', 'value']));
+        $this->assertEquals(['type' => 'type', 'metric_key' => 'key1', 'value' => 100], $entries->skip(1)->first()->extract(['type', 'metric_key', 'value']));
+        $this->assertEquals(['type' => 'type', 'metric_key' => 'key2', 'value' => 400], $entries->skip(2)->first()->extract(['type', 'metric_key', 'value']));
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->orderBy(['period' => 'ASC', 'aggregate' => 'ASC', 'key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->orderBy(['period' => 'ASC', 'aggregate' => 'ASC', 'metric_key' => 'ASC'])->all());
         $this->assertCount(40, $aggregates);
         $agg = fn($i) => $aggregates->skip($i)->first();
         // period 60
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'avg', 'key' => 'key1', 'value' => 150], $agg(0)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'avg', 'key' => 'key2', 'value' => 400], $agg(1)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'count', 'key' => 'key1', 'value' => 2], $agg(2)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'count', 'key' => 'key2', 'value' => 1], $agg(3)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'max', 'key' => 'key1', 'value' => 200], $agg(4)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'max', 'key' => 'key2', 'value' => 400], $agg(5)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'min', 'key' => 'key1', 'value' => 100], $agg(6)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'min', 'key' => 'key2', 'value' => 400], $agg(7)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'sum', 'key' => 'key1', 'value' => 300], $agg(8)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'sum', 'key' => 'key2', 'value' => 400], $agg(9)->extract(['type','period','aggregate','key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'avg', 'metric_key' => 'key1', 'value' => 150], $agg(0)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'avg', 'metric_key' => 'key2', 'value' => 400], $agg(1)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'count', 'metric_key' => 'key1', 'value' => 2], $agg(2)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'count', 'metric_key' => 'key2', 'value' => 1], $agg(3)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'max', 'metric_key' => 'key1', 'value' => 200], $agg(4)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'max', 'metric_key' => 'key2', 'value' => 400], $agg(5)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'min', 'metric_key' => 'key1', 'value' => 100], $agg(6)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'min', 'metric_key' => 'key2', 'value' => 400], $agg(7)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'sum', 'metric_key' => 'key1', 'value' => 300], $agg(8)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'sum', 'metric_key' => 'key2', 'value' => 400], $agg(9)->extract(['type','period','aggregate','metric_key','value']));
         // period 360
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'avg', 'key' => 'key1', 'value' => 150], $agg(10)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'avg', 'key' => 'key2', 'value' => 400], $agg(11)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'count', 'key' => 'key1', 'value' => 2], $agg(12)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'count', 'key' => 'key2', 'value' => 1], $agg(13)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'max', 'key' => 'key1', 'value' => 200], $agg(14)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'max', 'key' => 'key2', 'value' => 400], $agg(15)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'min', 'key' => 'key1', 'value' => 100], $agg(16)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'min', 'key' => 'key2', 'value' => 400], $agg(17)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'sum', 'key' => 'key1', 'value' => 300], $agg(18)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'sum', 'key' => 'key2', 'value' => 400], $agg(19)->extract(['type','period','aggregate','key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'avg', 'metric_key' => 'key1', 'value' => 150], $agg(10)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'avg', 'metric_key' => 'key2', 'value' => 400], $agg(11)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'count', 'metric_key' => 'key1', 'value' => 2], $agg(12)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'count', 'metric_key' => 'key2', 'value' => 1], $agg(13)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'max', 'metric_key' => 'key1', 'value' => 200], $agg(14)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'max', 'metric_key' => 'key2', 'value' => 400], $agg(15)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'min', 'metric_key' => 'key1', 'value' => 100], $agg(16)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'min', 'metric_key' => 'key2', 'value' => 400], $agg(17)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'sum', 'metric_key' => 'key1', 'value' => 300], $agg(18)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'sum', 'metric_key' => 'key2', 'value' => 400], $agg(19)->extract(['type','period','aggregate','metric_key','value']));
         // period 1440
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'avg', 'key' => 'key1', 'value' => 150], $agg(20)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'avg', 'key' => 'key2', 'value' => 400], $agg(21)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'count', 'key' => 'key1', 'value' => 2], $agg(22)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'count', 'key' => 'key2', 'value' => 1], $agg(23)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'max', 'key' => 'key1', 'value' => 200], $agg(24)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'max', 'key' => 'key2', 'value' => 400], $agg(25)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'min', 'key' => 'key1', 'value' => 100], $agg(26)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'min', 'key' => 'key2', 'value' => 400], $agg(27)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'sum', 'key' => 'key1', 'value' => 300], $agg(28)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'sum', 'key' => 'key2', 'value' => 400], $agg(29)->extract(['type','period','aggregate','key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'avg', 'metric_key' => 'key1', 'value' => 150], $agg(20)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'avg', 'metric_key' => 'key2', 'value' => 400], $agg(21)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'count', 'metric_key' => 'key1', 'value' => 2], $agg(22)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'count', 'metric_key' => 'key2', 'value' => 1], $agg(23)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'max', 'metric_key' => 'key1', 'value' => 200], $agg(24)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'max', 'metric_key' => 'key2', 'value' => 400], $agg(25)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'min', 'metric_key' => 'key1', 'value' => 100], $agg(26)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'min', 'metric_key' => 'key2', 'value' => 400], $agg(27)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'sum', 'metric_key' => 'key1', 'value' => 300], $agg(28)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'sum', 'metric_key' => 'key2', 'value' => 400], $agg(29)->extract(['type','period','aggregate','metric_key','value']));
         // period 10080
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'avg', 'key' => 'key1', 'value' => 150], $agg(30)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'avg', 'key' => 'key2', 'value' => 400], $agg(31)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'count', 'key' => 'key1', 'value' => 2], $agg(32)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'count', 'key' => 'key2', 'value' => 1], $agg(33)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'max', 'key' => 'key1', 'value' => 200], $agg(34)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'max', 'key' => 'key2', 'value' => 400], $agg(35)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'min', 'key' => 'key1', 'value' => 100], $agg(36)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'min', 'key' => 'key2', 'value' => 400], $agg(37)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'sum', 'key' => 'key1', 'value' => 300], $agg(38)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'sum', 'key' => 'key2', 'value' => 400], $agg(39)->extract(['type','period','aggregate','key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'avg', 'metric_key' => 'key1', 'value' => 150], $agg(30)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'avg', 'metric_key' => 'key2', 'value' => 400], $agg(31)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'count', 'metric_key' => 'key1', 'value' => 2], $agg(32)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'count', 'metric_key' => 'key2', 'value' => 1], $agg(33)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'max', 'metric_key' => 'key1', 'value' => 200], $agg(34)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'max', 'metric_key' => 'key2', 'value' => 400], $agg(35)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'min', 'metric_key' => 'key1', 'value' => 100], $agg(36)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'min', 'metric_key' => 'key2', 'value' => 400], $agg(37)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'sum', 'metric_key' => 'key1', 'value' => 300], $agg(38)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'sum', 'metric_key' => 'key2', 'value' => 400], $agg(39)->extract(['type','period','aggregate','metric_key','value']));
 
         $this->rhythm->record('type', 'key1', 600)->count()->min()->max()->sum()->avg();
         $this->rhythm->ingest();
 
         $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
         $this->assertCount(4, $entries);
-        $this->assertEquals(['type' => 'type', 'key' => 'key1', 'value' => 200], $entries->first()->extract(['type', 'key', 'value']));
-        $this->assertEquals(['type' => 'type', 'key' => 'key1', 'value' => 100], $entries->skip(1)->first()->extract(['type', 'key', 'value']));
-        $this->assertEquals(['type' => 'type', 'key' => 'key2', 'value' => 400], $entries->skip(2)->first()->extract(['type', 'key', 'value']));
-        $this->assertEquals(['type' => 'type', 'key' => 'key1', 'value' => 600], $entries->skip(3)->first()->extract(['type', 'key', 'value']));
+        $this->assertEquals(['type' => 'type', 'metric_key' => 'key1', 'value' => 200], $entries->first()->extract(['type', 'metric_key', 'value']));
+        $this->assertEquals(['type' => 'type', 'metric_key' => 'key1', 'value' => 100], $entries->skip(1)->first()->extract(['type', 'metric_key', 'value']));
+        $this->assertEquals(['type' => 'type', 'metric_key' => 'key2', 'value' => 400], $entries->skip(2)->first()->extract(['type', 'metric_key', 'value']));
+        $this->assertEquals(['type' => 'type', 'metric_key' => 'key1', 'value' => 600], $entries->skip(3)->first()->extract(['type', 'metric_key', 'value']));
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->orderBy(['period' => 'ASC', 'aggregate' => 'ASC', 'key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->orderBy(['period' => 'ASC', 'aggregate' => 'ASC', 'metric_key' => 'ASC'])->all());
         $agg = fn($i) => $aggregates->skip($i)->first();
 
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'avg', 'key' => 'key1', 'value' => 300], $agg(0)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'avg', 'key' => 'key2', 'value' => 400], $agg(1)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'count', 'key' => 'key1', 'value' => 3], $agg(2)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'count', 'key' => 'key2', 'value' => 1], $agg(3)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'max', 'key' => 'key1', 'value' => 600], $agg(4)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'max', 'key' => 'key2', 'value' => 400], $agg(5)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'min', 'key' => 'key1', 'value' => 100], $agg(6)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'min', 'key' => 'key2', 'value' => 400], $agg(7)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'sum', 'key' => 'key1', 'value' => 900], $agg(8)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'sum', 'key' => 'key2', 'value' => 400], $agg(9)->extract(['type','period','aggregate','key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'avg', 'metric_key' => 'key1', 'value' => 300], $agg(0)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'avg', 'metric_key' => 'key2', 'value' => 400], $agg(1)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'count', 'metric_key' => 'key1', 'value' => 3], $agg(2)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'count', 'metric_key' => 'key2', 'value' => 1], $agg(3)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'max', 'metric_key' => 'key1', 'value' => 600], $agg(4)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'max', 'metric_key' => 'key2', 'value' => 400], $agg(5)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'min', 'metric_key' => 'key1', 'value' => 100], $agg(6)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'min', 'metric_key' => 'key2', 'value' => 400], $agg(7)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'sum', 'metric_key' => 'key1', 'value' => 900], $agg(8)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'sum', 'metric_key' => 'key2', 'value' => 400], $agg(9)->extract(['type','period','aggregate','metric_key','value']));
 
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'avg', 'key' => 'key1', 'value' => 300], $agg(10)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'avg', 'key' => 'key2', 'value' => 400], $agg(11)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'count', 'key' => 'key1', 'value' => 3], $agg(12)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'count', 'key' => 'key2', 'value' => 1], $agg(13)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'max', 'key' => 'key1', 'value' => 600], $agg(14)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'max', 'key' => 'key2', 'value' => 400], $agg(15)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'min', 'key' => 'key1', 'value' => 100], $agg(16)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'min', 'key' => 'key2', 'value' => 400], $agg(17)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'sum', 'key' => 'key1', 'value' => 900], $agg(18)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'sum', 'key' => 'key2', 'value' => 400], $agg(19)->extract(['type','period','aggregate','key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'avg', 'metric_key' => 'key1', 'value' => 300], $agg(10)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'avg', 'metric_key' => 'key2', 'value' => 400], $agg(11)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'count', 'metric_key' => 'key1', 'value' => 3], $agg(12)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'count', 'metric_key' => 'key2', 'value' => 1], $agg(13)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'max', 'metric_key' => 'key1', 'value' => 600], $agg(14)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'max', 'metric_key' => 'key2', 'value' => 400], $agg(15)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'min', 'metric_key' => 'key1', 'value' => 100], $agg(16)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'min', 'metric_key' => 'key2', 'value' => 400], $agg(17)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'sum', 'metric_key' => 'key1', 'value' => 900], $agg(18)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 360, 'aggregate' => 'sum', 'metric_key' => 'key2', 'value' => 400], $agg(19)->extract(['type','period','aggregate','metric_key','value']));
 
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'avg', 'key' => 'key1', 'value' => 300], $agg(20)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'avg', 'key' => 'key2', 'value' => 400], $agg(21)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'count', 'key' => 'key1', 'value' => 3], $agg(22)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'count', 'key' => 'key2', 'value' => 1], $agg(23)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'max', 'key' => 'key1', 'value' => 600], $agg(24)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'max', 'key' => 'key2', 'value' => 400], $agg(25)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'min', 'key' => 'key1', 'value' => 100], $agg(26)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'min', 'key' => 'key2', 'value' => 400], $agg(27)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'sum', 'key' => 'key1', 'value' => 900], $agg(28)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'sum', 'key' => 'key2', 'value' => 400], $agg(29)->extract(['type','period','aggregate','key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'avg', 'metric_key' => 'key1', 'value' => 300], $agg(20)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'avg', 'metric_key' => 'key2', 'value' => 400], $agg(21)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'count', 'metric_key' => 'key1', 'value' => 3], $agg(22)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'count', 'metric_key' => 'key2', 'value' => 1], $agg(23)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'max', 'metric_key' => 'key1', 'value' => 600], $agg(24)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'max', 'metric_key' => 'key2', 'value' => 400], $agg(25)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'min', 'metric_key' => 'key1', 'value' => 100], $agg(26)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'min', 'metric_key' => 'key2', 'value' => 400], $agg(27)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'sum', 'metric_key' => 'key1', 'value' => 900], $agg(28)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 1440, 'aggregate' => 'sum', 'metric_key' => 'key2', 'value' => 400], $agg(29)->extract(['type','period','aggregate','metric_key','value']));
 
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'avg', 'key' => 'key1', 'value' => 300], $agg(30)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'avg', 'key' => 'key2', 'value' => 400], $agg(31)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'count', 'key' => 'key1', 'value' => 3], $agg(32)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'count', 'key' => 'key2', 'value' => 1], $agg(33)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'max', 'key' => 'key1', 'value' => 600], $agg(34)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'max', 'key' => 'key2', 'value' => 400], $agg(35)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'min', 'key' => 'key1', 'value' => 100], $agg(36)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'min', 'key' => 'key2', 'value' => 400], $agg(37)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'sum', 'key' => 'key1', 'value' => 900], $agg(38)->extract(['type','period','aggregate','key','value']));
-        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'sum', 'key' => 'key2', 'value' => 400], $agg(39)->extract(['type','period','aggregate','key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'avg', 'metric_key' => 'key1', 'value' => 300], $agg(30)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'avg', 'metric_key' => 'key2', 'value' => 400], $agg(31)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'count', 'metric_key' => 'key1', 'value' => 3], $agg(32)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'count', 'metric_key' => 'key2', 'value' => 1], $agg(33)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'max', 'metric_key' => 'key1', 'value' => 600], $agg(34)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'max', 'metric_key' => 'key2', 'value' => 400], $agg(35)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'min', 'metric_key' => 'key1', 'value' => 100], $agg(36)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'min', 'metric_key' => 'key2', 'value' => 400], $agg(37)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'sum', 'metric_key' => 'key1', 'value' => 900], $agg(38)->extract(['type','period','aggregate','metric_key','value']));
+        $this->assertEquals(['type' => 'type', 'period' => 10080, 'aggregate' => 'sum', 'metric_key' => 'key2', 'value' => 400], $agg(39)->extract(['type','period','aggregate','metric_key','value']));
     }
 
     /**
@@ -186,10 +186,10 @@ class DatabaseStorageFeatureTest extends TestCase
 
         $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
         $this->assertCount(4, $entries);
-        $this->assertEquals(['type' => 'type', 'key' => 'key1'], $entries->first()->extract(['type', 'key']));
-        $this->assertEquals(['type' => 'type', 'key' => 'key2'], $entries->last()->extract(['type', 'key']));
+        $this->assertEquals(['type' => 'type', 'metric_key' => 'key1'], $entries->first()->extract(['type', 'metric_key']));
+        $this->assertEquals(['type' => 'type', 'metric_key' => 'key2'], $entries->last()->extract(['type', 'metric_key']));
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
         $this->assertEquals(3, $aggregates->first()->value);
         $this->assertEquals(1, $aggregates->last()->value);
     }
@@ -209,10 +209,10 @@ class DatabaseStorageFeatureTest extends TestCase
 
         $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
         $this->assertCount(4, $entries);
-        $this->assertEquals(['type' => 'type', 'key' => 'key1'], $entries->first()->extract(['type', 'key']));
-        $this->assertEquals(['type' => 'type', 'key' => 'key2'], $entries->last()->extract(['type', 'key']));
+        $this->assertEquals(['type' => 'type', 'metric_key' => 'key1'], $entries->first()->extract(['type', 'metric_key']));
+        $this->assertEquals(['type' => 'type', 'metric_key' => 'key2'], $entries->last()->extract(['type', 'metric_key']));
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
         $this->assertEquals(100, $aggregates->first()->value);
         $this->assertEquals(100, $aggregates->last()->value);
     }
@@ -232,10 +232,10 @@ class DatabaseStorageFeatureTest extends TestCase
 
         $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
         $this->assertCount(4, $entries);
-        $this->assertEquals(['type' => 'type', 'key' => 'key1'], $entries->first()->extract(['type', 'key']));
-        $this->assertEquals(['type' => 'type', 'key' => 'key2'], $entries->last()->extract(['type', 'key']));
+        $this->assertEquals(['type' => 'type', 'metric_key' => 'key1'], $entries->first()->extract(['type', 'metric_key']));
+        $this->assertEquals(['type' => 'type', 'metric_key' => 'key2'], $entries->last()->extract(['type', 'metric_key']));
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
         $this->assertEquals(300, $aggregates->first()->value);
         $this->assertEquals(100, $aggregates->last()->value);
     }
@@ -255,10 +255,10 @@ class DatabaseStorageFeatureTest extends TestCase
 
         $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
         $this->assertCount(4, $entries);
-        $this->assertEquals(['type' => 'type', 'key' => 'key1'], $entries->first()->extract(['type', 'key']));
-        $this->assertEquals(['type' => 'type', 'key' => 'key2'], $entries->last()->extract(['type', 'key']));
+        $this->assertEquals(['type' => 'type', 'metric_key' => 'key1'], $entries->first()->extract(['type', 'metric_key']));
+        $this->assertEquals(['type' => 'type', 'metric_key' => 'key2'], $entries->last()->extract(['type', 'metric_key']));
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
         $this->assertEquals(600, $aggregates->first()->value);
         $this->assertEquals(100, $aggregates->last()->value);
     }
@@ -278,23 +278,23 @@ class DatabaseStorageFeatureTest extends TestCase
 
         $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
         $this->assertCount(4, $entries);
-        $this->assertEquals(['type' => 'type', 'key' => 'key1'], $entries->first()->extract(['type', 'key']));
-        $this->assertEquals(['type' => 'type', 'key' => 'key2'], $entries->last()->extract(['type', 'key']));
+        $this->assertEquals(['type' => 'type', 'metric_key' => 'key1'], $entries->first()->extract(['type', 'metric_key']));
+        $this->assertEquals(['type' => 'type', 'metric_key' => 'key2'], $entries->last()->extract(['type', 'metric_key']));
         // Aggregate assertion placeholder
 
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
         $this->assertEquals(200, $aggregates->first()->value);
         $this->assertEquals(100, $aggregates->last()->value);
-        $this->assertEquals(3, $aggregates->first()->count);
-        $this->assertEquals(1, $aggregates->last()->count);
+        $this->assertEquals(3, $aggregates->first()->entry_count);
+        $this->assertEquals(1, $aggregates->last()->entry_count);
 
         $this->rhythm->record('type', 'key1', 400)->avg();
         $this->rhythm->record('type', 'key1', 400)->avg();
         $this->rhythm->record('type', 'key1', 400)->avg();
         $this->rhythm->ingest();
-        $aggregate = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60, 'key' => 'key1'])->first());
-        $this->assertEquals(6, $aggregate->count);
+        $aggregate = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60, 'metric_key' => 'key1'])->first());
+        $this->assertEquals(6, $aggregate->entry_count);
         $this->assertEquals(300, $aggregate->value);
     }
 
@@ -343,7 +343,7 @@ class DatabaseStorageFeatureTest extends TestCase
         $data = [];
         foreach ($results as $row) {
             $data[] = [
-                'key' => $row['key'],
+                'key' => $row['metric_key'],
                 'cache_hit' => $row['cache_hit'],
                 'cache_miss' => $row['cache_miss'],
             ];

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Recorder\Trait;
+namespace Crustum\Rhythm\Recorder\Trait;
 
 use Cake\Cache\Cache;
 use Cake\I18n\DateTime;
+use Crustum\Rhythm\Event\IsolatedBeat;
+use Crustum\Rhythm\Event\SharedBeat;
 use DateInterval;
-use Rhythm\Event\IsolatedBeat;
-use Rhythm\Event\SharedBeat;
 
 /**
  * Provides throttling functionality for recorders.
@@ -18,7 +18,7 @@ trait ThrottlingTrait
      * Determine if the recorder is ready to record another snapshot.
      *
      * @param \DateInterval|int $interval The interval to throttle.
-     * @param \Rhythm\Event\SharedBeat|\Rhythm\Event\IsolatedBeat $event The beat event.
+     * @param \Crustum\Rhythm\Event\SharedBeat|\Crustum\Rhythm\Event\IsolatedBeat $event The beat event.
      * @param callable $callback The callback to execute.
      * @param string|null $key An optional key for the throttle.
      * @return void

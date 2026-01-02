@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Queue;
+namespace Crustum\Rhythm\Queue;
 
 use Cake\Core\ContainerInterface;
 use Cake\Queue\Job\Message;

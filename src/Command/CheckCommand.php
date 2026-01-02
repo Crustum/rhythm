@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Command;
+namespace Crustum\Rhythm\Command;
 
 use Cake\Cache\Cache;
 use Cake\Command\Command;
@@ -11,8 +11,8 @@ use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Event\EventManager;
 use Cake\I18n\DateTime;
-use Rhythm\Event\SharedBeat;
-use Rhythm\Rhythm;
+use Crustum\Rhythm\Event\SharedBeat;
+use Crustum\Rhythm\Rhythm;
 use SignalHandler\Command\Trait\SignalHandlerTrait;
 
 /**
@@ -27,7 +27,7 @@ class CheckCommand extends Command
     /**
      * Rhythm instance.
      *
-     * @var \Rhythm\Rhythm
+     * @var \Crustum\Rhythm\Rhythm
      */
     protected Rhythm $rhythm;
 
@@ -48,7 +48,7 @@ class CheckCommand extends Command
     /**
      * Constructor.
      *
-     * @param \Rhythm\Rhythm $rhythm Rhythm instance
+     * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm instance
      * @param \Cake\Console\CommandFactoryInterface $factory Command factory instance
      */
     public function __construct(Rhythm $rhythm, ?CommandFactoryInterface $factory = null)

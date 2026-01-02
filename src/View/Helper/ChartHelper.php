@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\View\Helper;
+namespace Crustum\Rhythm\View\Helper;
 
 use Cake\View\Helper;
 

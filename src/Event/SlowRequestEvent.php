@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Event;
+namespace Crustum\Rhythm\Event;
 
 use Cake\Event\Event;
 use Psr\Http\Message\ResponseInterface;
@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Event class for slow HTTP requests.
  *
- * @extends \Cake\Event\Event<\Rhythm\Rhythm>
+ * @extends \Cake\Event\Event<\Crustum\Rhythm\Rhythm>
  */
 class SlowRequestEvent extends Event
 {

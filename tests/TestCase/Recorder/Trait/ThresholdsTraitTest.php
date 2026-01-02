@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase\Recorder\Trait;
+namespace Crustum\Rhythm\Test\TestCase\Recorder\Trait;
 
 use Cake\TestSuite\TestCase;
 

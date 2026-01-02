@@ -17,7 +17,7 @@ $this->set('widgetName', $widgetName);
 $data = $widget->getData();
 $this->set('data', $data);
 
-$this->extend('Rhythm.widgets/widget_base');
+$this->extend('Crustum/Rhythm.widgets/widget_base');
 
 $this->start('widget_body');
 
@@ -27,7 +27,7 @@ $application = $appData['application'] ?? [];
 $system = $appData['system'] ?? [];
 
 if (isset($appData['error'])) {
-    echo $this->element('Rhythm.components/widget_error', [
+    echo $this->element('Crustum/Rhythm.components/widget_error', [
         'message' => 'Application info error: ' . h($appData['error'])
     ]);
 } else {

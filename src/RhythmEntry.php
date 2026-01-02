@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm;
+namespace Crustum\Rhythm;
 
 /**
  * Lightweight Entry for Internal Collections

@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase\Ingest;
+namespace Crustum\Rhythm\Test\TestCase\Ingest;
 
 use Cake\Collection\Collection;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
-use Rhythm\Ingest\IngestInterface;
-use Rhythm\Ingest\NullIngest;
-use Rhythm\RhythmEntry;
-use Rhythm\Storage\StorageInterface;
+use Crustum\Rhythm\Ingest\IngestInterface;
+use Crustum\Rhythm\Ingest\NullIngest;
+use Crustum\Rhythm\RhythmEntry;
+use Crustum\Rhythm\Storage\StorageInterface;
 
 /**
  * NullIngest Test Case
@@ -21,7 +21,7 @@ class NullIngestTest extends TestCase
     /**
      * Null ingest instance.
      *
-     * @var \Rhythm\Ingest\NullIngest
+     * @var \Crustum\Rhythm\Ingest\NullIngest
      */
     protected NullIngest $nullIngest;
 
@@ -43,7 +43,7 @@ class NullIngestTest extends TestCase
      */
     public function testDigestReturnsZero(): void
     {
-        /** @var \Rhythm\Storage\StorageInterface&\PHPUnit\Framework\MockObject\MockObject $storage */
+        /** @var \Crustum\Rhythm\Storage\StorageInterface&\PHPUnit\Framework\MockObject\MockObject $storage */
         $storage = $this->createMock(StorageInterface::class);
 
         // Storage should never be called since null ingest doesn't process anything
@@ -61,7 +61,7 @@ class NullIngestTest extends TestCase
      */
     public function testMultipleOperationsInSequence(): void
     {
-        /** @var \Rhythm\Storage\StorageInterface&\PHPUnit\Framework\MockObject\MockObject $storage */
+        /** @var \Crustum\Rhythm\Storage\StorageInterface&\PHPUnit\Framework\MockObject\MockObject $storage */
         $storage = $this->createMock(StorageInterface::class);
         $storage->expects($this->never())->method('store');
 

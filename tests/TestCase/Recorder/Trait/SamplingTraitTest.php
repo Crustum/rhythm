@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase\Recorder\Trait;
+namespace Crustum\Rhythm\Test\TestCase\Recorder\Trait;
 
 use Cake\TestSuite\TestCase;
 
@@ -13,7 +13,7 @@ class SamplingTraitTest extends TestCase
     /**
      * Test subject
      *
-     * @var \Rhythm\Test\TestCase\Recorder\Trait\TestSamplingClass
+     * @var \Crustum\Rhythm\Test\TestCase\Recorder\Trait\TestSamplingClass
      */
     protected TestSamplingClass $samplingClass;
 

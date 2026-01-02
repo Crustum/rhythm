@@ -28,7 +28,7 @@ return [
 
         'recorders' => [
             'servers' => [
-                'className' => \Rhythm\Recorder\ServersRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\ServersRecorder::class,
                 'enabled' => env('RHYTHM_SERVER_ENABLED', true),
                 'server_name' => env('RHYTHM_SERVER_NAME', gethostname()),
                 'directories' => explode(':', env('RHYTHM_SERVER_DIRECTORIES', '/')),
@@ -40,7 +40,7 @@ return [
                 ],
             ],
             'user_requests' => [
-                'className' => \Rhythm\Recorder\UserRequestsRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\UserRequestsRecorder::class,
                 'enabled' => env('RHYTHM_USER_REQUESTS_ENABLED', true),
                 'sample_rate' => env('RHYTHM_USER_REQUESTS_SAMPLE_RATE', 1.0),
                 'ignore' => [
@@ -49,7 +49,7 @@ return [
                 ],
             ],
             'cache' => [
-                'className' => \Rhythm\Recorder\CacheRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\CacheRecorder::class,
                 'enabled' => env('RHYTHM_CACHE_ENABLED', true),
                 'sample_rate' => env('RHYTHM_CACHE_SAMPLE_RATE', 1.0),
                 'groups' => [
@@ -65,7 +65,7 @@ return [
                 ],
             ],
             'slow_queries' => [
-                'className' => \Rhythm\Recorder\SlowQueriesRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\SlowQueriesRecorder::class,
                 'enabled' => env('RHYTHM_SLOW_QUERIES_ENABLED', true),
                 'threshold' => [
                     'default' => env('RHYTHM_SLOW_QUERIES_THRESHOLD', 10),
@@ -84,7 +84,7 @@ return [
                 ],
             ],
             'slow_requests' => [
-                'className' => \Rhythm\Recorder\SlowRequestsRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\SlowRequestsRecorder::class,
                 'enabled' => env('RHYTHM_SLOW_REQUESTS_ENABLED', true),
                 'threshold' => [
                     'default' => env('RHYTHM_SLOW_REQUESTS_THRESHOLD', 10),
@@ -100,7 +100,7 @@ return [
                 ],
             ],
             'slow_outgoing_requests' => [
-                'className' => \Rhythm\Recorder\OutgoingRequestRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\OutgoingRequestRecorder::class,
                 'enabled' => env('RHYTHM_SLOW_OUTGOING_REQUESTS_ENABLED', true),
                 'threshold' => [
                     'default' => 1000,
@@ -121,7 +121,7 @@ return [
                 ],
             ],
             'exceptions' => [
-                'className' => \Rhythm\Recorder\ExceptionsRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\ExceptionsRecorder::class,
                 'enabled' => env('RHYTHM_EXCEPTIONS_ENABLED', true),
                 'sample_rate' => env('RHYTHM_EXCEPTIONS_SAMPLE_RATE', 0.1),
                 'ignore' => [
@@ -131,7 +131,7 @@ return [
             ],
 
             'queues' => [
-                'className' => \Rhythm\Recorder\QueuesRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\QueuesRecorder::class,
                 'enabled' => env('RHYTHM_QUEUE_JOBS_ENABLED', true),
                 'sample_rate' => env('RHYTHM_QUEUE_JOBS_SAMPLE_RATE', 0.1),
                 'ignore' => [
@@ -140,7 +140,7 @@ return [
                 ],
             ],
             // 'queue_stats' => [
-                // 'className' => \Rhythm\Recorder\QueueStatsRecorder::class,
+                // 'className' => \Crustum\Rhythm\Recorder\QueueStatsRecorder::class,
                 // 'enabled' => env('RHYTHM_QUEUE_STATS_ENABLED', true),
                 // 'sample_rate' => env('RHYTHM_QUEUE_STATS_SAMPLE_RATE', 0.99),
                 // 'ignore' => [
@@ -157,7 +157,7 @@ return [
                 // ],
             // ],
             'slow_jobs' => [
-                'className' => \Rhythm\Recorder\SlowJobsRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\SlowJobsRecorder::class,
                 'enabled' => env('RHYTHM_SLOW_JOBS_ENABLED', true),
                 'threshold' => [
                     'default' => env('RHYTHM_SLOW_JOBS_THRESHOLD', 10), // 5 seconds default
@@ -173,7 +173,7 @@ return [
                 ],
             ],
             'redis_monitor' => [
-                'className' => \Rhythm\Recorder\RedisMonitorRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\RedisMonitorRecorder::class,
                 'enabled' => env('RHYTHM_REDIS_MONITOR_ENABLED', true),
                 'interval' => env('RHYTHM_REDIS_MONITOR_INTERVAL', 5), // minutes
                 'connections' => ['default_db0'],
@@ -192,7 +192,7 @@ return [
                 ],
             ],
             'mysql_monitor' => [
-                'className' => \Rhythm\Recorder\MySqlMonitorRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\MySqlMonitorRecorder::class,
                 'enabled' => env('RHYTHM_MYSQL_MONITOR_ENABLED', true),
                 'interval' => env('RHYTHM_MYSQL_MONITOR_INTERVAL', 5), // minutes
                 'connections' => ['default'],
@@ -287,11 +287,11 @@ return [
                 ],
             ],
             'git' => [
-                'className' => \Rhythm\Recorder\GitRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\GitRecorder::class,
                 'enabled' => env('RHYTHM_GIT_ENABLED', true),
             ],
             'postgresql_monitor' => [
-                'className' => \Rhythm\Recorder\PostgreSqlMonitorRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\PostgreSqlMonitorRecorder::class,
                 'enabled' => env('RHYTHM_POSTGRESQL_MONITOR_ENABLED', true),
                 'interval' => env('RHYTHM_POSTGRESQL_MONITOR_INTERVAL', 5), // minutes
                 'connections' => ['default'],
@@ -371,26 +371,26 @@ return [
 
         'widgets' => [
             'cache' => [
-                'className' => \Rhythm\Widget\CacheWidget::class,
+                'className' => \Crustum\Rhythm\Widget\CacheWidget::class,
                 'name' => 'Cache',
                 'cols' => ['default' => 12, 'lg' => 4],
                 'refreshInterval' => 60,
             ],
             'server-state' => [
-                'className' => \Rhythm\Widget\ServerStateWidget::class,
+                'className' => \Crustum\Rhythm\Widget\ServerStateWidget::class,
                 'name' => 'Server State',
                 'cols' => ['default' => 12, 'lg' => 12],
                 'rows' => 1,
                 'refreshInterval' => 30,
             ],
             'usage' => [
-                'className' => \Rhythm\Widget\UsageWidget::class,
+                'className' => \Crustum\Rhythm\Widget\UsageWidget::class,
                 'name' => 'Usage',
                 'cols' => ['default' => 12, 'lg' => 6],
                 'refreshInterval' => 30,
             ],
             'queues' => [
-                'className' => \Rhythm\Widget\QueuesWidget::class,
+                'className' => \Crustum\Rhythm\Widget\QueuesWidget::class,
                 'name' => 'Queues',
                 'cols' => ['default' => 12, 'lg' => 4],
                 'refreshInterval' => 30,
@@ -424,44 +424,44 @@ return [
                 ],
             ],
             'slow-queries' => [
-                'className' => \Rhythm\Widget\SlowQueriesWidget::class,
+                'className' => \Crustum\Rhythm\Widget\SlowQueriesWidget::class,
                 'name' => 'Slow Queries',
                 'cols' => ['default' => 12, 'lg' => 6],
                 'refreshInterval' => 60,
             ],
             'slow-requests' => [
-                'className' => \Rhythm\Widget\SlowRequestsWidget::class,
+                'className' => \Crustum\Rhythm\Widget\SlowRequestsWidget::class,
                 'name' => 'Slow Requests',
                 'cols' => ['default' => 12, 'lg' => 6],
                 'refreshInterval' => 5,
             ],
             'exceptions' => [
-                'className' => \Rhythm\Widget\ExceptionsWidget::class,
+                'className' => \Crustum\Rhythm\Widget\ExceptionsWidget::class,
                 'name' => 'Exceptions',
                 'cols' => ['default' => 12, 'lg' => 6],
                 'refreshInterval' => 5,
             ],
             'slow-jobs' => [
-                'className' => \Rhythm\Widget\SlowJobsWidget::class,
+                'className' => \Crustum\Rhythm\Widget\SlowJobsWidget::class,
                 'name' => 'Slow Jobs',
                 'cols' => ['default' => 12, 'lg' => 12],
                 'refreshInterval' => 5,
             ],
             'git' => [
-                'className' => \Rhythm\Widget\GitWidget::class,
+                'className' => \Crustum\Rhythm\Widget\GitWidget::class,
                 'name' => 'Git Status',
                 'cols' => ['default' => 12, 'lg' => 6],
                 'refreshInterval' => 60,
                 'commit_count' => 5,
             ],
             'app_info' => [
-                'className' => \Rhythm\Widget\AppInfoWidget::class,
+                'className' => \Crustum\Rhythm\Widget\AppInfoWidget::class,
                 'name' => 'Application Info',
                 'cols' => ['default' => 12, 'lg' => 6],
                 'refreshInterval' => 300,
             ],
             'redis_monitor' => [
-                'className' => \Rhythm\Widget\RedisWidget::class,
+                'className' => \Crustum\Rhythm\Widget\RedisWidget::class,
                 'name' => 'Redis Status',
                 'cols' => ['default' => 12, 'lg' => 6],
                 'refreshInterval' => 60,
@@ -515,7 +515,7 @@ return [
                 ],
             ],
             'database_monitor' => [
-                'className' => \Rhythm\Widget\DatabaseWidget::class,
+                'className' => \Crustum\Rhythm\Widget\DatabaseWidget::class,
                 'name' => 'Database Status',
                 'cols' => ['default' => 12, 'lg' => 6],
                 'refreshInterval' => 60,
@@ -523,7 +523,7 @@ return [
                 'connections' => ['default'],
             ],
             'slow-outgoing-requests' => [
-                'className' => \Rhythm\Widget\SlowOutgoingRequestsWidget::class,
+                'className' => \Crustum\Rhythm\Widget\SlowOutgoingRequestsWidget::class,
                 'name' => 'Slow Outgoing Requests',
                 'cols' => ['default' => 12, 'lg' => 6],
                 'refreshInterval' => 60,

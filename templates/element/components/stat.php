@@ -62,7 +62,7 @@ $statClasses = [
 
     <?php if ($badge): ?>
         <div class="stat-badge">
-            <?= $this->element('Rhythm.components/badge', $badge) ?>
+            <?= $this->element('Crustum/Rhythm.components/badge', $badge) ?>
         </div>
     <?php endif; ?>
 

@@ -1,5 +1,5 @@
 {
-    "name": "skie/rhythm",
+    "name": "crustum/rhythm",
     "description": "CakePHP Rhythm - Real-time application performance monitoring",
     "type": "cakephp-plugin",
     "license": "MIT",
@@ -15,12 +15,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Rhythm\\": "src/"
+            "Crustum\\Rhythm\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Rhythm\\Test\\": "tests/"
+            "Crustum\\Rhythm\\Test\\": "tests/"
         }
     },
     "scripts": {

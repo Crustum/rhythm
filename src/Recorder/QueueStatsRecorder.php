@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Recorder;
+namespace Crustum\Rhythm\Recorder;
 
 use Cake\Core\Configure;
 use Cake\Event\EventListenerInterface;
 use Cake\I18n\DateTime;
+use Crustum\Rhythm\Datasource\RedisConnection;
+use Crustum\Rhythm\Event\SharedBeat;
+use Crustum\Rhythm\Recorder\Trait\IgnoresTrait;
+use Crustum\Rhythm\Recorder\Trait\QueueNameTrait;
+use Crustum\Rhythm\Recorder\Trait\SamplingTrait;
+use Crustum\Rhythm\Recorder\Trait\ThrottlingTrait;
+use Crustum\Rhythm\Rhythm;
 use Exception;
 use Redis;
-use Rhythm\Datasource\RedisConnection;
-use Rhythm\Event\SharedBeat;
-use Rhythm\Recorder\Trait\IgnoresTrait;
-use Rhythm\Recorder\Trait\QueueNameTrait;
-use Rhythm\Recorder\Trait\SamplingTrait;
-use Rhythm\Recorder\Trait\ThrottlingTrait;
-use Rhythm\Rhythm;
 
 /**
  * Collects current queue statistics from Redis.
@@ -47,7 +47,7 @@ class QueueStatsRecorder extends BaseRecorder implements EventListenerInterface
     /**
      * Create a new recorder instance.
      *
-     * @param \Rhythm\Rhythm $rhythm The Rhythm instance.
+     * @param \Crustum\Rhythm\Rhythm $rhythm The Rhythm instance.
      * @param array $config Configuration array
      */
     public function __construct(Rhythm $rhythm, array $config = [])

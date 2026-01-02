@@ -23,14 +23,14 @@ if ($sort !== null) {
 $data = $widget->getData($options);
 $this->set('data', $data);
 
-$this->extend('Rhythm.widgets/widget_base');
+$this->extend('Crustum/Rhythm.widgets/widget_base');
 
 $this->start('widget_body');
 
 $jobsData = $data['jobs'] ?? [];
 
 if (empty($jobsData)) {
-    echo $this->element('Rhythm.components/widget_placeholder', [
+    echo $this->element('Crustum/Rhythm.components/widget_placeholder', [
         'message' => 'No slow jobs recorded in the selected period.'
     ]);
 } else {

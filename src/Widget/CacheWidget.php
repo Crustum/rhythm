@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Widget;
+namespace Crustum\Rhythm\Widget;
 
 use Cake\Collection\CollectionInterface;
 use Exception;
@@ -45,7 +45,7 @@ class CacheWidget extends BaseWidget
                     ->aggregateTypes(['cache_hit', 'cache_miss'], 'count', $period, 'cache_hit', 'desc', 100)
                     ->map(function (array $row) {
                         return (object)[
-                            'key' => $row['key'] ?? '',
+                            'key' => $row['metric_key'] ?? '',
                             'hits' => (int)($row['cache_hit'] ?? 0),
                             'misses' => (int)($row['cache_miss'] ?? 0),
                         ];
@@ -98,7 +98,7 @@ class CacheWidget extends BaseWidget
      */
     public function getTemplate(): string
     {
-        return 'Rhythm.widgets/cache';
+        return 'Crustum/Rhythm.widgets/cache';
     }
 
     /**

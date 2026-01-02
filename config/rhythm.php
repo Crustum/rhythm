@@ -49,7 +49,7 @@ return [
                 ],
             ],
             'cache' => [
-                'className' => \Rhythm\Recorder\CacheRecorder::class,
+                'className' => \Crustum\Rhythm\Recorder\CacheRecorder::class,
                 'enabled' => env('RHYTHM_CACHE_ENABLED', true),
                 'sample_rate' => env('RHYTHM_CACHE_SAMPLE_RATE', 1.0),
                 'groups' => [
@@ -371,7 +371,7 @@ return [
 
         'widgets' => [
             'cache' => [
-                'className' => \Rhythm\Widget\CacheWidget::class,
+                'className' => \Crustum\Rhythm\Widget\CacheWidget::class,
                 'name' => 'Cache',
                 'cols' => ['default' => 12, 'lg' => 4],
                 'refreshInterval' => 60,

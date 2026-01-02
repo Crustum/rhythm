@@ -80,6 +80,13 @@ $cache = [
         'serialize' => 'File',
         'duration' => '+10 seconds',
     ],
+    'rhythm' => [
+        'className' => 'File',
+        'prefix' => 'rhythm_test_',
+        'path' => CACHE . 'rhythm' . DS,
+        'serialize' => true,
+        'duration' => '+10 seconds',
+    ],
 ];
 
 Cache::setConfig($cache);

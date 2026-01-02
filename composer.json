@@ -6,6 +6,7 @@
     "require": {
         "php": ">=8.1",
         "cakephp/cakephp": "^5.0",
+        "crustum/plugin-manifest": "^1.0",
         "skie/signal_handler": "^1.0"
     },
     "require-dev": {

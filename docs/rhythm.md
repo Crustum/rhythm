@@ -27,25 +27,63 @@ For in-depth debugging of individual events, check out [CakePHP Debug Kit](https
 
 ## Installation
 
+Install the plugin via Composer:
+```bash
+composer require crustum/rhythm
+```
+
+> [!NOTE]
+> This plugin should be registered in your `config/plugins.php` file.
+
+```bash
+bin/cake plugin load Crustum/Rhythm
+```
+
+Or load the plugin in your `Application.php`:
+```php
+public function bootstrap(): void
+{
+    parent::bootstrap();
+
+    $this->addPlugin('Crustum/Rhythm', ['bootstrap' => true, 'routes' => true]);
+}
+```
+
+> [!TIP]
+> **After the plugin registers itself**, it's recommended to install the configuration with the manifest system:
+
+```bash
+bin/cake manifest install --plugin Crustum/Rhythm
+```
+
+The Rhythm plugin will create the `config/rhythm.php` configuration file and the `config/rhythm_layouts.php` file where you may register your application's widgets and layouts. Additionally, it will copy the migrations to the application's migrations directory and append the loading of the Rhythm configuration to the `config/bootstrap.php` file.
+
+### Database Migrations
+
+**Without manifest installation** (plugin-level migrations):
+```bash
+bin/cake migrations migrate -p Crustum/Rhythm
+```
+
+**With manifest installation** (migrations copied to application):
+```bash
+bin/cake migrations migrate
+```
+
+> [!NOTE]
+> If you used the manifest system to install the plugin, the migrations have been copied to your application's `config/Migrations` directory and should be run using the application-level command without the `-p` flag.
+
+### Database Configuration
+
 > [!WARNING]
 > Rhythm's storage implementation currently requires a MySQL, MariaDB, PostgreSQL, or SQLite database. If you are using a different database engine, you will need a separate database for your Rhythm data.
 
-You may install Rhythm using the Composer package manager:
-
-```shell
-composer require skie/rhythm
-```
-
-Next, you should run the `migrate` command in order to create the tables needed to store Rhythm's data:
-
-```shell
-bin/cake migrations migrate -p Rhythm
-```
-
-Once Rhythm's database migrations have been run, you may access the Rhythm dashboard via the `/rhythm/dashboard` route.
+By default, `Rhythm.storage.database.connection` is set to 'default' in the database configuration but you can change it to your own database connection.
 
 > [!NOTE]
 > If you do not want to store Rhythm data in your application's primary database, you may [specify a dedicated database connection](#using-a-different-database).
+
+Once Rhythm's database migrations have been run, you may access the Rhythm dashboard via the `/rhythm/dashboard` route.
 
 ### Configuration
 
@@ -419,7 +457,7 @@ As we have seen, many [recorders](#recorders) offer the ability to, via configur
 
 ```php
 use Cake\Core\Configure;
-use Rhythm\Rhythm;
+use Crustum\Rhythm\Rhythm;
 
 /**
  * Bootstrap the application.
@@ -508,7 +546,7 @@ Creating a custom widget in Rhythm starts with extending the base `BaseWidget` c
 ```php
 namespace App\Widget;
 
-use Rhythm\Widget\BaseWidget;
+use Crustum\Rhythm\Widget\BaseWidget;
 
 class TopSellers extends BaseWidget
 {
@@ -607,7 +645,7 @@ Custom widgets may fetch and display data from anywhere; however, you may wish t
 Rhythm allows you to record "entries" using the `Rhythm::record` method:
 
 ```php
-use Rhythm\Rhythm;
+use Crustum\Rhythm\Rhythm;
 
 $rhythm = $this->getContainer()->get(Rhythm::class);
 
@@ -688,7 +726,7 @@ namespace Acme\Recorders;
 
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventInterface;
-use Rhythm\Rhythm;
+use Crustum\Rhythm\Rhythm;
 
 class Deployments implements EventListenerInterface
 {

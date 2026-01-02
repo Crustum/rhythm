@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase\Ingest;
+namespace Crustum\Rhythm\Test\TestCase\Ingest;
 
 use Cake\Core\Container;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
-use Rhythm\Ingest\TransparentIngest;
-use Rhythm\Model\Table\RhythmAggregatesTable;
-use Rhythm\Model\Table\RhythmEntriesTable;
-use Rhythm\Model\Table\RhythmValuesTable;
-use Rhythm\Rhythm;
-use Rhythm\Storage\DigestStorage;
+use Crustum\Rhythm\Ingest\TransparentIngest;
+use Crustum\Rhythm\Model\Table\RhythmAggregatesTable;
+use Crustum\Rhythm\Model\Table\RhythmEntriesTable;
+use Crustum\Rhythm\Model\Table\RhythmValuesTable;
+use Crustum\Rhythm\Rhythm;
+use Crustum\Rhythm\Storage\DigestStorage;
 
 /**
  * Ingest test
@@ -32,9 +32,9 @@ class DatabaseIngestTest extends TestCase
         $this->storage = new DigestStorage();
         $this->ingest = new TransparentIngest($this->storage);
         $this->rhythm = new Rhythm($this->storage, $this->ingest, $container);
-        $this->Entries = $this->getTableLocator()->get('Rhythm.RhythmEntries');
-        $this->Aggregates = $this->getTableLocator()->get('Rhythm.RhythmAggregates');
-        $this->Values = $this->getTableLocator()->get('Rhythm.RhythmValues');
+        $this->Entries = $this->getTableLocator()->get('Crustum/Rhythm.RhythmEntries');
+        $this->Aggregates = $this->getTableLocator()->get('Crustum/Rhythm.RhythmAggregates');
+        $this->Values = $this->getTableLocator()->get('Crustum/Rhythm.RhythmValues');
     }
 
     public function tearDown(): void
@@ -59,7 +59,7 @@ class DatabaseIngestTest extends TestCase
         DateTime::setTestNow('2000-01-08 00:00:05');
         $this->rhythm->trim();
 
-        $this->assertEquals(['baz'], $this->Values->find()->all()->extract('key')->toArray());
+        $this->assertEquals(['baz'], $this->Values->find()->all()->extract('metric_key')->toArray());
     }
 
     public function testTrimsEntriesAtOrAfterWeekAfterTimestamp(): void
@@ -217,7 +217,7 @@ class DatabaseIngestTest extends TestCase
         $this->rhythm->trim();
 
         $this->assertEquals(['baz'], $this->Entries->find()->all()->extract('type')->toArray());
-        $this->assertEquals(['baz'], $this->Values->find()->all()->extract('key')->toArray());
+        $this->assertEquals(['baz'], $this->Values->find()->all()->extract('metric_key')->toArray());
     }
 
     public function testRestrictsTrimDurationTo7Days(): void
@@ -246,6 +246,6 @@ class DatabaseIngestTest extends TestCase
         $this->rhythm->trim();
 
         $this->assertEquals(['baz'], $this->Entries->find()->all()->extract('type')->toArray());
-        $this->assertEquals(['baz'], $this->Values->find()->all()->extract('key')->toArray());
+        $this->assertEquals(['baz'], $this->Values->find()->all()->extract('metric_key')->toArray());
     }
 }

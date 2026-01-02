@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Recorder;
+namespace Crustum\Rhythm\Recorder;
 
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Event\EventListenerInterface;
+use Crustum\Rhythm\Datasource\RedisConnection;
+use Crustum\Rhythm\Event\SharedBeat;
+use Crustum\Rhythm\Recorder\Trait\ThrottlingTrait;
+use Crustum\Rhythm\Rhythm;
 use Exception;
 use Redis;
-use Rhythm\Datasource\RedisConnection;
-use Rhythm\Event\SharedBeat;
-use Rhythm\Recorder\Trait\ThrottlingTrait;
-use Rhythm\Rhythm;
 use RuntimeException;
 
 /**
@@ -56,7 +56,7 @@ class RedisMonitorRecorder extends BaseRecorder implements EventListenerInterfac
     /**
      * Create a new recorder instance.
      *
-     * @param \Rhythm\Rhythm $rhythm The Rhythm instance.
+     * @param \Crustum\Rhythm\Rhythm $rhythm The Rhythm instance.
      * @param array<string, mixed> $config Configuration array
      */
     public function __construct(Rhythm $rhythm, array $config = [])
@@ -114,7 +114,7 @@ class RedisMonitorRecorder extends BaseRecorder implements EventListenerInterfac
     /**
      * Monitors the memory usage of all configured Redis connections.
      *
-     * @param \Rhythm\Event\SharedBeat $event The shared beat event.
+     * @param \Crustum\Rhythm\Event\SharedBeat $event The shared beat event.
      * @return void
      */
     protected function monitorMemoryUsage(SharedBeat $event): void
@@ -132,7 +132,7 @@ class RedisMonitorRecorder extends BaseRecorder implements EventListenerInterfac
     /**
      * Monitors the key usage of all configured Redis connections.
      *
-     * @param \Rhythm\Event\SharedBeat $event The shared beat event.
+     * @param \Crustum\Rhythm\Event\SharedBeat $event The shared beat event.
      * @return void
      */
     protected function monitorKeyUsage(SharedBeat $event): void
@@ -150,7 +150,7 @@ class RedisMonitorRecorder extends BaseRecorder implements EventListenerInterfac
     /**
      * Monitors the key stats of all configured Redis connections.
      *
-     * @param \Rhythm\Event\SharedBeat $event The shared beat event.
+     * @param \Crustum\Rhythm\Event\SharedBeat $event The shared beat event.
      * @return void
      */
     protected function monitorKeyStats(SharedBeat $event): void
@@ -168,7 +168,7 @@ class RedisMonitorRecorder extends BaseRecorder implements EventListenerInterfac
     /**
      * Monitors network usage of all configured Redis connections.
      *
-     * @param \Rhythm\Event\SharedBeat $event The shared beat event.
+     * @param \Crustum\Rhythm\Event\SharedBeat $event The shared beat event.
      * @return void
      */
     protected function monitorNetworkUsage(SharedBeat $event): void
@@ -188,7 +188,7 @@ class RedisMonitorRecorder extends BaseRecorder implements EventListenerInterfac
      *
      * @param string $connection Connection name
      * @param array<string, mixed> $output Redis INFO output
-     * @param \Rhythm\Event\SharedBeat $event The shared beat event
+     * @param \Crustum\Rhythm\Event\SharedBeat $event The shared beat event
      * @return void
      */
     protected function recordMemoryUsage(string $connection, array $output, SharedBeat $event): void
@@ -223,7 +223,7 @@ class RedisMonitorRecorder extends BaseRecorder implements EventListenerInterfac
      *
      * @param string $connection Connection name
      * @param array<string, mixed> $output Redis INFO output
-     * @param \Rhythm\Event\SharedBeat $event The shared beat event
+     * @param \Crustum\Rhythm\Event\SharedBeat $event The shared beat event
      * @return void
      */
     protected function recordKeyUsage(string $connection, array $output, SharedBeat $event): void
@@ -272,7 +272,7 @@ class RedisMonitorRecorder extends BaseRecorder implements EventListenerInterfac
      *
      * @param string $connection Connection name
      * @param array<string, mixed> $output Redis INFO output
-     * @param \Rhythm\Event\SharedBeat $event The shared beat event
+     * @param \Crustum\Rhythm\Event\SharedBeat $event The shared beat event
      * @return void
      */
     protected function recordKeyStats(string $connection, array $output, SharedBeat $event): void
@@ -307,7 +307,7 @@ class RedisMonitorRecorder extends BaseRecorder implements EventListenerInterfac
      *
      * @param string $connection Connection name
      * @param array<string, mixed> $output Redis INFO output
-     * @param \Rhythm\Event\SharedBeat $event The shared beat event
+     * @param \Crustum\Rhythm\Event\SharedBeat $event The shared beat event
      * @return void
      */
     protected function recordNetworkUsage(string $connection, array $output, SharedBeat $event): void

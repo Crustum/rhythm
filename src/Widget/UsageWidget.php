@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Widget;
+namespace Crustum\Rhythm\Widget;
 
+use Crustum\Rhythm\Widget\Trait\WidgetSamplingTrait;
 use Exception;
-use Rhythm\Widget\Trait\WidgetSamplingTrait;
 
 /**
  * Usage Widget
@@ -77,7 +77,7 @@ class UsageWidget extends BaseWidget
      */
     public function getTemplate(): string
     {
-        return 'Rhythm.widgets/usage';
+        return 'Crustum/Rhythm.widgets/usage';
     }
 
     /**

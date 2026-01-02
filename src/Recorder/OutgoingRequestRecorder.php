@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Recorder;
+namespace Crustum\Rhythm\Recorder;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Http\Client\Request;
-use Rhythm\Recorder\Trait\GroupsTrait;
-use Rhythm\Recorder\Trait\IgnoresTrait;
-use Rhythm\Recorder\Trait\SamplingTrait;
-use Rhythm\Recorder\Trait\ThresholdsTrait;
-use Rhythm\Rhythm;
+use Crustum\Rhythm\Recorder\Trait\GroupsTrait;
+use Crustum\Rhythm\Recorder\Trait\IgnoresTrait;
+use Crustum\Rhythm\Recorder\Trait\SamplingTrait;
+use Crustum\Rhythm\Recorder\Trait\ThresholdsTrait;
+use Crustum\Rhythm\Rhythm;
 use SplObjectStorage;
 
 /**
@@ -33,7 +33,7 @@ class OutgoingRequestRecorder extends BaseRecorder implements EventListenerInter
     /**
      * Constructor.
      *
-     * @param \Rhythm\Rhythm $rhythm Rhythm service instance.
+     * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm service instance.
      * @param array<string, mixed> $config Configuration for the recorder.
      */
     public function __construct(Rhythm $rhythm, array $config = [])

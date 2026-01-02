@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase;
+namespace Crustum\Rhythm\Test\TestCase;
 
 use Cake\Collection\Collection;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
-use Rhythm\RhythmEntry;
-use Rhythm\RhythmValue;
-use Rhythm\Storage\DigestStorage;
+use Crustum\Rhythm\RhythmEntry;
+use Crustum\Rhythm\RhythmValue;
+use Crustum\Rhythm\Storage\DigestStorage;
 
 /**
  * DigestStorage Test Case
@@ -18,7 +18,7 @@ class DatabaseStorageTest extends TestCase
     /**
      * Storage instance.
      *
-     * @var \Rhythm\Storage\DigestStorage
+     * @var \Crustum\Rhythm\Storage\DigestStorage
      */
     protected DigestStorage $storage;
 

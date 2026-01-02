@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase;
+namespace Crustum\Rhythm\Test\TestCase;
 
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\I18n\DateTime;
+use Crustum\Rhythm\Middleware\RhythmMiddleware;
 use Psr\Http\Server\RequestHandlerInterface;
-use Rhythm\Middleware\RhythmMiddleware;
 
 /**
  * Integration Flow Test
@@ -159,7 +159,7 @@ class IntegrationFlowTest extends RhythmTestCase
                 );
 
                 foreach ($aggregates as $aggregate) {
-                    $this->assertArrayHasKey('key', $aggregate);
+                    $this->assertArrayHasKey('metric_key', $aggregate);
                     $this->assertArrayHasKey($aggType, $aggregate);
                     $this->assertIsNumeric($aggregate[$aggType]);
                     if ($aggType === 'count') {

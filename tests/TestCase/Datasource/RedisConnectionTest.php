@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase\Datasource;
+namespace Crustum\Rhythm\Test\TestCase\Datasource;
 
 use Cake\TestSuite\TestCase;
+use Crustum\Rhythm\Datasource\RedisConnection;
 use Redis;
-use Rhythm\Datasource\RedisConnection;
 
 /**
  * RedisConnection Test Case

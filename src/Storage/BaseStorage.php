@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Storage;
+namespace Crustum\Rhythm\Storage;
 
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
@@ -9,12 +9,12 @@ use Cake\Core\Configure;
 use Cake\Database\Connection;
 use Cake\I18n\DateTime;
 use Cake\ORM\TableRegistry;
+use Crustum\Rhythm\Model\Table\RhythmAggregatesTable;
+use Crustum\Rhythm\Model\Table\RhythmEntriesTable;
+use Crustum\Rhythm\Model\Table\RhythmValuesTable;
+use Crustum\Rhythm\RhythmEntry;
+use Crustum\Rhythm\RhythmValue;
 use Exception;
-use Rhythm\Model\Table\RhythmAggregatesTable;
-use Rhythm\Model\Table\RhythmEntriesTable;
-use Rhythm\Model\Table\RhythmValuesTable;
-use Rhythm\RhythmEntry;
-use Rhythm\RhythmValue;
 
 /**
  * Base Storage Implementation
@@ -41,21 +41,21 @@ abstract class BaseStorage implements StorageInterface
     /**
      * Entries table instance.
      *
-     * @var \Rhythm\Model\Table\RhythmEntriesTable
+     * @var \Crustum\Rhythm\Model\Table\RhythmEntriesTable
      */
     protected RhythmEntriesTable $entriesTable;
 
     /**
      * Values table instance.
      *
-     * @var \Rhythm\Model\Table\RhythmValuesTable
+     * @var \Crustum\Rhythm\Model\Table\RhythmValuesTable
      */
     protected RhythmValuesTable $valuesTable;
 
     /**
      * Aggregates table instance.
      *
-     * @var \Rhythm\Model\Table\RhythmAggregatesTable
+     * @var \Crustum\Rhythm\Model\Table\RhythmAggregatesTable
      */
     protected RhythmAggregatesTable $aggregatesTable;
 
@@ -67,16 +67,16 @@ abstract class BaseStorage implements StorageInterface
     public function __construct(array $config = [])
     {
         $this->config = $config;
-        /** @var \Rhythm\Model\Table\RhythmEntriesTable $entriesTable */
-        $entriesTable = TableRegistry::getTableLocator()->get('Rhythm.RhythmEntries');
+        /** @var \Crustum\Rhythm\Model\Table\RhythmEntriesTable $entriesTable */
+        $entriesTable = TableRegistry::getTableLocator()->get('Crustum/Rhythm.RhythmEntries');
         $this->entriesTable = $entriesTable;
 
-        /** @var \Rhythm\Model\Table\RhythmValuesTable $valuesTable */
-        $valuesTable = TableRegistry::getTableLocator()->get('Rhythm.RhythmValues');
+        /** @var \Crustum\Rhythm\Model\Table\RhythmValuesTable $valuesTable */
+        $valuesTable = TableRegistry::getTableLocator()->get('Crustum/Rhythm.RhythmValues');
         $this->valuesTable = $valuesTable;
 
-        /** @var \Rhythm\Model\Table\RhythmAggregatesTable $aggregatesTable */
-        $aggregatesTable = TableRegistry::getTableLocator()->get('Rhythm.RhythmAggregates');
+        /** @var \Crustum\Rhythm\Model\Table\RhythmAggregatesTable $aggregatesTable */
+        $aggregatesTable = TableRegistry::getTableLocator()->get('Crustum/Rhythm.RhythmAggregates');
         $this->aggregatesTable = $aggregatesTable;
         $this->connection = $this->entriesTable->getConnection();
     }
@@ -254,7 +254,7 @@ abstract class BaseStorage implements StorageInterface
             ->map(fn(RhythmEntry $entry) => [
                 'timestamp' => $entry->timestamp,
                 'type' => $entry->type,
-                'key' => $entry->key,
+                'metric_key' => $entry->key,
                 'key_hash' => md5($entry->key),
                 'value' => $entry->value,
             ])
@@ -266,7 +266,7 @@ abstract class BaseStorage implements StorageInterface
             ->map(fn(RhythmValue $value) => [
                 'timestamp' => $value->timestamp,
                 'type' => $value->type,
-                'key' => $value->key,
+                'metric_key' => $value->key,
                 'key_hash' => md5($value->key),
                 'value' => $value->value,
             ])
@@ -326,7 +326,7 @@ abstract class BaseStorage implements StorageInterface
                         'bucket' => $bucket,
                         'period' => $period,
                         'type' => $entry->type,
-                        'key' => $entry->key,
+                        'metric_key' => $entry->key,
                         'key_hash' => md5($entry->key),
                         'value' => $entry->value,
                     ];
@@ -349,8 +349,8 @@ abstract class BaseStorage implements StorageInterface
     /**
      * Collapse the given values.
      *
-     * @param \Cake\Collection\CollectionInterface<int, \Rhythm\RhythmValue> $values
-     * @return \Cake\Collection\CollectionInterface<int, \Rhythm\RhythmValue>
+     * @param \Cake\Collection\CollectionInterface<int, \Crustum\Rhythm\RhythmValue> $values
+     * @return \Cake\Collection\CollectionInterface<int, \Crustum\Rhythm\RhythmValue>
      */
     protected function collapseValues(CollectionInterface $values): CollectionInterface
     {

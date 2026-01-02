@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Widget;
+namespace Crustum\Rhythm\Widget;
 
+use Crustum\Rhythm\Widget\Trait\SortableTrait;
+use Crustum\Rhythm\Widget\Trait\WidgetSamplingTrait;
 use Exception;
-use Rhythm\Widget\Trait\SortableTrait;
-use Rhythm\Widget\Trait\WidgetSamplingTrait;
 
 /**
  * Slow Jobs Widget
@@ -46,8 +46,8 @@ class SlowJobsWidget extends BaseWidget
                 $totalCount = 0;
 
                 foreach ($jobs as $job) {
-                    $jobData = json_decode($job['key'], true);
-                    $jobName = is_array($jobData) && isset($jobData[0]) ? $jobData[0] : $job['key'];
+                    $jobData = json_decode($job['metric_key'], true);
+                    $jobName = is_array($jobData) && isset($jobData[0]) ? $jobData[0] : $job['metric_key'];
                     $status = is_array($jobData) && isset($jobData[1]) ? $jobData[1] : 'unknown';
 
                     $rawCount = $job['count'] ?? 0;
@@ -96,7 +96,7 @@ class SlowJobsWidget extends BaseWidget
      */
     public function getTemplate(): string
     {
-        return 'Rhythm.widgets/slow_jobs';
+        return 'Crustum/Rhythm.widgets/slow_jobs';
     }
 
     /**

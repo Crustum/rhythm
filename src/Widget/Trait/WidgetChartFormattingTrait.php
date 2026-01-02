@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Widget\Trait;
+namespace Crustum\Rhythm\Widget\Trait;
 
 use DateTime;
 

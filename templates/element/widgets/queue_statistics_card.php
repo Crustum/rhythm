@@ -17,7 +17,7 @@
 ?>
 <?php if (isset($chartData)): ?>
     <div class="rhythm-card" data-queue="<?= h($queueName) ?>">
-        <?= $this->element('Rhythm.widgets/queue_card_header', [
+        <?= $this->element('Crustum/Rhythm.widgets/queue_card_header', [
             'icon' => 'fas fa-chart-line',
             'title' => $queueName . ' Queue Health'
         ]) ?>
@@ -44,12 +44,12 @@
     </div>
 <?php else: ?>
     <div class="rhythm-card">
-        <?= $this->element('Rhythm.widgets/queue_card_header', [
+        <?= $this->element('Crustum/Rhythm.widgets/queue_card_header', [
             'icon' => 'fas fa-chart-line',
             'title' => $queueName . ' Queue Health'
         ]) ?>
         <div class="widget-content">
-            <?= $this->element('Rhythm.components/widget_placeholder', ['message' => 'No statistics data for this queue.']) ?>
+            <?= $this->element('Crustum/Rhythm.components/widget_placeholder', ['message' => 'No statistics data for this queue.']) ?>
         </div>
     </div>
 <?php endif; ?>

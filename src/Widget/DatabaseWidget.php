@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Widget;
+namespace Crustum\Rhythm\Widget;
 
 use Cake\I18n\DateTime;
+use Crustum\Rhythm\Widget\Trait\WidgetChartFormattingTrait;
+use Crustum\Rhythm\Widget\Trait\WidgetSamplingTrait;
 use Exception;
-use Rhythm\Widget\Trait\WidgetChartFormattingTrait;
-use Rhythm\Widget\Trait\WidgetSamplingTrait;
 
 /**
  * Database Widget
@@ -221,7 +221,7 @@ class DatabaseWidget extends BaseWidget
      */
     public function getTemplate(): string
     {
-        return 'Rhythm.widgets/database';
+        return 'Crustum/Rhythm.widgets/database';
     }
 
     /**

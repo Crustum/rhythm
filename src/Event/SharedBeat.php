@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Event;
+namespace Crustum\Rhythm\Event;
 
 use Cake\Event\Event;
 use Cake\I18n\DateTime;
@@ -11,7 +11,7 @@ use Cake\I18n\DateTime;
  *
  * Represents a shared metric beat event.
  *
- * @extends \Cake\Event\Event<\Rhythm\Rhythm>
+ * @extends \Cake\Event\Event<\Crustum\Rhythm\Rhythm>
  */
 class SharedBeat extends Event
 {

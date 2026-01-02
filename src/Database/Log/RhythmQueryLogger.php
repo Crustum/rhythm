@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Database\Log;
+namespace Crustum\Rhythm\Database\Log;
 
 use Cake\Database\Log\LoggedQuery;
 use Cake\Event\EventManager;
+use Crustum\Rhythm\Event\SlowQueryEvent;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
-use Rhythm\Event\SlowQueryEvent;
 use Stringable;
 
 /**

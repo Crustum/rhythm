@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Command;
+namespace Crustum\Rhythm\Command;
 
 use Cake\Cache\Cache;
 use Cake\Command\Command;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Model\Entity;
+namespace Crustum\Rhythm\Model\Entity;
 
 use Cake\ORM\Entity;
 
@@ -20,9 +20,39 @@ class MetricEntry extends Entity
     protected array $_accessible = [
         'timestamp' => true,
         'type' => true,
-        'key' => true,
+        'metric_key' => true,
         'key_hash' => true,
         'value' => true,
+        'key' => true,
+    ];
+
+    /**
+     * Get the metric key.
+     *
+     * @return string|null
+     */
+    protected function _getKey(): ?string
+    {
+        return $this->_fields['metric_key'] ?? null;
+    }
+
+    /**
+     * Set the metric key.
+     *
+     * @param string|null $value
+     */
+    protected function _setKey(?string $value): void
+    {
+        $this->_fields['metric_key'] = $value;
+    }
+
+    /**
+     * Virtual fields that use accessors.
+     *
+     * @var array<string>
+     */
+    protected array $_virtual = [
+        'key',
     ];
 
     /**

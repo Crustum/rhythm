@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Recorder;
+namespace Crustum\Rhythm\Recorder;
 
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Event\EventListenerInterface;
-use Rhythm\Recorder\Trait\IgnoresTrait;
-use Rhythm\Recorder\Trait\SamplingTrait;
-use Rhythm\Rhythm;
+use Crustum\Rhythm\Recorder\Trait\IgnoresTrait;
+use Crustum\Rhythm\Recorder\Trait\SamplingTrait;
+use Crustum\Rhythm\Rhythm;
 
 /**
  * User Requests Recorder
@@ -23,7 +23,7 @@ class UserRequestsRecorder extends BaseRecorder implements EventListenerInterfac
     /**
      * Constructor.
      *
-     * @param \Rhythm\Rhythm $rhythm Rhythm instance
+     * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm instance
      * @param array $config Configuration array
      */
     public function __construct(Rhythm $rhythm, array $config = [])

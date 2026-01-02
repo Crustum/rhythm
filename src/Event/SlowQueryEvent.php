@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Event;
+namespace Crustum\Rhythm\Event;
 
 use Cake\Database\Log\LoggedQuery;
 use Cake\Event\Event;
@@ -11,7 +11,7 @@ use Cake\Event\Event;
  *
  * Event dispatched when a slow database query is detected.
  *
- * @extends \Cake\Event\Event<\Rhythm\Rhythm>
+ * @extends \Cake\Event\Event<\Crustum\Rhythm\Rhythm>
  */
 class SlowQueryEvent extends Event
 {

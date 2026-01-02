@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Recorder\Trait;
+namespace Crustum\Rhythm\Recorder\Trait;
 
-use Rhythm\Utility\Chance;
+use Crustum\Rhythm\Utility\Chance;
 
 /**
  * Provides sampling functionality for recorders.

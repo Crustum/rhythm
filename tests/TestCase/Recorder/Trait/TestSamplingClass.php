@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Test\TestCase\Recorder\Trait;
+namespace Crustum\Rhythm\Test\TestCase\Recorder\Trait;
 
-use Rhythm\Recorder\Trait\SamplingTrait;
+use Crustum\Rhythm\Recorder\Trait\SamplingTrait;
 
 /**
  * Test class for testing SamplingTrait

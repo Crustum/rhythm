@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Widget;
+namespace Crustum\Rhythm\Widget;
 
+use Crustum\Rhythm\Widget\Trait\WidgetSamplingTrait;
 use Exception;
-use Rhythm\Widget\Trait\WidgetSamplingTrait;
 
 /**
  * Slow Outgoing Requests Widget
@@ -38,9 +38,9 @@ class SlowOutgoingRequestsWidget extends BaseWidget
                 $totalCount = 0;
 
                 foreach ($requests as $request) {
-                    $requestData = json_decode($request['key'], true);
+                    $requestData = json_decode($request['metric_key'], true);
                     $method = is_array($requestData) && isset($requestData[0]) ? $requestData[0] : 'GET';
-                    $url = is_array($requestData) && isset($requestData[1]) ? $requestData[1] : $request['key'];
+                    $url = is_array($requestData) && isset($requestData[1]) ? $requestData[1] : $request['metric_key'];
 
                     $rawCount = $request['count'] ?? 0;
                     $magnifiedCount = $this->magnifyValue($rawCount);
@@ -87,7 +87,7 @@ class SlowOutgoingRequestsWidget extends BaseWidget
      */
     public function getTemplate(): string
     {
-        return 'Rhythm.widgets/slow_outgoing_requests';
+        return 'Crustum/Rhythm.widgets/slow_outgoing_requests';
     }
 
     /**

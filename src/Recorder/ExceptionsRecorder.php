@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Recorder;
+namespace Crustum\Rhythm\Recorder;
 
 use Cake\Error\FatalErrorException;
 use Cake\Event\EventInterface;
 use Cake\Event\EventListenerInterface;
 use Cake\I18n\DateTime;
-use Rhythm\Recorder\Trait\IgnoresTrait;
-use Rhythm\Recorder\Trait\SamplingTrait;
+use Crustum\Rhythm\Recorder\Trait\IgnoresTrait;
+use Crustum\Rhythm\Recorder\Trait\SamplingTrait;
 use Throwable;
 
 /**
@@ -37,7 +37,7 @@ class ExceptionsRecorder extends BaseRecorder implements EventListenerInterface
     /**
      * Record exception.
      *
-     * @param \Cake\Event\EventInterface<\Rhythm\Rhythm> $event Event instance
+     * @param \Cake\Event\EventInterface<\Crustum\Rhythm\Rhythm> $event Event instance
      * @return void
      */
     public function recordException(EventInterface $event): void

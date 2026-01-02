@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Rhythm\Storage;
+namespace Crustum\Rhythm\Storage;
 
 use Cake\Collection\CollectionInterface;
 

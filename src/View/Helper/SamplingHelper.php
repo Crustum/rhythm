@@ -18,7 +18,7 @@ class SamplingHelper extends Helper
      *
      * @var array<string, mixed>
      */
-    protected array $_defaultConfig = [];
+    protected $_defaultConfig = [];
 
     /**
      * Format a magnified value for display with sampling indicator

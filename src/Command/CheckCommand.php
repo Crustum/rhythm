@@ -6,11 +6,10 @@ namespace Crustum\Rhythm\Command;
 use Cake\Cache\Cache;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
-use Cake\Console\CommandFactoryInterface;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Event\EventManager;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Crustum\Rhythm\Event\SharedBeat;
 use Crustum\Rhythm\Rhythm;
 use SignalHandler\Command\Trait\SignalHandlerTrait;
@@ -49,11 +48,10 @@ class CheckCommand extends Command
      * Constructor.
      *
      * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm instance
-     * @param \Cake\Console\CommandFactoryInterface $factory Command factory instance
      */
-    public function __construct(Rhythm $rhythm, ?CommandFactoryInterface $factory = null)
+    public function __construct(Rhythm $rhythm)
     {
-        parent::__construct($factory);
+        parent::__construct();
         $this->rhythm = $rhythm;
         $this->eventManager = EventManager::instance();
     }
@@ -113,7 +111,7 @@ class CheckCommand extends Command
                 return self::CODE_SUCCESS;
             }
 
-            $now = new DateTime();
+            $now = new FrozenTime();
             $instance = gethostname() ?: 'default';
 
             $this->eventManager->dispatch(new SharedBeat($now, $instance));

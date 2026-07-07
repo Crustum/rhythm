@@ -199,7 +199,7 @@ class SlowQueryMiddlewareTest extends TestCase
         $entriesTable = $this->getTableLocator()->get('Rhythm.RhythmEntries');
         $entries = $entriesTable->find()
             ->where(['type' => 'slow_query'])
-            ->orderBy(['timestamp' => 'DESC'])
+            ->order(['timestamp' => 'DESC'])
             ->limit(2)
             ->toArray();
 

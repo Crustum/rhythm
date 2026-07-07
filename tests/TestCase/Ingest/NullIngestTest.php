@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Crustum\Rhythm\Test\TestCase\Ingest;
 
 use Cake\Collection\Collection;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Cake\TestSuite\TestCase;
 use Crustum\Rhythm\Ingest\IngestInterface;
 use Crustum\Rhythm\Ingest\NullIngest;
@@ -65,7 +65,7 @@ class NullIngestTest extends TestCase
         $storage = $this->createMock(StorageInterface::class);
         $storage->expects($this->never())->method('store');
 
-        $timestamp = (new DateTime())->getTimestamp();
+        $timestamp = (new FrozenTime())->getTimestamp();
         $items = new Collection([
             new RhythmEntry($timestamp, 'request', 'user:456', 200),
         ]);

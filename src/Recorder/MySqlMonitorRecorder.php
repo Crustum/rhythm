@@ -126,6 +126,10 @@ class MySqlMonitorRecorder extends BaseRecorder implements EventListenerInterfac
         $statusVariables = $this->getStatusVariables();
 
         $filtered = [];
+        if ($result === false) {
+            return [];
+        }
+
         foreach ($result as $row) {
             if (in_array($row['Variable_name'], $statusVariables)) {
                 $filtered[$row['Variable_name']] = $row['Value'];

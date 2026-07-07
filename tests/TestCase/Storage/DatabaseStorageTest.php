@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Crustum\Rhythm\Test\TestCase\Storage;
 
 use Cake\Collection\Collection;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Crustum\Rhythm\Model\Table\RhythmAggregatesTable;
@@ -59,7 +59,7 @@ class DatabaseStorageTest extends TestCase
     {
         parent::setUp();
 
-        DateTime::setTestNow('2025-01-15 12:30:00');
+        FrozenTime::setTestNow('2025-01-15 12:30:00');
 
         $this->storage = new DigestStorage();
         /** @var \Crustum\Rhythm\Model\Table\RhythmEntriesTable $entriesTable */
@@ -81,7 +81,7 @@ class DatabaseStorageTest extends TestCase
      */
     public function tearDown(): void
     {
-        DateTime::setTestNow(null);
+        FrozenTime::setTestNow(null);
 
         unset($this->storage);
         unset($this->entriesTable);
@@ -97,7 +97,7 @@ class DatabaseStorageTest extends TestCase
      */
     protected function generateTestData(): void
     {
-        $now = (new DateTime())->getTimestamp();
+        $now = (new FrozenTime())->getTimestamp();
         $oneHourAgo = $now - 3600;
         $twoHoursAgo = $now - 7200;
 
@@ -597,7 +597,7 @@ class DatabaseStorageTest extends TestCase
     public function testAggregateWithAllAggregates(): void
     {
         $this->aggregatesTable->updateAll(
-            ['bucket' => (new DateTime())->getTimestamp() - 100],
+            ['bucket' => (new FrozenTime())->getTimestamp() - 100],
             ['type' => 'request', 'metric_key' => '/api/users'],
         );
 
@@ -619,7 +619,7 @@ class DatabaseStorageTest extends TestCase
     public function testAggregateAvgMaxOnly(): void
     {
         $this->aggregatesTable->updateAll(
-            ['bucket' => (new DateTime())->getTimestamp() - 100],
+            ['bucket' => (new FrozenTime())->getTimestamp() - 100],
             ['type' => 'request', 'metric_key' => '/api/users'],
         );
 
@@ -638,7 +638,7 @@ class DatabaseStorageTest extends TestCase
     public function testGraph(): void
     {
         $this->aggregatesTable->updateAll(
-            ['bucket' => (new DateTime())->getTimestamp() - 100],
+            ['bucket' => (new FrozenTime())->getTimestamp() - 100],
             ['type IN' => ['request', 'database']],
         );
 

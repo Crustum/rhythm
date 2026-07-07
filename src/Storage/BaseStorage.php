@@ -7,7 +7,8 @@ use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\Core\Configure;
 use Cake\Database\Connection;
-use Cake\I18n\DateTime;
+use Cake\Datasource\EntityInterface;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Crustum\Rhythm\Model\Table\RhythmAggregatesTable;
 use Crustum\Rhythm\Model\Table\RhythmEntriesTable;
@@ -88,11 +89,11 @@ abstract class BaseStorage implements StorageInterface
      */
     public function trim(): void
     {
-        $now = DateTime::now();
+        $now = FrozenTime::now();
 
         $keep = $this->config['trim']['keep'] ?? '7 days';
 
-        $before = DateTime::now()->modify("-{$keep}");
+        $before = FrozenTime::now()->modify("-{$keep}");
 
         if ($now->subDays(7) > $before) {
             $before = $now->subDays(7);
@@ -316,7 +317,7 @@ abstract class BaseStorage implements StorageInterface
             }
 
             foreach ((Configure::read('Rhythm.aggregation.periods') ?? [60, 360, 1440, 10080]) as $period) {
-                if ($entry->timestamp < (new DateTime())->getTimestamp() - $period * 60) {
+                if ($entry->timestamp < (new FrozenTime())->getTimestamp() - $period * 60) {
                     continue;
                 }
                 $bucket = (int)(floor($entry->timestamp / $period) * $period);
@@ -354,9 +355,19 @@ abstract class BaseStorage implements StorageInterface
      */
     protected function collapseValues(CollectionInterface $values): CollectionInterface
     {
-        $reversed = new Collection(array_reverse($values->toList()));
+        $reversed = array_reverse($values->toList());
+        $seen = [];
+        $unique = [];
 
-        return $reversed->unique(fn(RhythmValue $value) => $value->key . ':' . $value->type);
+        foreach ($reversed as $value) {
+            $key = $value->key . ':' . $value->type;
+            if (!isset($seen[$key])) {
+                $seen[$key] = true;
+                $unique[] = $value;
+            }
+        }
+
+        return new Collection($unique);
     }
 
     /**
@@ -368,7 +379,7 @@ abstract class BaseStorage implements StorageInterface
      */
     protected function getCurrentBucket(int $period, ?int $timestamp = null): int
     {
-        $timestamp = $timestamp ?: (new DateTime())->getTimestamp();
+        $timestamp = $timestamp ?: (new FrozenTime())->getTimestamp();
 
         return (int)($timestamp / $period) * $period;
     }
@@ -395,9 +406,9 @@ abstract class BaseStorage implements StorageInterface
                 ])
                 ->first();
 
-            if ($existing) {
+            if ($existing && $existing instanceof EntityInterface) {
                 $toUpdate[] = [
-                    'id' => $existing->id,
+                    'id' => $existing->get('id'),
                     'timestamp' => $value['timestamp'],
                     'value' => $value['value'],
                 ];

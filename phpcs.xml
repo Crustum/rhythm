@@ -9,6 +9,10 @@
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint">
         <exclude-pattern>*/src/Controller/*</exclude-pattern>
     </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint">
+        <exclude-pattern>*/src/Model/Entity/*</exclude-pattern>
+        <exclude-pattern>*/src/View/Helper/*</exclude-pattern>
+    </rule>
     <rule ref="Generic.WhiteSpace.ScopeIndent.Incorrect">
         <exclude-pattern>templates/*</exclude-pattern>
     </rule>

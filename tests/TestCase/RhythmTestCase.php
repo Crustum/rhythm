@@ -8,7 +8,7 @@ use Cake\Core\Configure;
 use Cake\Core\ContainerInterface;
 use Cake\Database\Connection;
 use Cake\Datasource\ConnectionManager;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Cake\TestSuite\TestCase;
 use Crustum\Rhythm\Ingest\RedisIngest;
 use Crustum\Rhythm\Rhythm;
@@ -149,19 +149,19 @@ abstract class RhythmTestCase extends TestCase
     {
         $entries = [
             new RhythmEntry(
-                timestamp: (new DateTime())->getTimestamp() - 3600,
+                timestamp: (new FrozenTime())->getTimestamp() - 3600,
                 type: 'user_requests',
                 key: 'GET /users',
                 value: 150,
             ),
             new RhythmEntry(
-                timestamp: (new DateTime())->getTimestamp() - 1800,
+                timestamp: (new FrozenTime())->getTimestamp() - 1800,
                 type: 'user_requests',
                 key: 'POST /users',
                 value: 200,
             ),
             new RhythmEntry(
-                timestamp: (new DateTime())->getTimestamp() - 900,
+                timestamp: (new FrozenTime())->getTimestamp() - 900,
                 type: 'slow_queries',
                 key: 'SELECT * FROM users',
                 value: 250,
@@ -197,7 +197,7 @@ abstract class RhythmTestCase extends TestCase
     protected function createTestEntry(string $type, string $key, ?int $value = null, ?int $timestamp = null): RhythmEntry
     {
         return new RhythmEntry(
-            timestamp: $timestamp ?? (new DateTime())->getTimestamp(),
+            timestamp: $timestamp ?? (new FrozenTime())->getTimestamp(),
             type: $type,
             key: $key,
             value: $value,
@@ -216,7 +216,7 @@ abstract class RhythmTestCase extends TestCase
     protected function createTestValue(string $type, string $key, string $value, ?int $timestamp = null): RhythmValue
     {
         return new RhythmValue(
-            timestamp: $timestamp ?? (new DateTime())->getTimestamp(),
+            timestamp: $timestamp ?? (new FrozenTime())->getTimestamp(),
             type: $type,
             key: $key,
             value: $value,

@@ -12,7 +12,7 @@ The plugin works with CakePHP's event system and includes command line tools for
 
 ## Requirements
 
-* PHP 8.2+
+* PHP 8.1+
 
 See [Versions.md](docs/Versions.md) for the supported CakePHP versions.
 

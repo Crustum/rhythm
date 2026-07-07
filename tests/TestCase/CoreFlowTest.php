@@ -3,14 +3,13 @@ declare(strict_types=1);
 
 namespace Crustum\Rhythm\Test\TestCase;
 
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Crustum\Rhythm\Recorder\RecorderInterface;
 use Crustum\Rhythm\Rhythm;
 use Crustum\Rhythm\RhythmEntry;
 use Crustum\Rhythm\RhythmValue;
 use Crustum\Rhythm\Storage\DigestStorage;
 use Exception;
-use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Core Flow Test
@@ -81,11 +80,11 @@ class CoreFlowTest extends RhythmTestCase
     /**
      * Test basic metric recording flow.
      *
+     * @dataProvider storageProvider
      * @param string $storageClass
      * @param array $config
      * @return void
      */
-    #[DataProvider('storageProvider')]
     public function testBasicMetricRecordingFlow(string $storageClass, array $config): void
     {
         $this->setupStorage($storageClass, $config);
@@ -108,11 +107,11 @@ class CoreFlowTest extends RhythmTestCase
     /**
      * Test storage flow - metrics are stored in database.
      *
+     * @dataProvider storageProvider
      * @param string $storageClass
      * @param array $config
      * @return void
      */
-    #[DataProvider('storageProvider')]
     public function testStorageFlow(string $storageClass, array $config): void
     {
         $this->setupStorage($storageClass, $config);
@@ -151,11 +150,11 @@ class CoreFlowTest extends RhythmTestCase
     /**
      * Test recorder flow - recorders collect and record metrics.
      *
+     * @dataProvider storageProvider
      * @param string $storageClass
      * @param array $config
      * @return void
      */
-    #[DataProvider('storageProvider')]
     public function testRecorderFlow(string $storageClass, array $config): void
     {
         $this->markTestSkipped('Recorder tests not implemented yet');
@@ -164,16 +163,16 @@ class CoreFlowTest extends RhythmTestCase
     /**
      * Test aggregation flow - metrics are aggregated over time periods.
      *
+     * @dataProvider storageProvider
      * @param string $storageClass
      * @param array $config
      * @return void
      */
-    #[DataProvider('storageProvider')]
     public function testAggregationFlow(string $storageClass, array $config): void
     {
         $this->setupStorage($storageClass, $config);
 
-        $fixedTimestamp = (new DateTime())->getTimestamp() - 30;
+        $fixedTimestamp = (new FrozenTime())->getTimestamp() - 30;
 
         $this->rhythm->record('agg_test', 'key_1', 10, $fixedTimestamp);
         $this->rhythm->record('agg_test', 'key_1', 20, $fixedTimestamp);
@@ -198,11 +197,11 @@ class CoreFlowTest extends RhythmTestCase
     /**
      * Test end-to-end flow - complete metric lifecycle.
      *
+     * @dataProvider storageProvider
      * @param string $storageClass
      * @param array $config
      * @return void
      */
-    #[DataProvider('storageProvider')]
     public function testEndToEndFlow(string $storageClass, array $config): void
     {
         $this->setupStorage($storageClass, $config);
@@ -245,11 +244,11 @@ class CoreFlowTest extends RhythmTestCase
     /**
      * Test error handling flow - errors are handled gracefully.
      *
+     * @dataProvider storageProvider
      * @param string $storageClass
      * @param array $config
      * @return void
      */
-    #[DataProvider('storageProvider')]
     public function testErrorHandlingFlow(string $storageClass, array $config): void
     {
         $invalidConfig = ['connection' => 'nonexistent'];
@@ -266,11 +265,11 @@ class CoreFlowTest extends RhythmTestCase
      * Test performance flow - metrics are recorded efficiently.
      *
      * @group performance
+     * @dataProvider storageProvider
      * @param string $storageClass
      * @param array $config
      * @return void
      */
-    #[DataProvider('storageProvider')]
     public function testPerformanceFlow(string $storageClass, array $config): void
     {
         $this->setupStorage($storageClass, $config);
@@ -296,11 +295,11 @@ class CoreFlowTest extends RhythmTestCase
     /**
      * Minimal test: Store a RhythmEntry and dump the DB row for debugging.
      *
+     * @dataProvider storageProvider
      * @param string $storageClass
      * @param array $config
      * @return void
      */
-    #[DataProvider('storageProvider')]
     public function testMinimalRhythmEntryStorage(string $storageClass, array $config): void
     {
         $this->setupStorage($storageClass, $config);

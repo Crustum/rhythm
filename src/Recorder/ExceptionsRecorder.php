@@ -6,7 +6,7 @@ namespace Crustum\Rhythm\Recorder;
 use Cake\Error\FatalErrorException;
 use Cake\Event\EventInterface;
 use Cake\Event\EventListenerInterface;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Crustum\Rhythm\Recorder\Trait\IgnoresTrait;
 use Crustum\Rhythm\Recorder\Trait\SamplingTrait;
 use Throwable;
@@ -85,7 +85,7 @@ class ExceptionsRecorder extends BaseRecorder implements EventListenerInterface
             return;
         }
 
-        $timestamp = (new DateTime())->getTimestamp();
+        $timestamp = (new FrozenTime())->getTimestamp();
         $this->rhythm->record('exception', $key, $timestamp)->max()->count();
     }
 

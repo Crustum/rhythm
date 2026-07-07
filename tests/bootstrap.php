@@ -66,9 +66,16 @@ $cache = [
         'engine' => 'File',
         'path' => CACHE,
     ],
-    '_cake_translations_' => [
+    '_cake_core_' => [
         'className' => 'File',
         'prefix' => 'rhythm_test_cake_core_',
+        'path' => CACHE . 'persistent/',
+        'serialize' => true,
+        'duration' => '+10 seconds',
+    ],
+    '_cake_translations_' => [
+        'className' => 'File',
+        'prefix' => 'rhythm_test_cake_translations_',
         'path' => CACHE . 'persistent/',
         'serialize' => true,
         'duration' => '+10 seconds',

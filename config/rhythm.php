@@ -48,22 +48,8 @@ return [
                     '#^/health#',
                 ],
             ],
-            'cache' => [
-                'className' => \Crustum\Rhythm\Recorder\CacheRecorder::class,
-                'enabled' => env('RHYTHM_CACHE_ENABLED', true),
-                'sample_rate' => env('RHYTHM_CACHE_SAMPLE_RATE', 1.0),
-                'groups' => [
-                    // Optional: Normalize cache keys (like Reverb)
-                    // '/users:\d+:profile/' => 'users:{user}:profile',
-                ],
-                'ignore' => [
-                    // '/cake_model_/',
-                    '/cake_core_/',
-                    '/^rhythm-widget/',
-                    '/^cake_rhythm/',
-                    '/^rhythm/',
-                ],
-            ],
+            // NOTE: CacheRecorder removed - not compatible with CakePHP 4
+            // Cache event system changed significantly between CakePHP 4 and 5
             'slow_queries' => [
                 'className' => \Crustum\Rhythm\Recorder\SlowQueriesRecorder::class,
                 'enabled' => env('RHYTHM_SLOW_QUERIES_ENABLED', true),
@@ -370,12 +356,7 @@ return [
         ],
 
         'widgets' => [
-            'cache' => [
-                'className' => \Crustum\Rhythm\Widget\CacheWidget::class,
-                'name' => 'Cache',
-                'cols' => ['default' => 12, 'lg' => 4],
-                'refreshInterval' => 60,
-            ],
+            // NOTE: CacheWidget removed - not compatible with CakePHP 4
             'server-state' => [
                 'className' => \Crustum\Rhythm\Widget\ServerStateWidget::class,
                 'name' => 'Server State',

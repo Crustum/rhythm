@@ -5,7 +5,7 @@ namespace Crustum\Rhythm\Test\TestCase;
 
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Crustum\Rhythm\Middleware\RhythmMiddleware;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -131,7 +131,7 @@ class IntegrationFlowTest extends RhythmTestCase
      */
     public function testRealWorldAggregation(): void
     {
-        $baseTime = (new DateTime())->getTimestamp() - 3600;
+        $baseTime = (new FrozenTime())->getTimestamp() - 3600;
         $metrics = [
             'user_requests' => [100, 150, 200, 120, 180],
             'db_queries' => [50, 75, 100, 60, 90],

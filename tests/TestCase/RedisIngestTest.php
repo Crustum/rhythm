@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Crustum\Rhythm\Test\TestCase;
 
 use Cake\Collection\Collection;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Crustum\Rhythm\RhythmEntry;
 use Crustum\Rhythm\RhythmValue;
 
@@ -31,7 +31,7 @@ class RedisIngestTest extends RhythmTestCase
      */
     public function testBasicIngest(): void
     {
-        $timestamp = (new DateTime())->getTimestamp();
+        $timestamp = (new FrozenTime())->getTimestamp();
         $items = new Collection([
             new RhythmEntry($timestamp, 'request', 'user:123', 100),
             new RhythmValue($timestamp, 'user', 'active:123', 'John Doe'),

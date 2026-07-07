@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Crustum\Rhythm\Widget;
 
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Exception;
 use RuntimeException;
 
@@ -40,7 +40,7 @@ class ServerStateWidget extends BaseWidget
                 }
 
                 $serverName = $values['name'] ?? $serverKey;
-                $currentTime = (new DateTime())->getTimestamp();
+                $currentTime = (new FrozenTime())->getTimestamp();
                 $recentlyReported = $currentTime - $systemData->timestamp < 300;
 
                 $serverGraphData = $graphs[$serverKey] ?? null;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Crustum\Rhythm\Ingest;
 
 use Cake\Collection\CollectionInterface;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Crustum\Rhythm\RhythmEntry;
 use Crustum\Rhythm\RhythmValue;
 use Crustum\Rhythm\Storage\StorageInterface;
@@ -163,7 +163,7 @@ abstract class AbstractIngest implements IngestInterface
      */
     protected function calculateCutoffTime(string $keep): int
     {
-        return (int)DateTime::now()->modify("-{$keep}")->getTimestamp();
+        return (int)FrozenTime::now()->modify("-{$keep}")->getTimestamp();
     }
 
     /**

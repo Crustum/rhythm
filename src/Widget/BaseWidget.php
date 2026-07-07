@@ -5,7 +5,7 @@ namespace Crustum\Rhythm\Widget;
 
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Cake\Utility\Hash;
 use Crustum\Rhythm\Rhythm;
 use InvalidArgumentException;
@@ -222,8 +222,8 @@ abstract class BaseWidget
         $cachedTime = Cache::read($timeKey, 'rhythm');
 
         if ($cached !== null && $cachedTime !== null) {
-            $cachedTimestamp = new DateTime($cachedTime);
-            $currentTime = new DateTime();
+            $cachedTimestamp = new FrozenTime($cachedTime);
+            $currentTime = new FrozenTime();
             $expiryTime = $cachedTimestamp->modify("+{$ttl} seconds");
 
             if ($currentTime < $expiryTime) {
@@ -232,7 +232,7 @@ abstract class BaseWidget
         }
 
         $result = $query();
-        $currentTimestamp = (new DateTime())->format('Y-m-d H:i:s');
+        $currentTimestamp = (new FrozenTime())->format('Y-m-d H:i:s');
 
         Cache::write($cacheKey, $result, 'rhythm');
         Cache::write($timeKey, $currentTimestamp, 'rhythm');

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Crustum\Rhythm\Event;
 
 use Cake\Event\Event;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 
 /**
  * Isolated Beat Event
@@ -18,10 +18,10 @@ class IsolatedBeat extends Event
     /**
      * Constructor.
      *
-     * @param \Cake\I18n\DateTime $timestamp The timestamp of the event.
+     * @param \Cake\I18n\FrozenTime $timestamp The timestamp of the event.
      * @param mixed $subject The event subject (optional)
      */
-    public function __construct(DateTime $timestamp, mixed $subject = null)
+    public function __construct(FrozenTime $timestamp, mixed $subject = null)
     {
         parent::__construct(self::class, $subject, [
             'timestamp' => $timestamp,
@@ -31,9 +31,9 @@ class IsolatedBeat extends Event
     /**
      * Get the time of the event.
      *
-     * @return \Cake\I18n\DateTime
+     * @return \Cake\I18n\FrozenTime
      */
-    public function getTimestamp(): DateTime
+    public function getTimestamp(): FrozenTime
     {
         return $this->getData('timestamp');
     }

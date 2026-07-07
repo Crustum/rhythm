@@ -5,7 +5,6 @@ namespace Crustum\Rhythm\Command;
 
 use Cake\Command\Command;
 use Cake\Console\Arguments;
-use Cake\Console\CommandFactoryInterface;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Crustum\Rhythm\Rhythm;
@@ -29,11 +28,10 @@ class TestIngestCommand extends Command
      * Constructor
      *
      * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm instance
-     * @param \Cake\Console\CommandFactoryInterface|null $factory Command factory
      */
-    public function __construct(Rhythm $rhythm, ?CommandFactoryInterface $factory = null)
+    public function __construct(Rhythm $rhythm)
     {
-        parent::__construct($factory);
+        parent::__construct();
         $this->rhythm = $rhythm;
     }
 

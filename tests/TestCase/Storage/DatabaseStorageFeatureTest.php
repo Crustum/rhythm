@@ -5,7 +5,7 @@ namespace Crustum\Rhythm\Test\TestCase\Storage;
 
 use Cake\Collection\Collection;
 use Cake\Core\Container;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Cake\TestSuite\TestCase;
 use Crustum\Rhythm\Ingest\TransparentIngest;
 use Crustum\Rhythm\Model\Table\RhythmAggregatesTable;
@@ -59,13 +59,13 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->rhythm->record('type', 'key2', 400)->count()->min()->max()->sum()->avg();
         $this->rhythm->ingest();
 
-        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
+        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->order(['id' => 'ASC'])->all());
         $this->assertCount(3, $entries);
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1', 'value' => 200], $entries->first()->extract(['type', 'metric_key', 'value']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1', 'value' => 100], $entries->skip(1)->first()->extract(['type', 'metric_key', 'value']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key2', 'value' => 400], $entries->skip(2)->first()->extract(['type', 'metric_key', 'value']));
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->orderBy(['period' => 'ASC', 'aggregate' => 'ASC', 'metric_key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->order(['period' => 'ASC', 'aggregate' => 'ASC', 'metric_key' => 'ASC'])->all());
         $this->assertCount(40, $aggregates);
         $agg = fn($i) => $aggregates->skip($i)->first();
         // period 60
@@ -116,14 +116,14 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->rhythm->record('type', 'key1', 600)->count()->min()->max()->sum()->avg();
         $this->rhythm->ingest();
 
-        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
+        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->order(['id' => 'ASC'])->all());
         $this->assertCount(4, $entries);
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1', 'value' => 200], $entries->first()->extract(['type', 'metric_key', 'value']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1', 'value' => 100], $entries->skip(1)->first()->extract(['type', 'metric_key', 'value']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key2', 'value' => 400], $entries->skip(2)->first()->extract(['type', 'metric_key', 'value']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1', 'value' => 600], $entries->skip(3)->first()->extract(['type', 'metric_key', 'value']));
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->orderBy(['period' => 'ASC', 'aggregate' => 'ASC', 'metric_key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->order(['period' => 'ASC', 'aggregate' => 'ASC', 'metric_key' => 'ASC'])->all());
         $agg = fn($i) => $aggregates->skip($i)->first();
 
         $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'avg', 'metric_key' => 'key1', 'value' => 300], $agg(0)->extract(['type','period','aggregate','metric_key','value']));
@@ -184,12 +184,12 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->rhythm->record('type', 'key2')->count();
         $this->rhythm->ingest();
 
-        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
+        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->order(['id' => 'ASC'])->all());
         $this->assertCount(4, $entries);
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1'], $entries->first()->extract(['type', 'metric_key']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key2'], $entries->last()->extract(['type', 'metric_key']));
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->order(['metric_key' => 'ASC'])->all());
         $this->assertEquals(3, $aggregates->first()->value);
         $this->assertEquals(1, $aggregates->last()->value);
     }
@@ -207,12 +207,12 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->rhythm->record('type', 'key2', 100)->min();
         $this->rhythm->ingest();
 
-        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
+        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->order(['id' => 'ASC'])->all());
         $this->assertCount(4, $entries);
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1'], $entries->first()->extract(['type', 'metric_key']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key2'], $entries->last()->extract(['type', 'metric_key']));
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->order(['metric_key' => 'ASC'])->all());
         $this->assertEquals(100, $aggregates->first()->value);
         $this->assertEquals(100, $aggregates->last()->value);
     }
@@ -230,12 +230,12 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->rhythm->record('type', 'key2', 100)->max();
         $this->rhythm->ingest();
 
-        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
+        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->order(['id' => 'ASC'])->all());
         $this->assertCount(4, $entries);
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1'], $entries->first()->extract(['type', 'metric_key']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key2'], $entries->last()->extract(['type', 'metric_key']));
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->order(['metric_key' => 'ASC'])->all());
         $this->assertEquals(300, $aggregates->first()->value);
         $this->assertEquals(100, $aggregates->last()->value);
     }
@@ -253,12 +253,12 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->rhythm->record('type', 'key2', 100)->sum();
         $this->rhythm->ingest();
 
-        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
+        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->order(['id' => 'ASC'])->all());
         $this->assertCount(4, $entries);
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1'], $entries->first()->extract(['type', 'metric_key']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key2'], $entries->last()->extract(['type', 'metric_key']));
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->order(['metric_key' => 'ASC'])->all());
         $this->assertEquals(600, $aggregates->first()->value);
         $this->assertEquals(100, $aggregates->last()->value);
     }
@@ -276,14 +276,14 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->rhythm->record('type', 'key2', 100)->avg();
         $this->rhythm->ingest();
 
-        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
+        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->order(['id' => 'ASC'])->all());
         $this->assertCount(4, $entries);
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1'], $entries->first()->extract(['type', 'metric_key']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key2'], $entries->last()->extract(['type', 'metric_key']));
         // Aggregate assertion placeholder
 
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->order(['metric_key' => 'ASC'])->all());
         $this->assertEquals(200, $aggregates->first()->value);
         $this->assertEquals(100, $aggregates->last()->value);
         $this->assertEquals(3, $aggregates->first()->entry_count);
@@ -305,13 +305,13 @@ class DatabaseStorageFeatureTest extends TestCase
      */
     public function testAggregateTypesCountPerKey(): void
     {
-        DateTime::setTestNow('2000-01-01 12:00:00');
+        FrozenTime::setTestNow('2000-01-01 12:00:00');
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'user:*')->count();
         $this->rhythm->record('cache_miss', 'flight:*')->count();
         $this->rhythm->record('cache_miss', 'user:*')->count();
 
-        DateTime::setTestNow('2000-01-01 12:00:01');
+        FrozenTime::setTestNow('2000-01-01 12:00:01');
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'flight:*')->count();
@@ -323,7 +323,7 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->rhythm->record('cache_hit', 'user:*')->count();
         $this->rhythm->record('cache_miss', 'user:*')->count();
 
-        DateTime::setTestNow('2000-01-01 12:59:58');
+        FrozenTime::setTestNow('2000-01-01 12:59:58');
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'flight:*')->count();
@@ -337,7 +337,7 @@ class DatabaseStorageFeatureTest extends TestCase
 
         $this->rhythm->ingest();
 
-        DateTime::setTestNow('2000-01-01 13:00:00');
+        FrozenTime::setTestNow('2000-01-01 13:00:00');
 
         $results = $this->storage->aggregateTypes(['cache_hit', 'cache_miss'], 'count', 60);
         $data = [];
@@ -352,7 +352,7 @@ class DatabaseStorageFeatureTest extends TestCase
             ['key' => 'flight:*', 'cache_hit' => 8, 'cache_miss' => 6],
             ['key' => 'user:*', 'cache_hit' => 4, 'cache_miss' => 2],
         ], $data);
-        DateTime::setTestNow();
+        FrozenTime::setTestNow();
     }
 
     /**
@@ -362,36 +362,36 @@ class DatabaseStorageFeatureTest extends TestCase
      */
     public function testAggregateTotalSingleType(): void
     {
-        DateTime::setTestNow('2000-01-01 12:00:00');
+        FrozenTime::setTestNow('2000-01-01 12:00:00');
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'flight:*')->count();
 
-        DateTime::setTestNow('2000-01-01 12:00:01');
+        FrozenTime::setTestNow('2000-01-01 12:00:01');
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'flight:*')->count();
-        DateTime::setTestNow('2000-01-01 12:00:02');
+        FrozenTime::setTestNow('2000-01-01 12:00:02');
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'flight:*')->count();
-        DateTime::setTestNow('2000-01-01 12:00:03');
+        FrozenTime::setTestNow('2000-01-01 12:00:03');
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'flight:*')->count();
 
-        DateTime::setTestNow('2000-01-01 12:59:00');
+        FrozenTime::setTestNow('2000-01-01 12:59:00');
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'flight:*')->count();
-        DateTime::setTestNow('2000-01-01 12:59:10');
+        FrozenTime::setTestNow('2000-01-01 12:59:10');
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'flight:*')->count();
-        DateTime::setTestNow('2000-01-01 12:59:20');
+        FrozenTime::setTestNow('2000-01-01 12:59:20');
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'flight:*')->count();
 
         $this->rhythm->ingest();
-        DateTime::setTestNow('2000-01-01 13:00:00');
+        FrozenTime::setTestNow('2000-01-01 13:00:00');
 
         $total = $this->storage->aggregateTotal('cache_hit', 'count', 60);
         $this->assertEquals(12, $total);
-        DateTime::setTestNow();
+        FrozenTime::setTestNow();
     }
 
     /**
@@ -401,39 +401,39 @@ class DatabaseStorageFeatureTest extends TestCase
      */
     public function testAggregateTotalMultipleTypes(): void
     {
-        DateTime::setTestNow('2000-01-01 12:00:00');
+        FrozenTime::setTestNow('2000-01-01 12:00:00');
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_miss', 'flight:*')->count();
 
-        DateTime::setTestNow('2000-01-01 12:00:01');
+        FrozenTime::setTestNow('2000-01-01 12:00:01');
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_miss', 'flight:*')->count();
-        DateTime::setTestNow('2000-01-01 12:00:02');
+        FrozenTime::setTestNow('2000-01-01 12:00:02');
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_miss', 'flight:*')->count();
-        DateTime::setTestNow('2000-01-01 12:00:03');
+        FrozenTime::setTestNow('2000-01-01 12:00:03');
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_miss', 'flight:*')->count();
 
-        DateTime::setTestNow('2000-01-01 12:59:00');
+        FrozenTime::setTestNow('2000-01-01 12:59:00');
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_miss', 'flight:*')->count();
-        DateTime::setTestNow('2000-01-01 12:59:10');
+        FrozenTime::setTestNow('2000-01-01 12:59:10');
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_miss', 'flight:*')->count();
-        DateTime::setTestNow('2000-01-01 12:59:20');
+        FrozenTime::setTestNow('2000-01-01 12:59:20');
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_hit', 'flight:*')->count();
         $this->rhythm->record('cache_miss', 'flight:*')->count();
 
         $this->rhythm->ingest();
-        DateTime::setTestNow('2000-01-01 13:00:00');
+        FrozenTime::setTestNow('2000-01-01 13:00:00');
 
         $results = $this->storage->aggregateTotal(['cache_hit', 'cache_miss'], 'count', 60);
         $this->assertInstanceOf(Collection::class, $results);
@@ -442,7 +442,7 @@ class DatabaseStorageFeatureTest extends TestCase
             'cache_hit' => 12,
             'cache_miss' => 6,
         ], $resultsArray);
-        DateTime::setTestNow();
+        FrozenTime::setTestNow();
     }
 
     /**

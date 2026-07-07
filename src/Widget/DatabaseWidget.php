@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Crustum\Rhythm\Widget;
 
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Crustum\Rhythm\Widget\Trait\WidgetChartFormattingTrait;
 use Crustum\Rhythm\Widget\Trait\WidgetSamplingTrait;
 use Exception;
@@ -84,7 +84,7 @@ class DatabaseWidget extends BaseWidget
         foreach ($connections as $connectionName) {
             $connectionValues = $this->rhythm->getStorage()->values('database_connection', [$connectionName]);
 
-            if (count($connectionValues) === 0) {
+            if ($connectionValues->count() === 0) {
                 continue;
             }
 
@@ -115,7 +115,7 @@ class DatabaseWidget extends BaseWidget
                 'chartData' => $chartData[$connectionName] ?? [],
                 'mappedGraphs' => $mappedColors,
                 'updated_at' => $latestValue->timestamp,
-                'recently_reported' => (new DateTime())->getTimestamp() - $latestValue->timestamp < 30,
+                'recently_reported' => (new FrozenTime())->getTimestamp() - $latestValue->timestamp < 30,
             ];
         }
 

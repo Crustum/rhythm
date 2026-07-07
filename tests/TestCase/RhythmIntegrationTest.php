@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Crustum\Rhythm\Test\TestCase;
 
 use Cake\Collection\Collection;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Cake\TestSuite\TestCase;
 use Crustum\Rhythm\RhythmEntry;
 use Crustum\Rhythm\RhythmValue;
@@ -23,7 +23,7 @@ class RhythmIntegrationTest extends TestCase
      */
     public function testMixedRhythmData(): void
     {
-        $timestamp = (new DateTime())->getTimestamp();
+        $timestamp = (new FrozenTime())->getTimestamp();
 
         $entry = new RhythmEntry($timestamp, 'request', 'user:123', 100);
         $value = new RhythmValue($timestamp, 'user', 'active:123', 'John Doe');
@@ -51,7 +51,7 @@ class RhythmIntegrationTest extends TestCase
      */
     public function testConvertToArrays(): void
     {
-        $timestamp = (new DateTime())->getTimestamp();
+        $timestamp = (new FrozenTime())->getTimestamp();
 
         $entry = new RhythmEntry($timestamp, 'request', 'test', 200);
         $value = new RhythmValue($timestamp, 'cache', 'status', 'connected');
@@ -79,7 +79,7 @@ class RhythmIntegrationTest extends TestCase
      */
     public function testBulkCreation(): void
     {
-        $timestamp = (new DateTime())->getTimestamp();
+        $timestamp = (new FrozenTime())->getTimestamp();
         $entries = [];
 
         for ($i = 1; $i <= 100; $i++) {

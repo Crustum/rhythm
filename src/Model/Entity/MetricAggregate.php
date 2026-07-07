@@ -17,7 +17,7 @@ class MetricAggregate extends Entity
      *
      * @var array<string, bool>
      */
-    protected array $_accessible = [
+    protected $_accessible = [
         'bucket' => true,
         'period' => true,
         'type' => true,
@@ -75,7 +75,7 @@ class MetricAggregate extends Entity
      *
      * @var array<string>
      */
-    protected array $_virtual = [
+    protected $_virtual = [
         'key',
         'count',
     ];
@@ -85,7 +85,7 @@ class MetricAggregate extends Entity
      *
      * @var array<string>
      */
-    protected array $_hidden = [
+    protected $_hidden = [
         'id',
     ];
 }

@@ -6,10 +6,9 @@ namespace Crustum\Rhythm\Command;
 use Cake\Cache\Cache;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
-use Cake\Console\CommandFactoryInterface;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 
 /**
  * Restart Command
@@ -20,12 +19,10 @@ class RestartCommand extends Command
 {
     /**
      * Constructor.
-     *
-     * @param \Cake\Console\CommandFactoryInterface|null $factory Command factory instance
      */
-    public function __construct(?CommandFactoryInterface $factory = null)
+    public function __construct()
     {
-        parent::__construct($factory);
+        parent::__construct();
     }
 
     /**
@@ -51,7 +48,7 @@ class RestartCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io): ?int
     {
-        Cache::write('rhythm:restart', (new DateTime())->getTimestamp(), 'default');
+        Cache::write('rhythm:restart', (new FrozenTime())->getTimestamp(), 'default');
 
         $io->success('Broadcasting Rhythm restart signal to all running commands.');
         $io->info('Running check and digest commands will restart gracefully.');

@@ -7,7 +7,7 @@ use Cake\Chronos\Chronos;
 use Cake\Collection\Collection;
 use Cake\Core\Configure;
 use Cake\Database\Expression\IdentifierExpression;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
@@ -169,7 +169,7 @@ class RhythmAggregatesTable extends Table
                 'period' => $period,
                 'bucket >=' => $oldestBucket,
             ])
-            ->groupBy(['key_hash', 'metric_key', 'type'])
+            ->group(['key_hash', 'metric_key', 'type'])
             ->limit($limit * count($types));
 
         foreach ($query->all() as $row) {
@@ -295,7 +295,7 @@ class RhythmAggregatesTable extends Table
                 'period' => $period,
                 'bucket >=' => $oldestBucket,
             ])
-            ->groupBy(['type']);
+            ->group(['type']);
 
         foreach ($aggregateQuery->all() as $row) {
             $results[$row->type] += (float)$row->total;
@@ -317,7 +317,7 @@ class RhythmAggregatesTable extends Table
                 'type IN' => $types,
                 'timestamp >=' => $windowStart,
             ])
-            ->groupBy(['type']);
+            ->group(['type']);
 
         foreach ($tailQuery->all() as $row) {
             if ($aggregate === 'min') {
@@ -368,7 +368,7 @@ class RhythmAggregatesTable extends Table
 
         $padding = [];
         for ($i = 0; $i < $maxDataPoints; $i++) {
-            $padding[Chronos::createFromTimestamp($firstBucket + $i * $secondsPerDataPoint)->toDateTimeString()] = null;
+            $padding[Chronos::createFromTimestamp((int)($firstBucket + $i * $secondsPerDataPoint))->toDateTimeString()] = null;
         }
 
         $structure = [];
@@ -385,7 +385,7 @@ class RhythmAggregatesTable extends Table
                 'bucket >=' => $firstBucket,
                 'bucket <=' => $currentBucket,
             ])
-            ->orderBy(['bucket'])
+            ->order(['bucket'])
             ->all();
 
         $groupedByKey = (new Collection($queryResults))->groupBy('metric_key')->toArray();
@@ -483,7 +483,7 @@ class RhythmAggregatesTable extends Table
                 'timestamp >=' => $windowStart,
                 'timestamp <=' => $oldestBucket - 1,
             ])
-            ->groupBy(['key_hash']);
+            ->group(['key_hash']);
 
         $bucketQueries = [];
         foreach ($aggregates as $currentAggregate) {
@@ -513,7 +513,7 @@ class RhythmAggregatesTable extends Table
                     'aggregate' => $currentAggregate,
                     'bucket >=' => $oldestBucket,
                 ])
-                ->groupBy(['key_hash']);
+                ->group(['key_hash']);
 
             $bucketQueries[] = $bucketQuery;
         }
@@ -539,8 +539,8 @@ class RhythmAggregatesTable extends Table
         $middleQuery = $middleQuery
             ->select($middleSelectFields)
             ->from(['results' => $unionQuery])
-            ->groupBy(['key_hash'])
-            ->orderBy([$orderBy => $direction])
+            ->group(['key_hash'])
+            ->order([$orderBy => $direction])
             ->limit($limit);
 
         $finalQuery = $this->find();
@@ -599,7 +599,7 @@ class RhythmAggregatesTable extends Table
      */
     private function _getTimeScope(int $intervalMinutes): array
     {
-        $now = (new DateTime())->getTimestamp();
+        $now = (new FrozenTime())->getTimestamp();
         $intervalSeconds = $intervalMinutes * 60;
         $windowStart = $now - $intervalSeconds + 1;
 

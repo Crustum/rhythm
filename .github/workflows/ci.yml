@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - 'main'
-      - 'develop'
+      - '0.x-cake4'
   pull_request:
     branches:
       - '*'
@@ -27,18 +27,6 @@ jobs:
             db-type: 'mysql'
             dependencies: highest
           - php-version: '8.3'
-            db-type: 'pgsql'
-            dependencies: highest
-          - php-version: '8.4'
-            db-type: 'mysql'
-            dependencies: highest
-          - php-version: '8.4'
-            db-type: 'pgsql'
-            dependencies: highest
-          - php-version: '8.5'
-            db-type: 'mysql'
-            dependencies: highest
-          - php-version: '8.5'
             db-type: 'pgsql'
             dependencies: highest
 
@@ -100,7 +88,7 @@ jobs:
         export REDIS_PORT=6379
         if [[ "${{ matrix.db-type }}" == 'mysql' ]]; then export db_dsn='mysql://root:root@127.0.0.1:3306/rhythm_test?encoding=utf8mb4&timezone=UTC&cacheMetadata=true&quoteIdentifiers=true&persistent=false'; fi
         if [[ "${{ matrix.db-type }}" == 'pgsql' ]]; then export db_dsn='postgres://postgres:postgres@127.0.0.1:5432/rhythm_test?encoding=utf8&timezone=UTC&cacheMetadata=true&quoteIdentifiers=true&persistent=false'; fi
-        vendor/bin/phpunit --configuration=phpunit.xml --display-deprecations --display-incomplete --display-skipped --coverage-clover=coverage.xml
+        vendor/bin/phpunit --configuration=phpunit.xml --coverage-clover=coverage.xml
 
     - name: Run PHPUnit without coverage
       if: matrix.php-version != '8.2' || matrix.db-type != 'mysql'
@@ -125,7 +113,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.4'
+        php-version: '8.3'
         extensions: mbstring, intl
         coverage: none
         tools: phive

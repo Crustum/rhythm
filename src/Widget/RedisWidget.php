@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Crustum\Rhythm\Widget;
 
+use Cake\I18n\FrozenTime;
 use Crustum\Rhythm\Widget\Trait\WidgetChartFormattingTrait;
 use Crustum\Rhythm\Widget\Trait\WidgetSamplingTrait;
-use DateTime;
 use Exception;
 
 /**
@@ -158,8 +158,9 @@ class RedisWidget extends BaseWidget
             $latestValue = null;
             foreach ($series as $timestamp => $value) {
                 if ($value !== null) {
-                    $date = DateTime::createFromFormat('Y-m-d H:i:s', $timestamp);
-                    $formattedTime = $date ? $date->format('d.m.y, H:i') : $timestamp;
+                    $date = FrozenTime::createFromFormat('Y-m-d H:i:s', $timestamp);
+                    /** @phpstan-ignore-next-line */
+                    $formattedTime = $date !== false ? $date->format('d.m.y, H:i') : $timestamp;
                     $val = is_numeric($value) ? (float)$value : $value;
                     if ($group === 'memory') {
                         $mbValue = $val / 1048576;

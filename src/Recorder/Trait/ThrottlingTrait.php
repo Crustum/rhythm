@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Crustum\Rhythm\Recorder\Trait;
 
 use Cake\Cache\Cache;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Crustum\Rhythm\Event\IsolatedBeat;
 use Crustum\Rhythm\Event\SharedBeat;
 use DateInterval;
@@ -40,7 +40,7 @@ trait ThrottlingTrait
         $lastRunAt = Cache::read($cacheKey, 'rhythm');
 
         if ($lastRunAt !== null) {
-            $future = new DateTime($lastRunAt);
+            $future = new FrozenTime($lastRunAt);
             if (is_int($interval)) {
                 $future = $future->modify("+{$interval} seconds");
             } else {

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Crustum\Rhythm\Test\TestCase;
 
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Cake\TestSuite\TestCase;
 use Crustum\Rhythm\RhythmValue;
 
@@ -19,7 +19,7 @@ class RhythmValueTest extends TestCase
      */
     public function testBasicConstruction(): void
     {
-        $timestamp = (new DateTime())->getTimestamp();
+        $timestamp = (new FrozenTime())->getTimestamp();
         $value = new RhythmValue($timestamp, 'user', 'active_user:123', 'John Doe');
 
         $this->assertEquals($timestamp, $value->timestamp);
@@ -35,7 +35,7 @@ class RhythmValueTest extends TestCase
      */
     public function testAttributes(): void
     {
-        $timestamp = (new DateTime())->getTimestamp();
+        $timestamp = (new FrozenTime())->getTimestamp();
         $value = new RhythmValue($timestamp, 'cache', 'redis_status', 'connected');
 
         $attributes = $value->attributes();

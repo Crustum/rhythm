@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Crustum\Rhythm\Recorder;
 
 use Cake\Event\EventListenerInterface;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Crustum\Rhythm\Event\SharedBeat;
 use Crustum\Rhythm\Recorder\Trait\ThrottlingTrait;
 use Exception;
@@ -187,7 +187,7 @@ class GitRecorder extends BaseRecorder implements EventListenerInterface
 
             $parts = explode('|', $line);
             if (count($parts) >= 5) {
-                $date = new DateTime($parts[3]);
+                $date = new FrozenTime($parts[3]);
                 $formattedDate = $date->format('M j, Y H:i');
 
                 $message = $parts[4];

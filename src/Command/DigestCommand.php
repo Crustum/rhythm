@@ -6,10 +6,9 @@ namespace Crustum\Rhythm\Command;
 use Cake\Cache\Cache;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
-use Cake\Console\CommandFactoryInterface;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Crustum\Rhythm\Rhythm;
 use SignalHandler\Command\Trait\SignalHandlerTrait;
 
@@ -41,11 +40,10 @@ class DigestCommand extends Command
      * Constructor
      *
      * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm instance
-     * @param \Cake\Console\CommandFactoryInterface|null $factory Command factory
      */
-    public function __construct(Rhythm $rhythm, ?CommandFactoryInterface $factory = null)
+    public function __construct(Rhythm $rhythm)
     {
-        parent::__construct($factory);
+        parent::__construct();
         $this->rhythm = $rhythm;
     }
 
@@ -85,10 +83,10 @@ class DigestCommand extends Command
         });
 
         $lastRestart = Cache::read('rhythm:restart', 'default');
-        $lastTrimmedStorageAt = (new DateTime())->getTimestamp();
+        $lastTrimmedStorageAt = (new FrozenTime())->getTimestamp();
 
         while ($this->isRunning) {
-            $now = (new DateTime())->getTimestamp();
+            $now = (new FrozenTime())->getTimestamp();
 
             if ($lastRestart !== Cache::read('rhythm:restart', 'default')) {
                 $io->info('Restart signal detected, stopping worker...');

@@ -17,7 +17,7 @@ class MetricEntry extends Entity
      *
      * @var array<string, bool>
      */
-    protected array $_accessible = [
+    protected $_accessible = [
         'timestamp' => true,
         'type' => true,
         'metric_key' => true,
@@ -51,7 +51,7 @@ class MetricEntry extends Entity
      *
      * @var array<string>
      */
-    protected array $_virtual = [
+    protected $_virtual = [
         'key',
     ];
 
@@ -60,7 +60,7 @@ class MetricEntry extends Entity
      *
      * @var array<string>
      */
-    protected array $_hidden = [
+    protected $_hidden = [
         'id',
     ];
 }

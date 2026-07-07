@@ -8,7 +8,7 @@ use Cake\Core\Configure;
 use Cake\Core\ContainerInterface;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Crustum\Rhythm\Ingest\IngestInterface;
 use Crustum\Rhythm\Recorder\RecorderInterface;
 use Crustum\Rhythm\Recorder\RecorderResolver;
@@ -155,7 +155,7 @@ class Rhythm
      */
     public function record(string $type, string $key, ?int $value = null, ?int $timestamp = null): RhythmEntry
     {
-        $timestamp = $timestamp ?: (new DateTime())->getTimestamp();
+        $timestamp = $timestamp ?: (new FrozenTime())->getTimestamp();
 
         $entry = new RhythmEntry($timestamp, $type, $key, $value);
 
@@ -178,7 +178,7 @@ class Rhythm
      */
     public function set(string $type, string $key, string $value, ?int $timestamp = null): RhythmValue
     {
-        $timestamp = $timestamp ?: (new DateTime())->getTimestamp();
+        $timestamp = $timestamp ?: (new FrozenTime())->getTimestamp();
 
         $metricValue = new RhythmValue($timestamp, $type, $key, $value);
 

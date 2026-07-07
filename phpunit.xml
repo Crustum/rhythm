@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    colors="true"
-    processIsolation="false"
-    stopOnFailure="false"
-    displayDetailsOnTestsThatTriggerDeprecations="true"
-    beStrictAboutOutputDuringTests="true"
-    bootstrap="tests/bootstrap.php"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
+         colors="true"
+         beStrictAboutOutputDuringTests="true"
+         processIsolation="false"
+         stopOnFailure="false">
+
   <php>
     <ini name="memory_limit" value="-1"/>
     <ini name="apc.enable_cli" value="1"/>
@@ -31,12 +30,12 @@
     </exclude>
   </groups>
 
-  <source>
+  <coverage>
     <include>
       <directory suffix=".php">src/</directory>
     </include>
     <exclude>
       <directory suffix=".php">src/Plugin.php</directory>
     </exclude>
-  </source>
+  </coverage>
 </phpunit>

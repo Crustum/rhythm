@@ -5,7 +5,7 @@ namespace Crustum\Rhythm\Recorder;
 
 use Cake\Core\Configure;
 use Cake\Event\EventListenerInterface;
-use Cake\I18n\DateTime;
+use Cake\I18n\FrozenTime;
 use Crustum\Rhythm\Datasource\RedisConnection;
 use Crustum\Rhythm\Event\SharedBeat;
 use Crustum\Rhythm\Recorder\Trait\IgnoresTrait;
@@ -318,7 +318,7 @@ class QueueStatsRecorder extends BaseRecorder implements EventListenerInterface
         }
 
         $createdAt = (int)$jobData['headers']['timestamp'];
-        $currentTime = (new DateTime())->getTimestamp();
+        $currentTime = (new FrozenTime())->getTimestamp();
 
         return (float)($currentTime - $createdAt);
     }

@@ -5,7 +5,6 @@ namespace Crustum\Rhythm\Command;
 
 use Cake\Command\Command;
 use Cake\Console\Arguments;
-use Cake\Console\CommandFactoryInterface;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\Configure;
@@ -29,11 +28,10 @@ class ClearCommand extends Command
      * Constructor.
      *
      * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm instance
-     * @param \Cake\Console\CommandFactoryInterface $factory Command factory instance
      */
-    public function __construct(Rhythm $rhythm, ?CommandFactoryInterface $factory = null)
+    public function __construct(Rhythm $rhythm)
     {
-        parent::__construct($factory);
+        parent::__construct();
         $this->rhythm = $rhythm;
     }
 

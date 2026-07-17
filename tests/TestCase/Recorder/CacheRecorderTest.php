@@ -40,7 +40,7 @@ class CacheRecorderTest extends RhythmTestCase
     {
         parent::setUp();
 
-        DateTime::setTestNow();
+        DateTime::setTestNow('2000-01-01 12:30:00');
         $this->cleanupTestData();
         $this->redisIngest->clear();
         $this->rhythm->flush();
@@ -82,7 +82,7 @@ class CacheRecorderTest extends RhythmTestCase
         $this->rhythm->ingest();
         $this->rhythm->digest();
 
-        $aggregates = $this->storage->aggregate('cache_hit', 'count', 240);
+        $aggregates = $this->storage->aggregate('cache_hit', 'count', 60);
         $this->assertGreaterThan(0, $aggregates->count(), 'No aggregates found for cache_hit');
 
         $keyAggregate = $aggregates->firstMatch(['metric_key' => 'cake_test_cache_key']);
@@ -102,7 +102,7 @@ class CacheRecorderTest extends RhythmTestCase
         $this->rhythm->ingest();
         $this->rhythm->digest();
 
-        $aggregates = $this->storage->aggregate('cache_miss', 'count', 240);
+        $aggregates = $this->storage->aggregate('cache_miss', 'count', 60);
         $this->assertGreaterThan(0, $aggregates->count());
 
         $keyAggregate = $aggregates->firstMatch(['metric_key' => 'cake_test_cache_key_miss']);
@@ -129,7 +129,7 @@ class CacheRecorderTest extends RhythmTestCase
         $this->rhythm->ingest();
         $this->rhythm->digest();
 
-        $aggregates = $this->storage->aggregate('cache_hit', 'count', 240);
+        $aggregates = $this->storage->aggregate('cache_hit', 'count', 60);
         $keyAggregate = $aggregates->firstMatch(['metric_key' => 'cake_test_cache_key']);
         $this->assertEmpty($keyAggregate);
 
@@ -156,7 +156,7 @@ class CacheRecorderTest extends RhythmTestCase
         $this->rhythm->ingest();
         $this->rhythm->digest();
 
-        $aggregates = $this->storage->aggregate('cache_hit', 'count', 240);
+        $aggregates = $this->storage->aggregate('cache_hit', 'count', 60);
         $keyAggregate = $aggregates->firstMatch(['metric_key' => 'cake_cache_user_*']);
         $this->assertNotEmpty($keyAggregate, 'Aggregate for cake_cache_user_* not found');
 
@@ -177,7 +177,7 @@ class CacheRecorderTest extends RhythmTestCase
         $this->rhythm->ingest();
         $this->rhythm->digest();
 
-        $aggregates = $this->storage->aggregate('cache_hit', 'count', 240);
+        $aggregates = $this->storage->aggregate('cache_hit', 'count', 60);
         $decodedKey = 'cake_test cache key with spaces';
         $keyAggregate = $aggregates->firstMatch(['metric_key' => $decodedKey]);
         if (empty($keyAggregate)) {
@@ -200,7 +200,7 @@ class CacheRecorderTest extends RhythmTestCase
         $this->rhythm->ingest();
         $this->rhythm->digest();
 
-        $aggregates = $this->storage->aggregate('cache_hit', 'count', 240);
+        $aggregates = $this->storage->aggregate('cache_hit', 'count', 60);
         $this->assertEquals(0, $aggregates->count());
     }
 

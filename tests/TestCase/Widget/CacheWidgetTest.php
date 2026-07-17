@@ -32,6 +32,8 @@ class CacheWidgetTest extends RhythmTestCase
     {
         parent::setUp();
 
+        DateTime::setTestNow('2000-01-01 12:30:00');
+
         $this->rhythm->flush();
         Cache::clear('rhythm');
         Cache::clear('default');
@@ -63,6 +65,7 @@ class CacheWidgetTest extends RhythmTestCase
         $this->rhythm->flush();
         Cache::clear('rhythm');
         Cache::clear('default');
+        DateTime::setTestNow();
         unset($this->widget);
         parent::tearDown();
     }
@@ -83,7 +86,7 @@ class CacheWidgetTest extends RhythmTestCase
         $this->rhythm->ingest();
         $this->rhythm->digest();
 
-        $data = $this->widget->getData(['period' => 240]);
+        $data = $this->widget->getData(['period' => 60]);
 
         $this->assertArrayHasKey('hits', $data);
         $this->assertArrayHasKey('misses', $data);
@@ -112,7 +115,7 @@ class CacheWidgetTest extends RhythmTestCase
         $this->rhythm->ingest();
         $this->rhythm->digest();
 
-        $data = $this->widget->getData(['period' => 240]);
+        $data = $this->widget->getData(['period' => 60]);
 
         $this->assertEquals(2, $data['hits']);
         $this->assertEquals(0, $data['misses']);
@@ -134,7 +137,7 @@ class CacheWidgetTest extends RhythmTestCase
         $this->rhythm->ingest();
         $this->rhythm->digest();
 
-        $data = $this->widget->getData(['period' => 240]);
+        $data = $this->widget->getData(['period' => 60]);
 
         $this->assertEquals(0, $data['hits']);
         $this->assertEquals(2, $data['misses']);
@@ -150,7 +153,7 @@ class CacheWidgetTest extends RhythmTestCase
      */
     public function testGetDataWithNoData(): void
     {
-        $data = $this->widget->getData(['period' => 240]);
+        $data = $this->widget->getData(['period' => 60]);
 
         $this->assertEquals(0, $data['hits']);
         $this->assertEquals(0, $data['misses']);
@@ -176,7 +179,7 @@ class CacheWidgetTest extends RhythmTestCase
         $this->rhythm->ingest();
         $this->rhythm->digest();
 
-        $data = $this->widget->getData(['period' => 240]);
+        $data = $this->widget->getData(['period' => 60]);
 
         $this->assertNotEmpty($data['cacheKeyInteractions']);
 
@@ -211,7 +214,7 @@ class CacheWidgetTest extends RhythmTestCase
 
         $widget = new CacheWidget($this->rhythm, []);
 
-        $data = $widget->getData(['period' => 240]);
+        $data = $widget->getData(['period' => 60]);
 
         $this->assertEquals(2, $data['hits'], 'Should have 2 hits (key1 + test_key, ignore only filters display)');
         $this->assertEquals(1, $data['misses'], 'Should have 1 miss (test_key, ignore only filters display)');
@@ -228,25 +231,40 @@ class CacheWidgetTest extends RhythmTestCase
     }
 
     /**
-     * Test getData with different periods
+     * Test getData with different time windows using frozen clock.
      *
      * @return void
      */
     public function testGetDataWithDifferentPeriods(): void
     {
-        $oneHourAgo = (new DateTime())->getTimestamp() - 3600;
+        DateTime::setTestNow('2000-01-01 11:00:00');
+        $this->rhythm->record('cache_hit', 'key1')->count()->onlyBuckets();
 
-        $this->rhythm->record('cache_hit', 'key1', null, $oneHourAgo)->count()->onlyBuckets();
+        DateTime::setTestNow('2000-01-01 12:30:00');
         $this->rhythm->record('cache_hit', 'key2')->count()->onlyBuckets();
 
         $this->rhythm->ingest();
         $this->rhythm->digest();
+        Cache::clear('rhythm');
 
         $data60 = $this->widget->getData(['period' => 60]);
-        $this->assertEquals(1, $data60['hits'], '60 minute period should only include recent key2');
+        $this->assertEquals(1, $data60['hits'], '60 minute window should only include key2 from the current hour');
 
-        $data240 = $this->widget->getData(['period' => 240]);
-        $this->assertEquals(2, $data240['hits'], '240 minute period should include both keys');
+        $this->cleanupTestData();
+        $this->rhythm->flush();
+        Cache::clear('rhythm');
+
+        DateTime::setTestNow('2000-01-01 12:00:00');
+        $this->rhythm->record('cache_hit', 'key1')->count()->onlyBuckets();
+        DateTime::setTestNow('2000-01-01 12:30:00');
+        $this->rhythm->record('cache_hit', 'key2')->count()->onlyBuckets();
+        $this->rhythm->ingest();
+        $this->rhythm->digest();
+        Cache::clear('rhythm');
+
+        DateTime::setTestNow('2000-01-01 12:45:00');
+        $dataSameHour = $this->widget->getData(['period' => 60]);
+        $this->assertEquals(2, $dataSameHour['hits'], '60 minute window should include both keys from the same hour');
     }
 
     /**

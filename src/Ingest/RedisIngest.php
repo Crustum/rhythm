@@ -6,6 +6,8 @@ namespace Crustum\Rhythm\Ingest;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Crustum\Rhythm\Datasource\RedisConnection;
+use Crustum\Rhythm\RhythmEntry;
+use Crustum\Rhythm\RhythmValue;
 use Redis;
 use RuntimeException;
 
@@ -111,8 +113,10 @@ class RedisIngest extends AbstractIngest
                     break;
                 }
 
-                $entry = unserialize($result);
-                if ($entry) {
+                $entry = unserialize($result, [
+                    'allowed_classes' => [RhythmEntry::class, RhythmValue::class],
+                ]);
+                if ($entry instanceof RhythmEntry || $entry instanceof RhythmValue) {
                     $batch[] = $entry;
                 }
             }

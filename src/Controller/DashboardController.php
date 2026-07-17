@@ -39,7 +39,7 @@ class DashboardController extends Controller
     {
         $this->initializeWidgets($rhythm);
 
-        $layout = $this->request->getQuery('layout', 'default');
+        $layout = $this->getRequest()->getQuery('layout', 'default');
         $layouts = Configure::read('Rhythm.layouts', []);
 
         if (!isset($layouts[$layout])) {
@@ -63,10 +63,10 @@ class DashboardController extends Controller
         $this->initializeWidgets($rhythm);
         $this->set('widgetRegistry', $this->widgetRegistry);
 
-        $pass = $this->request->getParam('pass', []);
+        $pass = $this->getRequest()->getParam('pass', []);
         $widgetName = !empty($pass) ? implode('/', $pass) : null;
-        $period = (int)$this->request->getQuery('period', 60);
-        $sort = $this->request->getQuery('sort');
+        $period = (int)$this->getRequest()->getQuery('period', 60);
+        $sort = $this->getRequest()->getQuery('sort');
 
         if (!$widgetName) {
             throw new BadRequestException('Widget name is required');
@@ -98,15 +98,15 @@ class DashboardController extends Controller
     public function refresh(Rhythm $rhythm): void
     {
         $this->initializeWidgets($rhythm);
-        $period = (int)$this->request->getQuery('period', 60);
-        $sort = $this->request->getQuery('sort');
+        $period = (int)$this->getRequest()->getQuery('period', 60);
+        $sort = $this->getRequest()->getQuery('sort');
 
         $options = ['period' => $period];
         if ($sort !== null) {
             $options['sort'] = $sort;
         }
 
-        $layout = $this->request->getQuery('layout', 'default');
+        $layout = $this->getRequest()->getQuery('layout', 'default');
         $layouts = Configure::read('Rhythm.layouts', []);
 
         if (!isset($layouts[$layout])) {

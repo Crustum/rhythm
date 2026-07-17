@@ -94,6 +94,34 @@ class RhythmTest extends TestCase
     }
 
     /**
+     * Test recording with backed and unit enums.
+     *
+     * @return void
+     */
+    public function testRecordAcceptsEnums(): void
+    {
+        $entry = $this->rhythm->record(TestMetricType::Request, TestMetricKey::UserOne, 100);
+
+        $this->assertSame('request', $entry->type);
+        $this->assertSame('UserOne', $entry->key);
+        $this->assertSame(100, $entry->value);
+    }
+
+    /**
+     * Test setting values with enums.
+     *
+     * @return void
+     */
+    public function testSetAcceptsEnums(): void
+    {
+        $value = $this->rhythm->set(TestMetricType::User, TestMetricKey::Active, 'John Doe');
+
+        $this->assertSame('user', $value->type);
+        $this->assertSame('Active', $value->key);
+        $this->assertSame('John Doe', $value->value);
+    }
+
+    /**
      * Test flushing entries
      *
      * @return void

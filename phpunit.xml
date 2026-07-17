@@ -10,7 +10,6 @@
     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd">
   <php>
     <ini name="memory_limit" value="-1"/>
-    <ini name="apc.enable_cli" value="1"/>
     <!-- Database connection will be set via environment variable in CI -->
     <!-- For local testing, you can uncomment one of these: -->
     <!--

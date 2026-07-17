@@ -9,6 +9,7 @@ use Cake\Core\Configure;
 use Cake\Database\Connection;
 use Cake\I18n\DateTime;
 use Cake\ORM\TableRegistry;
+use Crustum\Rhythm\Model\Entity\MetricValue;
 use Crustum\Rhythm\Model\Table\RhythmAggregatesTable;
 use Crustum\Rhythm\Model\Table\RhythmEntriesTable;
 use Crustum\Rhythm\Model\Table\RhythmValuesTable;
@@ -21,6 +22,14 @@ use Exception;
  *
  * Provides common logic for all Rhythm storage backends.
  * Does not implement upsert or aggregation logic.
+ *
+ * @phpstan-type ValueRow array{
+ *     timestamp: int,
+ *     type: string,
+ *     metric_key: string,
+ *     key_hash: string,
+ *     value: mixed
+ * }
  */
 abstract class BaseStorage implements StorageInterface
 {
@@ -287,7 +296,9 @@ abstract class BaseStorage implements StorageInterface
                 if (empty($chunk)) {
                     continue;
                 }
-                $this->upsertValues($chunk);
+                /** @var list<ValueRow> $rows */
+                $rows = array_values($chunk);
+                $this->upsertValues($rows);
             }
         } catch (Exception $e) {
             debug($e->getMessage());
@@ -376,7 +387,8 @@ abstract class BaseStorage implements StorageInterface
     /**
      * Upsert values (for set operations).
      *
-     * @param list<array<string, mixed>> $values
+     * @param list<ValueRow> $values
+     * @return int
      */
     protected function upsertValues(array $values): int
     {
@@ -388,6 +400,7 @@ abstract class BaseStorage implements StorageInterface
         $toUpdate = [];
 
         foreach ($values as $value) {
+            /** @var \Crustum\Rhythm\Model\Entity\MetricValue|null $existing */
             $existing = $this->valuesTable->find()
                 ->where([
                     'type' => $value['type'],
@@ -395,7 +408,7 @@ abstract class BaseStorage implements StorageInterface
                 ])
                 ->first();
 
-            if ($existing) {
+            if ($existing instanceof MetricValue) {
                 $toUpdate[] = [
                     'id' => $existing->id,
                     'timestamp' => $value['timestamp'],

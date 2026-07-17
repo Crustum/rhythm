@@ -9,6 +9,17 @@ use Cake\ORM\Entity;
  * Metric Entry Entity
  *
  * Represents a single metric entry in the rhythm system.
+ *
+ * @property int $id
+ * @property int $timestamp
+ * @property string $type
+ * @property string $metric_key
+ * @property string $key_hash
+ * @property float|string|int|null $value
+ * @property string|null $key Virtual accessor for metric_key
+ * @property float|string|int|null $total Virtual select alias used by aggregate queries
+ * @property \Cake\I18n\DateTime|null $created
+ * @property \Cake\I18n\DateTime|null $modified
  */
 class MetricEntry extends Entity
 {

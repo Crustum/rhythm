@@ -382,6 +382,8 @@ return [
                 'cols' => ['default' => 12, 'lg' => 12],
                 'rows' => 1,
                 'refreshInterval' => 30,
+                'sortBy' => 'name',
+                'sortDirection' => 'asc',
             ],
             'usage' => [
                 'className' => \Crustum\Rhythm\Widget\UsageWidget::class,

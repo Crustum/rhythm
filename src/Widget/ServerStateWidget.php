@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Crustum\Rhythm\Widget;
 
+use Cake\Collection\Collection;
 use Cake\I18n\DateTime;
+use Crustum\Rhythm\Widget\Trait\SortableTrait;
 use Exception;
 use RuntimeException;
 
@@ -14,17 +16,21 @@ use RuntimeException;
  */
 class ServerStateWidget extends BaseWidget
 {
+    use SortableTrait;
+
     /**
      * Get widget data
      *
-     * @param array $options Widget options (period, sort, etc.)
+     * @param array $options Widget options (period, sort, sortDirection, etc.)
      * @return array
      */
     public function getData(array $options = []): array
     {
         $period = $options['period'] ?? 60;
+        $sortBy = $this->resolveSortBy($options);
+        $sortDirection = $this->resolveSortDirection($options);
 
-        return $this->remember(function () use ($period) {
+        return $this->remember(function () use ($period, $sortBy, $sortDirection) {
             $systemValues = $this->rhythm->getStorage()->values('system');
             $graphs = $this->rhythm->getStorage()->graph(['cpu', 'memory'], 'avg', $period);
             $graphs = $graphs->toArray();
@@ -85,16 +91,95 @@ class ServerStateWidget extends BaseWidget
                     ],
                     'storage' => $storage,
                     'timestamp' => $systemData->timestamp,
+                    'updated_at' => $systemData->timestamp,
+                    'cpu_current' => $cpuCurrent,
+                    'memory_current' => $memoryCurrent,
                     'recently_reported' => $recentlyReported,
                 ];
             }
+
+            $servers = $this->sortServers($servers, $sortBy, $sortDirection);
 
             return [
                 'servers' => $servers,
                 'server_count' => count($servers),
                 'period' => $period,
+                'sort_by' => $sortBy,
+                'sort_direction' => $sortDirection,
             ];
-        }, 'server_state_' . $period, $this->getRefreshInterval());
+        }, $this->getSortCacheKey('server_state_' . $period . '_' . $sortBy . '_' . $sortDirection, $options), $this->getRefreshInterval());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getSortOptions(): array
+    {
+        return [
+            'name' => 'Name',
+            'cpu_current' => 'CPU',
+            'memory_current' => 'Memory',
+            'updated_at' => 'Updated',
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getDefaultSort(): string
+    {
+        return (string)$this->getConfigValue('sortBy', 'name');
+    }
+
+    /**
+     * Resolve sort field from options or widget config.
+     *
+     * @param array<string, mixed> $options Widget options
+     * @return string
+     */
+    protected function resolveSortBy(array $options): string
+    {
+        $sortBy = $options['sortBy'] ?? $options['sort'] ?? $this->getConfigValue('sortBy', 'name');
+        $validOptions = array_keys($this->getSortOptions());
+
+        if (is_string($sortBy) && in_array($sortBy, $validOptions, true)) {
+            return $sortBy;
+        }
+
+        return 'name';
+    }
+
+    /**
+     * Resolve sort direction from options or widget config.
+     *
+     * @param array<string, mixed> $options Widget options
+     * @return string
+     */
+    protected function resolveSortDirection(array $options): string
+    {
+        $direction = strtolower((string)($options['sortDirection'] ?? $this->getConfigValue('sortDirection', 'asc')));
+
+        return $direction === 'desc' ? 'desc' : 'asc';
+    }
+
+    /**
+     * Sort servers by the selected field and direction.
+     *
+     * @param array<string, array<string, mixed>> $servers Servers keyed by slug
+     * @param string $sortBy Sort field
+     * @param string $sortDirection Sort direction
+     * @return array<string, array<string, mixed>>
+     */
+    protected function sortServers(array $servers, string $sortBy, string $sortDirection): array
+    {
+        $sortType = $sortBy === 'name' ? SORT_NATURAL : SORT_NUMERIC;
+
+        $sorted = (new Collection($servers))
+            ->sortBy($sortBy, $sortDirection === 'desc' ? SORT_DESC : SORT_ASC, $sortType)
+            ->toArray();
+
+        /** @var array<string, array<string, mixed>> $sorted */
+        return $sorted;
     }
 
     /**

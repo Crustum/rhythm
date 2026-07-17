@@ -8,6 +8,7 @@ use Cake\I18n\DateTime;
 use Crustum\Rhythm\RhythmEntry;
 use Crustum\Rhythm\RhythmValue;
 use Crustum\Rhythm\Storage\StorageInterface;
+use RuntimeException;
 
 /**
  * Abstract Ingest Base Class
@@ -152,7 +153,15 @@ abstract class AbstractIngest implements IngestInterface
      */
     protected function createMetricEntity(array $data): RhythmEntry|RhythmValue
     {
-        return unserialize($data['data']);
+        $entry = unserialize($data['data'], [
+            'allowed_classes' => [RhythmEntry::class, RhythmValue::class],
+        ]);
+
+        if (!$entry instanceof RhythmEntry && !$entry instanceof RhythmValue) {
+            throw new RuntimeException('Invalid serialized Rhythm metric payload.');
+        }
+
+        return $entry;
     }
 
     /**

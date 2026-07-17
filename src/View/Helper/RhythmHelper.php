@@ -136,7 +136,7 @@ class RhythmHelper extends Helper
             'size' => 'md',
         ];
 
-        return $this->getView()->element('Crustum/Rhythm.components/badge', compact('text', 'variant', 'options'));
+        return $this->getView()->element('Crustum/Rhythm.components/badge', ['text' => $text, 'variant' => $variant, 'options' => $options]);
     }
 
     /**
@@ -175,9 +175,7 @@ class RhythmHelper extends Helper
             $html .= '</div>';
         }
 
-        $html .= '</div>';
-
-        return $html;
+        return $html . '</div>';
     }
 
     /**
@@ -229,7 +227,7 @@ class RhythmHelper extends Helper
      */
     public function summaryStats(array $stats): string
     {
-        return $this->getView()->element('Crustum/Rhythm.components/summary_stats', compact('stats'));
+        return $this->getView()->element('Crustum/Rhythm.components/summary_stats', ['stats' => $stats]);
     }
 
     /**
@@ -291,18 +289,22 @@ class RhythmHelper extends Helper
     public function prettifyNumber(string|float|int $value): string
     {
         if (!is_numeric($value)) {
-            return (string)$value;
+            return $value;
         }
+
         if (is_string($value)) {
             $value = (float)$value;
         }
+
         $abs = abs($value);
         if ($abs >= 1000000) {
             return round($value / 1000000, (is_float($value) ? 1 : 0)) . 'M';
         }
+
         if ($abs >= 1000) {
             return round($value / 1000, (is_float($value) ? 1 : 0)) . 'K';
         }
+
         if (is_float($value)) {
             return (string)round($value, 1);
         }

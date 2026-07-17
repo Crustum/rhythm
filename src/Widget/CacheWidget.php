@@ -23,7 +23,7 @@ class CacheWidget extends BaseWidget
     {
         $period = $options['period'] ?? 60;
 
-        return $this->remember(function () use ($period) {
+        return $this->remember(function () use ($period): array {
             try {
                 $cacheTotalsResult = $this->rhythm->getStorage()
                     ->aggregateTotal(['cache_hit', 'cache_miss'], 'count', $period);
@@ -43,20 +43,18 @@ class CacheWidget extends BaseWidget
 
                 $cacheKeyInteractions = $this->rhythm->getStorage()
                     ->aggregateTypes(['cache_hit', 'cache_miss'], 'count', $period, 'cache_hit', 'desc', 100)
-                    ->map(function (array $row) {
-                        return (object)[
-                            'key' => $row['metric_key'] ?? '',
-                            'hits' => (int)($row['cache_hit'] ?? 0),
-                            'misses' => (int)($row['cache_miss'] ?? 0),
-                        ];
-                    })
+                    ->map(fn(array $row) => (object)[
+                        'key' => $row['metric_key'] ?? '',
+                        'hits' => (int)($row['cache_hit'] ?? 0),
+                        'misses' => (int)($row['cache_miss'] ?? 0),
+                    ])
                     ->filter(function (object $item) use ($ignorePatterns): bool {
                         /** @var object{key: string, hits: int, misses: int} $item */
                         if (empty($item->key) || ($item->hits === 0 && $item->misses === 0)) {
                             return false;
                         }
 
-                        if (!empty($ignorePatterns)) {
+                        if ($ignorePatterns !== []) {
                             $decodedKey = rawurldecode($item->key);
                             foreach ($ignorePatterns as $pattern) {
                                 if (preg_match($pattern, $decodedKey) > 0 || preg_match($pattern, $item->key) > 0) {
@@ -77,7 +75,7 @@ class CacheWidget extends BaseWidget
                     'status' => $this->getCacheStatus($hitRate),
                     'cacheKeyInteractions' => $cacheKeyInteractions,
                 ];
-            } catch (Exception $e) {
+            } catch (Exception $exception) {
                 return [
                     'hits' => 0,
                     'misses' => 0,
@@ -85,7 +83,7 @@ class CacheWidget extends BaseWidget
                     'hit_rate' => 0,
                     'status' => 'unknown',
                     'cacheKeyInteractions' => [],
-                    'error' => $e->getMessage(),
+                    'error' => $exception->getMessage(),
                 ];
             }
         }, 'cache_' . $period, $this->getRefreshInterval());

@@ -34,12 +34,12 @@ class DatabaseWidget extends BaseWidget
 
         $key = 'database_widget_' . implode('_', $connections) . '_' . $period . '_' . md5(serialize($values));
 
-        return $this->remember(function () use ($period, $connections, $title, $values, $graphs) {
+        return $this->remember(function () use ($period, $connections, $title, $values, $graphs): array {
             try {
                 $connectionsData = $this->buildConnectionsData($period, $connections, $values, $graphs);
                 $empty = $connectionsData === [];
 
-                $data = [
+                return [
                     'empty' => $empty,
                     'connections' => $connectionsData,
                     'colors' => $this->getChartColors(),
@@ -49,9 +49,7 @@ class DatabaseWidget extends BaseWidget
                     'values' => $values,
                     'graphs' => $graphs,
                 ];
-
-                return $data;
-            } catch (Exception $e) {
+            } catch (Exception $exception) {
                 return [
                     'empty' => true,
                     'connections' => [],
@@ -61,7 +59,7 @@ class DatabaseWidget extends BaseWidget
                     'title' => $title,
                     'values' => $values,
                     'graphs' => $graphs,
-                    'error' => $e->getMessage(),
+                    'error' => $exception->getMessage(),
                 ];
             }
         }, $key, $this->getRefreshInterval());
@@ -100,7 +98,7 @@ class DatabaseWidget extends BaseWidget
             $filteredValues = array_intersect_key($allValues, array_flip($values));
 
             $unpackedGraphs = $graphsData;
-            foreach ($unpackedGraphs as $aggregateType => $graphData) {
+            foreach (array_keys($unpackedGraphs) as $aggregateType) {
                 $this->unpackGraphData($unpackedGraphs[$aggregateType]);
             }
 
@@ -139,9 +137,7 @@ class DatabaseWidget extends BaseWidget
                 continue;
             }
 
-            $databaseMetrics = array_map(function ($metric) {
-                return $metric;
-            }, array_keys($metricColors));
+            $databaseMetrics = array_map(fn($metric): string => $metric, array_keys($metricColors));
 
             $graphsData[$aggregateType] = $this->rhythm->getStorage()->graph($databaseMetrics, $aggregateType, $period);
         }

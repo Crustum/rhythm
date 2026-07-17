@@ -265,9 +265,9 @@ class Rhythm
             $this->shouldRecord = false;
 
             return $callback();
-        } catch (Throwable $e) {
-            debug($e->getMessage());
-            debug($e->getTraceAsString());
+        } catch (Throwable $throwable) {
+            debug($throwable->getMessage());
+            debug($throwable->getTraceAsString());
         } finally {
             $this->shouldRecord = $cachedRecording;
         }
@@ -311,9 +311,9 @@ class Rhythm
     {
         try {
             return $callback();
-        } catch (Throwable $e) {
+        } catch (Throwable $throwable) {
             if ($this->handleExceptionsUsing) {
-                ($this->handleExceptionsUsing)($e);
+                ($this->handleExceptionsUsing)($throwable);
             }
 
             return null;
@@ -454,9 +454,7 @@ class Rhythm
                 return 0;
             }
 
-            $entries = $this->rescue(function () {
-                return array_filter($this->entries, fn(RhythmEntry|RhythmValue $entry) => $this->shouldRecordEntry($entry));
-            }) ?? [];
+            $entries = $this->rescue(fn(): array => array_filter($this->entries, $this->shouldRecordEntry(...))) ?? [];
 
             if (empty($entries)) {
                 $this->flush();
@@ -464,7 +462,7 @@ class Rhythm
                 return 0;
             }
 
-            $count = $this->rescue(function () use ($entries) {
+            $count = $this->rescue(function () use ($entries): int {
                 $this->ingest->ingest(new Collection($entries));
 
                 return count($entries);
@@ -483,9 +481,7 @@ class Rhythm
      */
     public function digest(): int
     {
-            $count = $this->ingest->digest();
-
-            return $count;
+            return $this->ingest->digest();
     }
 
     /**
@@ -616,7 +612,7 @@ class Rhythm
     public function report(Throwable $exception)
     {
         $this->rescue(function () use ($exception): void {
-            $exceptionClass = get_class($exception);
+            $exceptionClass = $exception::class;
             $this->record('exception', $exceptionClass);
         });
 

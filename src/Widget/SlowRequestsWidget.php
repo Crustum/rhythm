@@ -27,7 +27,7 @@ class SlowRequestsWidget extends BaseWidget
     {
         $period = $options['period'] ?? 60;
 
-        return $this->remember(function () use ($period, $options) {
+        return $this->remember(function () use ($period, $options): array {
             try {
                 $sortOrder = $this->getSortOrder($options);
                 $orderBy = match ($sortOrder) {
@@ -78,12 +78,12 @@ class SlowRequestsWidget extends BaseWidget
                     'is_sampled' => $this->isSamplingEnabled(),
                     'sample_rate' => $this->getSampleRate(),
                 ];
-            } catch (Exception $e) {
+            } catch (Exception $exception) {
                 return [
                     'requests' => [],
                     'total_count' => 0,
                     'max_duration' => 0,
-                    'error' => $e->getMessage(),
+                    'error' => $exception->getMessage(),
                 ];
             }
         }, $this->getSortCacheKey('slow_requests_' . $period, $options), $this->getRefreshInterval());

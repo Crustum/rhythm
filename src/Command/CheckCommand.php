@@ -152,6 +152,6 @@ class CheckCommand extends Command
      */
     public static function getDescription(): string
     {
-        return 'Take a snapshot of the current server\'s rhythm';
+        return "Take a snapshot of the current server's rhythm";
     }
 }

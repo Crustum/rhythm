@@ -55,7 +55,7 @@ class DatabaseStorageTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -79,9 +79,9 @@ class DatabaseStorageTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        DateTime::setTestNow(null);
+        DateTime::setTestNow();
 
         unset($this->storage);
         unset($this->entriesTable);
@@ -355,7 +355,7 @@ class DatabaseStorageTest extends TestCase
         $this->assertArrayHasKey('metric_key', $data[0]);
         $this->assertArrayHasKey('count', $data[0]);
 
-        $usersData = array_filter($data, fn(array $item) => $item['metric_key'] === '/api/users');
+        $usersData = array_filter($data, fn(array $item): bool => $item['metric_key'] === '/api/users');
         $this->assertNotEmpty($usersData);
 
         $usersEntry = array_values($usersData)[0];
@@ -383,7 +383,7 @@ class DatabaseStorageTest extends TestCase
             $this->assertArrayHasKey('avg', $item);
         }
 
-        $usersData = array_filter($data, fn(array $item) => $item['metric_key'] === '/api/users');
+        $usersData = array_filter($data, fn(array $item): bool => $item['metric_key'] === '/api/users');
         if ($usersData !== []) {
             $usersEntry = array_values($usersData)[0];
             $this->assertEquals(17, $usersEntry['count']);
@@ -434,14 +434,14 @@ class DatabaseStorageTest extends TestCase
             $this->assertArrayHasKey('database', $item);
         }
 
-        $usersData = array_filter($data, fn(array $item) => $item['metric_key'] === '/api/users');
+        $usersData = array_filter($data, fn(array $item): bool => $item['metric_key'] === '/api/users');
         if ($usersData !== []) {
             $usersEntry = array_values($usersData)[0];
             $this->assertEquals(3, $usersEntry['request']);
             $this->assertEquals(0, $usersEntry['database']);
         }
 
-        $queryData = array_filter($data, fn(array $item) => $item['metric_key'] === 'users_query');
+        $queryData = array_filter($data, fn(array $item): bool => $item['metric_key'] === 'users_query');
         if ($queryData !== []) {
             $queryEntry = array_values($queryData)[0];
             $this->assertEquals(0, $queryEntry['request']);
@@ -603,7 +603,7 @@ class DatabaseStorageTest extends TestCase
 
         $result = $this->storage->aggregate('request', ['avg', 'max', 'min', 'count', 'sum'], 60);
 
-        $apiUsers = $result->filter(fn($r) => $r['metric_key'] === '/api/users')->first();
+        $apiUsers = $result->filter(fn($r): bool => $r['metric_key'] === '/api/users')->first();
         $this->assertEquals(200, $apiUsers['max']);
         $this->assertEquals(50, $apiUsers['min']);
         $this->assertEqualsWithDelta(122.06, $apiUsers['avg'], 0.01);
@@ -625,7 +625,7 @@ class DatabaseStorageTest extends TestCase
 
         $result = $this->storage->aggregate('request', ['avg', 'max'], 60);
 
-        $apiUsers = $result->filter(fn($r) => $r['metric_key'] === '/api/users')->first();
+        $apiUsers = $result->filter(fn($r): bool => $r['metric_key'] === '/api/users')->first();
         $this->assertEquals(200, $apiUsers['max']);
         $this->assertGreaterThan(0, $apiUsers['avg']);
     }
@@ -654,7 +654,7 @@ class DatabaseStorageTest extends TestCase
         $this->assertCount(2, $apiUsersGraph);
         $this->assertCount(60, $apiUsersGraph['request']);
 
-        $requestPoints = (new Collection($apiUsersGraph['request']))->filter(fn($val) => $val !== null);
+        $requestPoints = (new Collection($apiUsersGraph['request']))->filter(fn($val): bool => $val !== null);
         $this->assertGreaterThan(0, $requestPoints->count());
     }
 }

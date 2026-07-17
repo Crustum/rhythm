@@ -30,7 +30,7 @@ class ServerStateWidget extends BaseWidget
         $sortBy = $this->resolveSortBy($options);
         $sortDirection = $this->resolveSortDirection($options);
 
-        return $this->remember(function () use ($period, $sortBy, $sortDirection) {
+        return $this->remember(function () use ($period, $sortBy, $sortDirection): array {
             $systemValues = $this->rhythm->getStorage()->values('system');
             $graphs = $this->rhythm->getStorage()->graph(['cpu', 'memory'], 'avg', $period);
             $graphs = $graphs->toArray();
@@ -40,7 +40,7 @@ class ServerStateWidget extends BaseWidget
 
             $servers = [];
             foreach ($systemValues as $serverKey => $systemData) {
-                $values = json_decode($systemData->value, true);
+                $values = json_decode((string)$systemData->value, true);
                 if (!$values) {
                     continue;
                 }
@@ -64,6 +64,7 @@ class ServerStateWidget extends BaseWidget
                     $totalDisk += $disk['total'] ?? 0;
                     $usedDisk += $disk['used'] ?? 0;
                 }
+
                 $diskPercentage = $totalDisk > 0 ? $usedDisk / $totalDisk * 100 : 0;
 
                 $servers[$serverKey] = [
@@ -238,7 +239,7 @@ class ServerStateWidget extends BaseWidget
 
             $memoryAggregates = $this->rhythm->getStorage()->aggregate('memory', ['avg', 'max'], $period);
 
-            $serverMemory = $memoryAggregates->filter(fn($agg) => $agg['metric_key'] === $serverName)->first();
+            $serverMemory = $memoryAggregates->filter(fn($agg): bool => $agg['metric_key'] === $serverName)->first();
 
             $memoryAvg = $serverMemory['avg'] ?? 0;
             $memoryMax = $serverMemory['max'] ?? 0;
@@ -249,13 +250,13 @@ class ServerStateWidget extends BaseWidget
                 'unit' => 'MB',
                 'status' => $this->getStatusLevel((float)$memoryAvg, 80, 90),
             ];
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return [
                 'average' => 0,
                 'maximum' => 0,
                 'unit' => 'MB',
                 'status' => 'unknown',
-                'error' => $e->getMessage(),
+                'error' => $exception->getMessage(),
             ];
         }
     }
@@ -276,7 +277,7 @@ class ServerStateWidget extends BaseWidget
 
             $cpuAggregates = $this->rhythm->getStorage()->aggregate('cpu', ['avg', 'max'], $period);
 
-            $serverCpu = $cpuAggregates->filter(fn($agg) => $agg['metric_key'] === $serverName)->first();
+            $serverCpu = $cpuAggregates->filter(fn($agg): bool => $agg['metric_key'] === $serverName)->first();
 
             $cpuAvg = $serverCpu['avg'] ?? 0;
             $cpuMax = $serverCpu['max'] ?? 0;
@@ -287,13 +288,13 @@ class ServerStateWidget extends BaseWidget
                 'unit' => '%',
                 'status' => $this->getStatusLevel((float)$cpuAvg, 70, 85),
             ];
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return [
                 'average' => 0,
                 'maximum' => 0,
                 'unit' => '%',
                 'status' => 'unknown',
-                'error' => $e->getMessage(),
+                'error' => $exception->getMessage(),
             ];
         }
     }
@@ -311,10 +312,11 @@ class ServerStateWidget extends BaseWidget
             if (!$serverName) {
                 throw new RuntimeException('Could not determine host name.');
             }
+
             $systemValue = $this->rhythm->getStorage()->values('system', [$serverName])->first();
 
             if ($systemValue && $systemValue->value) {
-                $systemInfo = json_decode($systemValue->value, true);
+                $systemInfo = json_decode((string)$systemValue->value, true);
                 $storage = $systemInfo['storage'] ?? [];
 
                 if (!empty($storage)) {
@@ -347,7 +349,7 @@ class ServerStateWidget extends BaseWidget
                 'used' => 0,
                 'total' => 0,
             ];
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return [
                 'average' => 0,
                 'maximum' => 0,
@@ -355,7 +357,7 @@ class ServerStateWidget extends BaseWidget
                 'status' => 'unknown',
                 'used' => 0,
                 'total' => 0,
-                'error' => $e->getMessage(),
+                'error' => $exception->getMessage(),
             ];
         }
     }

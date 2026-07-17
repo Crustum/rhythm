@@ -44,7 +44,7 @@ class IntegrationFlowTest extends RhythmTestCase
         $handler = $this->createMock(RequestHandlerInterface::class);
         $handler->expects($this->once())
             ->method('handle')
-            ->willReturnCallback(function () {
+            ->willReturnCallback(function (): Response {
                 usleep(10000); // 10ms
 
                 return new Response();
@@ -150,7 +150,7 @@ class IntegrationFlowTest extends RhythmTestCase
 
         $aggregationTypes = ['sum', 'avg', 'min', 'max', 'count'];
 
-        foreach ($metrics as $type => $values) {
+        foreach (array_keys($metrics) as $type) {
             foreach ($aggregationTypes as $aggType) {
                 $aggregates = $this->rhythm->aggregate($type, $aggType, 3600);
 

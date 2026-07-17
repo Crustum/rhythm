@@ -20,7 +20,7 @@ class GitWidget extends BaseWidget
      */
     public function getData(array $options = []): array
     {
-        return $this->remember(function () {
+        return $this->remember(function (): array {
             try {
                 $gitData = $this->getGitData();
 
@@ -36,14 +36,14 @@ class GitWidget extends BaseWidget
                 }
 
                 return $gitData;
-            } catch (Exception $e) {
+            } catch (Exception $exception) {
                 return [
                     'branch' => 'Unknown',
                     'commits' => [],
                     'total_commits' => 0,
                     'last_commit' => null,
                     'repository_status' => 'error',
-                    'error' => $e->getMessage(),
+                    'error' => $exception->getMessage(),
                 ];
             }
         }, 'git_widget', $this->getRefreshInterval());
@@ -66,7 +66,7 @@ class GitWidget extends BaseWidget
         $latestTimestamp = 0;
 
         foreach ($gitValues as $gitData) {
-            $data = json_decode($gitData->value, true);
+            $data = json_decode((string)$gitData->value, true);
             if (!$data) {
                 continue;
             }

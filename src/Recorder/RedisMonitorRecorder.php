@@ -230,11 +230,15 @@ class RedisMonitorRecorder extends BaseRecorder implements EventListenerInterfac
     {
         $timestamp = $event->getTimestamp()->getTimestamp();
         foreach ($output as $dbKey => $statsString) {
-            if (!str_starts_with($dbKey, 'db') || empty($statsString)) {
+            if (!str_starts_with($dbKey, 'db')) {
                 continue;
             }
 
-            $dbStats = explode(',', $statsString);
+            if (empty($statsString)) {
+                continue;
+            }
+
+            $dbStats = explode(',', (string)$statsString);
             $parsedStats = [];
 
             foreach ($dbStats as $stat) {
@@ -283,8 +287,8 @@ class RedisMonitorRecorder extends BaseRecorder implements EventListenerInterfac
 
         $timestamp = $event->getTimestamp()->getTimestamp();
 
-        $prevExpiredKeys = (int)Cache::read('redis_total_expired_keys_' . $connection, 'rhythm') ?: 0;
-        $prevEvictedKeys = (int)Cache::read('redis_total_evicted_keys_' . $connection, 'rhythm') ?: 0;
+        $prevExpiredKeys = (int)Cache::read('redis_total_expired_keys_' . $connection, 'rhythm');
+        $prevEvictedKeys = (int)Cache::read('redis_total_evicted_keys_' . $connection, 'rhythm');
 
         if ($prevExpiredKeys > 0 || $prevEvictedKeys > 0) {
             $diffExpired = $output['expired_keys'] - $prevExpiredKeys;
@@ -318,8 +322,8 @@ class RedisMonitorRecorder extends BaseRecorder implements EventListenerInterfac
 
         $timestamp = $event->getTimestamp()->getTimestamp();
 
-        $prevInputBytes = (int)Cache::read('redis_total_net_input_bytes_' . $connection, 'rhythm') ?: 0;
-        $prevOutputBytes = (int)Cache::read('redis_total_net_output_bytes_' . $connection, 'rhythm') ?: 0;
+        $prevInputBytes = (int)Cache::read('redis_total_net_input_bytes_' . $connection, 'rhythm');
+        $prevOutputBytes = (int)Cache::read('redis_total_net_output_bytes_' . $connection, 'rhythm');
 
         if ($prevInputBytes > 0 && $prevOutputBytes > 0) {
             $diffInput = $output['total_net_input_bytes'] - $prevInputBytes;
@@ -347,8 +351,9 @@ class RedisMonitorRecorder extends BaseRecorder implements EventListenerInterfac
         if (!$redisConfig) {
             throw new RuntimeException('Redis configuration is required for RedisMonitorRecorder');
         }
+
         $connection = RedisConnection::create($redisConfig);
-        if (!$connection) {
+        if (!$connection instanceof Redis) {
             throw new RuntimeException('Failed to create Redis connection for RedisMonitorRecorder');
         }
 

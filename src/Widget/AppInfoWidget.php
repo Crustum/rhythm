@@ -23,19 +23,19 @@ class AppInfoWidget extends BaseWidget
      */
     public function getData(array $options = []): array
     {
-        return $this->remember(function () {
+        return $this->remember(function (): array {
             try {
                 return [
                     'environment' => $this->getEnvironmentInfo(),
                     'application' => $this->getApplicationInfo(),
                     'system' => $this->getSystemInfo(),
                 ];
-            } catch (Exception $e) {
+            } catch (Exception $exception) {
                 return [
                     'environment' => [],
                     'application' => [],
                     'system' => [],
-                    'error' => $e->getMessage(),
+                    'error' => $exception->getMessage(),
                 ];
             }
         }, 'app_info_widget', $this->getRefreshInterval());
@@ -127,7 +127,7 @@ class AppInfoWidget extends BaseWidget
     protected function getCakePhpVersion(): string
     {
         $version = Configure::version();
-        if ($version) {
+        if ($version !== '' && $version !== '0') {
             return $version;
         }
 

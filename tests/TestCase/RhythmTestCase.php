@@ -73,6 +73,7 @@ abstract class RhythmTestCase extends TestCase
         if (!$conn instanceof Connection) {
             $this->markTestSkipped('Test connection is not a Cake\Database\Connection');
         }
+
         $this->connection = $conn;
         $this->setupRhythmComponents();
 

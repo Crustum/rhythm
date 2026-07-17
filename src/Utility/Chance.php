@@ -162,8 +162,8 @@ class Chance
     protected function runCallback(mixed ...$args): mixed
     {
         return $this->isWin()
-            ? ($this->winner ?? fn() => true)(...$args)
-            : ($this->loser ?? fn() => false)(...$args);
+            ? ($this->winner ?? fn(): bool => true)(...$args)
+            : ($this->loser ?? fn(): bool => false)(...$args);
     }
 
     /**
@@ -183,7 +183,7 @@ class Chance
      */
     protected static function resultBuilder(): callable
     {
-        return static::$resultBuilder ?? fn($chances, $outOf) => $outOf === null
+        return static::$resultBuilder ?? fn($chances, $outOf): bool => $outOf === null
             ? random_int(0, PHP_INT_MAX) / PHP_INT_MAX <= $chances
             : random_int(1, $outOf) <= $chances;
     }
@@ -196,7 +196,7 @@ class Chance
      */
     public static function alwaysWin(?callable $callback = null): void
     {
-        self::setResultBuilder(fn() => true);
+        self::setResultBuilder(fn(): bool => true);
 
         if ($callback === null) {
             return;
@@ -215,7 +215,7 @@ class Chance
      */
     public static function alwaysLose(?callable $callback = null): void
     {
-        self::setResultBuilder(fn() => false);
+        self::setResultBuilder(fn(): bool => false);
 
         if ($callback === null) {
             return;

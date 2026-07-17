@@ -11,6 +11,7 @@ use Crustum\Rhythm\Recorder\RecorderResolver;
 use Crustum\Rhythm\Rhythm;
 use Crustum\Rhythm\Storage\StorageInterface;
 use InvalidArgumentException;
+use PHPUnit\Framework\MockObject\Stub;
 use stdClass;
 
 /**
@@ -50,9 +51,7 @@ class RecorderResolverTest extends TestCase
 
         $this->container = new Container();
 
-        $this->container->addShared(StorageInterface::class, function () {
-            return $this->createStub(StorageInterface::class);
-        });
+        $this->container->addShared(StorageInterface::class, fn(): Stub => $this->createStub(StorageInterface::class));
 
         $mockIngest = $this->createStub(IngestInterface::class);
         $this->rhythm = new Rhythm(
@@ -73,11 +72,9 @@ class RecorderResolverTest extends TestCase
     {
         $mockRecorder = $this->createStub(RecorderInterface::class);
 
-        $this->container->addShared('Crustum\Rhythm\Test\TestCase\Recorder\TestRecorder', function () use ($mockRecorder) {
-            return $mockRecorder;
-        });
+        $this->container->addShared(TestRecorder::class, fn(): Stub => $mockRecorder);
 
-        $result = $this->resolver->resolve('Crustum\Rhythm\Test\TestCase\Recorder\TestRecorder');
+        $result = $this->resolver->resolve(TestRecorder::class);
 
         $this->assertSame($mockRecorder, $result);
     }
@@ -89,9 +86,9 @@ class RecorderResolverTest extends TestCase
      */
     public function testResolveWithAutoInjection(): void
     {
-        $result = $this->resolver->resolve('Crustum\Rhythm\Test\TestCase\Recorder\TestRecorder');
+        $result = $this->resolver->resolve(TestRecorder::class);
 
-        $this->assertInstanceOf('Crustum\Rhythm\Test\TestCase\Recorder\TestRecorder', $result);
+        $this->assertInstanceOf(TestRecorder::class, $result);
     }
 
     /**
@@ -117,7 +114,7 @@ class RecorderResolverTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Recorder class `Crustum\Rhythm\Test\TestCase\Recorder\InvalidRecorder` must implement RecorderInterface.');
 
-        $this->resolver->resolve('Crustum\Rhythm\Test\TestCase\Recorder\InvalidRecorder');
+        $this->resolver->resolve(InvalidRecorder::class);
     }
 
     /**
@@ -129,9 +126,7 @@ class RecorderResolverTest extends TestCase
     {
         $invalidRecorder = new stdClass();
 
-        $this->container->addShared('TestRecorder', function () use ($invalidRecorder) {
-            return $invalidRecorder;
-        });
+        $this->container->addShared('TestRecorder', fn(): stdClass => $invalidRecorder);
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Recorder `TestRecorder` from container does not implement RecorderInterface.');

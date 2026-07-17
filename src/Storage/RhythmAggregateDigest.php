@@ -233,7 +233,7 @@ class RhythmAggregateDigest
 
         $updateClauses = $this->getUpdateClauses($aggregateType, $driverName);
 
-        if (in_array($driverName, ['mysql', 'mariadb'])) {
+        if (in_array($driverName, ['mysql', 'mariadb'], true)) {
             $query->epilog('ON DUPLICATE KEY UPDATE ' . implode(', ', $updateClauses));
         } else {
             $conflictColumns = ['bucket', 'period', 'type', 'key_hash', 'aggregate'];
@@ -374,7 +374,7 @@ class RhythmAggregateDigest
      */
     protected function getDriverName(Connection $connection): string
     {
-        $driverClass = get_class($connection->getDriver());
+        $driverClass = $connection->getDriver()::class;
         $driverName = strtolower(basename(str_replace('\\', '/', $driverClass)));
 
         return match ($driverName) {

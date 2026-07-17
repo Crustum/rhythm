@@ -34,7 +34,7 @@ class TimedProcessor extends Processor
         $jobMessage = new Message($message, $context, $this->container);
         try {
             $jobMessage->getCallable();
-        } catch (RuntimeException | Error $e) {
+        } catch (RuntimeException | Error) {
             $this->logger->debug('Invalid callable for message. Rejecting message from queue.');
             $this->dispatchEvent('Processor.message.invalid', ['message' => $jobMessage]);
 
@@ -46,13 +46,13 @@ class TimedProcessor extends Processor
 
         try {
             $response = $this->processMessage($jobMessage);
-        } catch (Throwable $e) {
-            $message->setProperty('jobException', $e);
+        } catch (Throwable $throwable) {
+            $message->setProperty('jobException', $throwable);
 
-            $this->logger->debug(sprintf('Message encountered exception: %s', $e->getMessage()));
+            $this->logger->debug(sprintf('Message encountered exception: %s', $throwable->getMessage()));
             $this->dispatchEvent('Processor.message.exception', [
                 'message' => $jobMessage,
-                'exception' => $e,
+                'exception' => $throwable,
                 'duration' => (int)((microtime(true) * 1000) - $startTime),
             ]);
 

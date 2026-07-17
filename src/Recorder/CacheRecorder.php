@@ -62,7 +62,7 @@ class CacheRecorder extends BaseRecorder implements EventListenerInterface
             return;
         }
 
-        $key = (string)$data->getKey();
+        $key = $data->getKey();
         $decodedKey = rawurldecode($key);
 
         if ($this->shouldIgnore($decodedKey) || $this->shouldIgnore($key)) {

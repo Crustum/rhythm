@@ -64,7 +64,7 @@ class DashboardController extends Controller
         $this->set('widgetRegistry', $this->widgetRegistry);
 
         $pass = $this->getRequest()->getParam('pass', []);
-        $widgetName = !empty($pass) ? implode('/', $pass) : null;
+        $widgetName = empty($pass) ? null : implode('/', $pass);
         $period = (int)$this->getRequest()->getQuery('period', 60);
         $sort = $this->getRequest()->getQuery('sort');
 
@@ -82,8 +82,9 @@ class DashboardController extends Controller
         if ($sort !== null) {
             $options['sort'] = $sort;
         }
+
         $data = $widget->getData($options);
-        $this->set(compact('data'));
+        $this->set(['data' => $data]);
         $this->set('widget', $widget);
         $this->set('widgetName', $widgetName);
 

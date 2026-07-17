@@ -185,6 +185,7 @@ class RhythmAggregatesTable extends Table
                     $aggregatedResults[$keyHash][$type] = 0;
                 }
             }
+
             $aggregatedResults[$keyHash][$row->type] = (float)$row->total;
         }
 
@@ -211,6 +212,7 @@ class RhythmAggregatesTable extends Table
                     $tailData[$keyHash]['values'][$t] = [];
                 }
             }
+
             $tailData[$keyHash]['values'][$type][] = (float)($entry->value ?? 0);
         }
 
@@ -242,7 +244,7 @@ class RhythmAggregatesTable extends Table
         /** @var list<array<string, float|int|string>> $results */
         $results = array_values($aggregatedResults);
         if ($orderBy && isset($results[0][$orderBy])) {
-            usort($results, function (array $a, array $b) use ($orderBy, $direction) {
+            usort($results, function (array $a, array $b) use ($orderBy, $direction): int {
                 $aVal = $a[$orderBy] ?? 0;
                 $bVal = $b[$orderBy] ?? 0;
 
@@ -412,6 +414,7 @@ class RhythmAggregatesTable extends Table
                     $time = Chronos::createFromTimestamp($reading->bucket)->toDateTimeString();
                     $valuesByBucket[$time] = $reading->value;
                 }
+
                 $merged = $valuesByBucket + $padding;
                 $mapped[$type] = array_slice($merged, 0, $maxDataPoints, true);
             }
@@ -559,9 +562,7 @@ class RhythmAggregatesTable extends Table
 
         $keySubquery = $this->find()
             ->select(['metric_key'])
-            ->where(function ($exp, $q) {
-                return $exp->equalFields('key_hash', 'aggregated.key_hash');
-            })
+            ->where(fn($exp, $q) => $exp->equalFields('key_hash', 'aggregated.key_hash'))
             ->limit(1);
 
         $outerSelectFields['metric_key'] = $keySubquery;
@@ -641,7 +642,7 @@ class RhythmAggregatesTable extends Table
         $allowed = ['count', 'min', 'max', 'sum', 'avg'];
 
         $invalid = array_diff($aggregates, $allowed);
-        if ($invalid) {
+        if ($invalid !== []) {
             throw new InvalidArgumentException(
                 'Invalid aggregate type(s) [' . implode(', ', $invalid) . '], ' .
                 'allowed types: [' . implode(', ', $allowed) . '].',

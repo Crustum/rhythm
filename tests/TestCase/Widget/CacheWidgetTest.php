@@ -218,7 +218,7 @@ class CacheWidgetTest extends RhythmTestCase
 
         $hasTestKey = false;
         foreach ($data['cacheKeyInteractions'] as $interaction) {
-            if (str_starts_with($interaction->key, 'test_')) {
+            if (str_starts_with((string)$interaction->key, 'test_')) {
                 $hasTestKey = true;
                 break;
             }
@@ -298,7 +298,6 @@ class CacheWidgetTest extends RhythmTestCase
     {
         $reflection = new ReflectionClass($this->widget);
         $method = $reflection->getMethod('getCacheStatus');
-        $method->setAccessible(true);
 
         $this->assertEquals('excellent', $method->invoke($this->widget, 95.0));
         $this->assertEquals('excellent', $method->invoke($this->widget, 90.0));

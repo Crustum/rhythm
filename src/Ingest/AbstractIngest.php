@@ -80,6 +80,7 @@ abstract class AbstractIngest implements IngestInterface
         if ($items->isEmpty()) {
             return;
         }
+
         $this->storeItems($items);
     }
 
@@ -137,12 +138,10 @@ abstract class AbstractIngest implements IngestInterface
      */
     protected function convertItemsToArray(CollectionInterface $items): CollectionInterface
     {
-        return $items->map(function ($item) {
-            return [
-                'data' => serialize($item),
-                'created' => date('Y-m-d H:i:s'),
-            ];
-        })->filter();
+        return $items->map(fn($item): array => [
+            'data' => serialize($item),
+            'created' => date('Y-m-d H:i:s'),
+        ])->filter();
     }
 
     /**
@@ -172,7 +171,7 @@ abstract class AbstractIngest implements IngestInterface
      */
     protected function calculateCutoffTime(string $keep): int
     {
-        return (int)DateTime::now()->modify("-{$keep}")->getTimestamp();
+        return DateTime::now()->modify("-{$keep}")->getTimestamp();
     }
 
     /**

@@ -257,8 +257,8 @@ class CoreFlowTest extends RhythmTestCase
         try {
             new $storageClass($invalidConfig);
             $this->fail('Expected exception for invalid connection');
-        } catch (Exception $e) {
-            $this->assertInstanceOf(Exception::class, $e);
+        } catch (Exception $exception) {
+            $this->assertInstanceOf(Exception::class, $exception);
         }
     }
 
@@ -308,6 +308,7 @@ class CoreFlowTest extends RhythmTestCase
         $this->rhythm->record('debug_type', 'minimal_key', 123);
         $this->rhythm->ingest();
         $this->rhythm->digest();
+
         $row = $this->connection->selectQuery()
             ->select(['metric_key', 'value'])
             ->from('rhythm_entries')

@@ -31,7 +31,7 @@ trait SamplingTrait
     public function shouldSampleDeterministically(string $seed): bool
     {
         $sampleRate = $this->getSampleRate();
-        $value = hexdec(md5($seed)) / pow(16, 32);
+        $value = hexdec(md5($seed)) / 16 ** 32;
 
         return $value <= $sampleRate;
     }

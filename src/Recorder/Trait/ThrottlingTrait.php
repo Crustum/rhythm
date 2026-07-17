@@ -41,11 +41,7 @@ trait ThrottlingTrait
 
         if ($lastRunAt !== null) {
             $future = new DateTime($lastRunAt);
-            if (is_int($interval)) {
-                $future = $future->modify("+{$interval} seconds");
-            } else {
-                $future = $future->add($interval);
-            }
+            $future = is_int($interval) ? $future->modify("+{$interval} seconds") : $future->add($interval);
 
             if ($future->isFuture()) {
                 return;

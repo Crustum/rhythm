@@ -60,6 +60,7 @@ class CacheRecorderTest extends RhythmTestCase
         if (isset($this->recorder)) {
             EventManager::instance()->off($this->recorder);
         }
+
         $this->rhythm->flush();
         Cache::clear('default');
         DateTime::setTestNow();
@@ -182,6 +183,7 @@ class CacheRecorderTest extends RhythmTestCase
         if (empty($keyAggregate)) {
             $keyAggregate = $aggregates->firstMatch(['metric_key' => 'cake_test%20cache%20key%20with%20spaces']);
         }
+
         $this->assertNotEmpty($keyAggregate, 'Aggregate for URL decoded key not found');
     }
 

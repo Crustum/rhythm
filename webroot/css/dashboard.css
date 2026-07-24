@@ -10,17 +10,25 @@
    ============================================================================ */
 
 :root {
-  /* Color Palette */
-  --rhythm-primary: #3b82f6;
-  --rhythm-primary-hover: #2563eb;
+  /* Brand — Speculum indigo (#TELESCOPE-UI-CONSOLIDATE-001 Phase 1) */
+  --rhythm-primary: #4040c8;
+  --rhythm-primary-hover: #3535a8;
+  --rhythm-primary-active: #2f2f96;
+  --rhythm-primary-light: #818cf8;
+  --rhythm-on-primary: #ffffff;
+  --rhythm-accent: #818cf8;
+  --rhythm-accent-hover: #6366f1;
   --rhythm-secondary: #6b7280;
   --rhythm-secondary-hover: #4b5563;
+
+  /* Typography — Speculum Figtree */
+  --rhythm-font-family: Figtree, sans-serif;
 
   /* Background Colors */
   --rhythm-bg-primary: #ffffff;
   --rhythm-bg-secondary: #f9fafb;
   --rhythm-bg-tertiary: #f3f4f6;
-  --rhythm-bg-accent: #eff6ff;
+  --rhythm-bg-accent: #eef2ff;
   --rhythm-bg-subtle: #f8fafc;
 
   /* Card & Surface Colors */
@@ -32,7 +40,7 @@
   --rhythm-text-primary: #111827;
   --rhythm-text-secondary: #6b7280;
   --rhythm-text-tertiary: #9ca3af;
-  --rhythm-text-inverse: #ffffff;
+  --rhythm-text-inverse: var(--rhythm-on-primary);
 
   /* Status Colors */
   --rhythm-success: #10b981;
@@ -47,18 +55,18 @@
   --rhythm-critical-bg: #fecaca;
   --rhythm-critical-text: #991b1b;
 
-  --rhythm-info: #3b82f6;
-  --rhythm-info-bg: #dbeafe;
-  --rhythm-info-text: #1e40af;
+  --rhythm-info: #4040c8;
+  --rhythm-info-bg: #e0e7ff;
+  --rhythm-info-text: #3730a3;
 
   /* Borders & Dividers */
   --rhythm-border-color: #e5e7eb;
   --rhythm-border-light: #f3f4f6;
-  --rhythm-border-focus: #3b82f6;
+  --rhythm-border-focus: var(--rhythm-primary);
 
   /* Focus Ring */
-  --rhythm-focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.1);
-  --rhythm-focus-ring-color: rgba(59, 130, 246, 0.1);
+  --rhythm-focus-ring: 0 0 0 3px rgba(64, 64, 200, 0.25);
+  --rhythm-focus-ring-color: rgba(64, 64, 200, 0.25);
 
   /* Shadows */
   --rhythm-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -164,33 +172,43 @@
   --rhythm-chart-grid: #f3f4f6;
 
   /* Theme Toggle */
-  --rhythm-theme-toggle-bg: #f3f4f6;
-  --rhythm-theme-toggle-border: #d1d5db;
-  --rhythm-theme-toggle-active: #3b82f6;
+  --rhythm-theme-toggle-bg: var(--rhythm-gray-200);
+  --rhythm-theme-toggle-border: var(--rhythm-gray-300);
+  --rhythm-theme-toggle-active: var(--rhythm-primary);
+  --rhythm-icon-fg: var(--rhythm-gray-600);
 
   /* Header Colors */
   --rhythm-header-bg: linear-gradient(135deg, var(--rhythm-primary) 0%, var(--rhythm-primary-hover) 100%);
-  --rhythm-header-text: var(--rhythm-text-inverse);
+  --rhythm-header-text: var(--rhythm-on-primary);
 }
 
-/* Dark Theme */
+/* Dark Theme — Speculum gray-900 family */
 [data-theme="dark"] {
+  --rhythm-primary: #4040c8;
+  --rhythm-primary-hover: #6366f1;
+  --rhythm-primary-active: #3535a8;
+  --rhythm-primary-light: #818cf8;
+  --rhythm-on-primary: #ffffff;
+  --rhythm-accent: #818cf8;
+  --rhythm-accent-hover: #a5b4fc;
+
   /* Background Colors */
-  --rhythm-bg-primary: #0f172a;
-  --rhythm-bg-secondary: #1e293b;
-  --rhythm-bg-tertiary: #334155;
-  --rhythm-bg-accent: #1e3a8a;
-  --rhythm-bg-subtle: #1e293b;
+  --rhythm-bg-primary: #111827;
+  --rhythm-bg-secondary: #1f2937;
+  --rhythm-bg-tertiary: #374151;
+  --rhythm-bg-accent: #312e81;
+  --rhythm-bg-subtle: #1f2937;
 
   /* Card & Surface Colors */
-  --rhythm-card-bg: #1e293b;
+  --rhythm-card-bg: #1f2937;
   --rhythm-card-border: rgba(255, 255, 255, 0.1);
-  --rhythm-card-hover-bg: #334155;
+  --rhythm-card-hover-bg: #374151;
 
   /* Text Colors */
-  --rhythm-text-primary: #f8fafc;
-  --rhythm-text-secondary: #cbd5e1;
-  --rhythm-text-tertiary: #94a3b8;
+  --rhythm-text-primary: #f3f4f6;
+  --rhythm-text-secondary: #e5e7eb;
+  --rhythm-text-tertiary: #9ca3af;
+  --rhythm-text-inverse: var(--rhythm-on-primary);
 
   /* Status Colors - Dark Theme Adjusted */
   --rhythm-success-bg: #064e3b;
@@ -202,16 +220,17 @@
   --rhythm-critical-bg: #7f1d1d;
   --rhythm-critical-text: #fca5a5;
 
-  --rhythm-info-bg: #1e3a8a;
-  --rhythm-info-text: #93c5fd;
+  --rhythm-info-bg: #312e81;
+  --rhythm-info-text: #a5b4fc;
 
   /* Borders & Dividers */
-  --rhythm-border-color: #334155;
-  --rhythm-border-light: #475569;
+  --rhythm-border-color: #374151;
+  --rhythm-border-light: #4b5563;
+  --rhythm-border-focus: var(--rhythm-accent);
 
   /* Focus Ring - Dark Theme */
-  --rhythm-focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.3);
-  --rhythm-focus-ring-color: rgba(59, 130, 246, 0.3);
+  --rhythm-focus-ring: 0 0 0 3px rgba(129, 140, 248, 0.3);
+  --rhythm-focus-ring-color: rgba(129, 140, 248, 0.3);
 
   /* Shadows - Dark Theme */
   --rhythm-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
@@ -219,7 +238,7 @@
   --rhythm-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
 
   /* Dark theme overlay adjustments */
-  --rhythm-overlay-bg: rgba(15, 23, 42, 0.8);
+  --rhythm-overlay-bg: rgba(17, 24, 39, 0.8);
   --rhythm-overlay-bg-dark: rgba(0, 0, 0, 0.9);
 
   /* Dark theme form controls */
@@ -234,44 +253,50 @@
   --rhythm-btn-overlay-border: rgba(255, 255, 255, 0.2);
 
   /* Chart Colors - Dark Theme */
-  --rhythm-chart-bg: #1e293b;
-  --rhythm-chart-border: #334155;
-  --rhythm-chart-text: #cbd5e1;
-  --rhythm-chart-grid: #334155;
+  --rhythm-chart-bg: #1f2937;
+  --rhythm-chart-border: #374151;
+  --rhythm-chart-text: #e5e7eb;
+  --rhythm-chart-grid: #374151;
 
   /* Theme Toggle - Dark Theme */
-  --rhythm-theme-toggle-bg: #334155;
-  --rhythm-theme-toggle-border: #475569;
-  --rhythm-theme-toggle-active: #60a5fa;
+  --rhythm-theme-toggle-bg: #374151;
+  --rhythm-theme-toggle-border: #4b5563;
+  --rhythm-theme-toggle-active: var(--rhythm-accent);
+  --rhythm-icon-fg: #e5e7eb;
 
   /* Header Colors - Dark Theme */
-  --rhythm-header-bg: linear-gradient(135deg, #06041f 0%, #050226 100%);
-  --rhythm-header-text: var(--rhythm-text-inverse);
+  --rhythm-header-bg: linear-gradient(135deg, #312e81 0%, #1e1b4b 100%);
+  --rhythm-header-text: var(--rhythm-on-primary);
 }
 
 /* System Theme Detection - Only apply when no manual theme is set */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    /* Auto-apply dark theme when system preference is dark and no manual theme is set */
-    --rhythm-bg-primary: #0f172a;
-    --rhythm-bg-secondary: #1e293b;
-    --rhythm-bg-tertiary: #334155;
-    --rhythm-bg-accent: #1e3a8a;
-    --rhythm-bg-subtle: #1e293b;
-    --rhythm-card-bg: #1e293b;
+    --rhythm-primary: #4040c8;
+    --rhythm-primary-hover: #6366f1;
+    --rhythm-on-primary: #ffffff;
+    --rhythm-accent: #818cf8;
+    --rhythm-accent-hover: #a5b4fc;
+    --rhythm-bg-primary: #111827;
+    --rhythm-bg-secondary: #1f2937;
+    --rhythm-bg-tertiary: #374151;
+    --rhythm-bg-accent: #312e81;
+    --rhythm-bg-subtle: #1f2937;
+    --rhythm-card-bg: #1f2937;
     --rhythm-card-border: rgba(255, 255, 255, 0.1);
-    --rhythm-card-hover-bg: #334155;
-    --rhythm-text-primary: #f8fafc;
-    --rhythm-text-secondary: #cbd5e1;
-    --rhythm-text-tertiary: #94a3b8;
-    --rhythm-border-color: #334155;
-    --rhythm-border-light: #475569;
-    --rhythm-focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.3);
-    --rhythm-focus-ring-color: rgba(59, 130, 246, 0.3);
+    --rhythm-card-hover-bg: #374151;
+    --rhythm-text-primary: #f3f4f6;
+    --rhythm-text-secondary: #e5e7eb;
+    --rhythm-text-tertiary: #9ca3af;
+    --rhythm-border-color: #374151;
+    --rhythm-border-light: #4b5563;
+    --rhythm-border-focus: var(--rhythm-accent);
+    --rhythm-focus-ring: 0 0 0 3px rgba(129, 140, 248, 0.3);
+    --rhythm-focus-ring-color: rgba(129, 140, 248, 0.3);
     --rhythm-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
     --rhythm-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
     --rhythm-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-    --rhythm-overlay-bg: rgba(15, 23, 42, 0.8);
+    --rhythm-overlay-bg: rgba(17, 24, 39, 0.8);
     --rhythm-overlay-bg-dark: rgba(0, 0, 0, 0.9);
     --rhythm-form-control-border: rgba(255, 255, 255, 0.2);
     --rhythm-form-control-bg: rgba(255, 255, 255, 0.05);
@@ -280,23 +305,29 @@
     --rhythm-btn-overlay-bg: rgba(255, 255, 255, 0.1);
     --rhythm-btn-overlay-bg-hover: rgba(255, 255, 255, 0.2);
     --rhythm-btn-overlay-border: rgba(255, 255, 255, 0.2);
-    --rhythm-chart-bg: #1e293b;
-    --rhythm-chart-border: #334155;
-    --rhythm-chart-text: #cbd5e1;
-    --rhythm-chart-grid: #334155;
-    --rhythm-theme-toggle-bg: #334155;
-    --rhythm-theme-toggle-border: #475569;
-    --rhythm-theme-toggle-active: #60a5fa;
+    --rhythm-chart-bg: #1f2937;
+    --rhythm-chart-border: #374151;
+    --rhythm-chart-text: #e5e7eb;
+    --rhythm-chart-grid: #374151;
+    --rhythm-theme-toggle-bg: #374151;
+    --rhythm-theme-toggle-border: #4b5563;
+    --rhythm-theme-toggle-active: var(--rhythm-accent);
+    --rhythm-icon-fg: #e5e7eb;
+    --rhythm-header-bg: linear-gradient(135deg, #312e81 0%, #1e1b4b 100%);
   }
 }
 
 /* Ensure manual theme selection takes precedence over system preference */
 :root[data-theme="light"] {
-  /* Force light theme variables when manually set to light */
+  --rhythm-primary: #4040c8;
+  --rhythm-primary-hover: #3535a8;
+  --rhythm-on-primary: #ffffff;
+  --rhythm-accent: #818cf8;
+  --rhythm-accent-hover: #6366f1;
   --rhythm-bg-primary: #ffffff;
   --rhythm-bg-secondary: #f9fafb;
   --rhythm-bg-tertiary: #f3f4f6;
-  --rhythm-bg-accent: #eff6ff;
+  --rhythm-bg-accent: #eef2ff;
   --rhythm-bg-subtle: #f8fafc;
   --rhythm-card-bg: #ffffff;
   --rhythm-card-border: rgba(0, 0, 0, 0.05);
@@ -306,8 +337,9 @@
   --rhythm-text-tertiary: #9ca3af;
   --rhythm-border-color: #e5e7eb;
   --rhythm-border-light: #f3f4f6;
-  --rhythm-focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.1);
-  --rhythm-focus-ring-color: rgba(59, 130, 246, 0.1);
+  --rhythm-border-focus: var(--rhythm-primary);
+  --rhythm-focus-ring: 0 0 0 3px rgba(64, 64, 200, 0.25);
+  --rhythm-focus-ring-color: rgba(64, 64, 200, 0.25);
   --rhythm-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   --rhythm-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --rhythm-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -324,13 +356,14 @@
   --rhythm-chart-border: #e5e7eb;
   --rhythm-chart-text: #374151;
   --rhythm-chart-grid: #f3f4f6;
-  --rhythm-theme-toggle-bg: #f3f4f6;
-  --rhythm-theme-toggle-border: #d1d5db;
-  --rhythm-theme-toggle-active: #3b82f6;
+  --rhythm-theme-toggle-bg: var(--rhythm-gray-200);
+  --rhythm-theme-toggle-border: var(--rhythm-gray-300);
+  --rhythm-theme-toggle-active: var(--rhythm-primary);
+  --rhythm-icon-fg: var(--rhythm-gray-600);
 
   /* Header Colors - Light Theme */
   --rhythm-header-bg: linear-gradient(135deg, var(--rhythm-primary) 0%, var(--rhythm-primary-hover) 100%);
-  --rhythm-header-text: var(--rhythm-text-inverse);
+  --rhythm-header-text: var(--rhythm-on-primary);
 }
 
 /* ============================================================================
@@ -578,7 +611,7 @@ body {
 
 .rhythm-btn-primary {
   background-color: var(--rhythm-primary);
-  color: var(--rhythm-text-inverse);
+  color: var(--rhythm-on-primary);
 }
 
 .rhythm-btn-primary:hover {

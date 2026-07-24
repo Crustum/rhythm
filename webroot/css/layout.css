@@ -2,7 +2,7 @@
 
 /* Dashboard Layout */
 .dashboard-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: var(--rhythm-font-family);
     margin: 0;
     padding: 0;
     background-color: var(--rhythm-bg-primary);
@@ -282,40 +282,6 @@
     margin-left: var(--rhythm-space-sm);
 }
 
-/* Center the moon icon in the toggle */
-.rhythm-theme-toggle .icon {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    font-size: 14px;
-    color: var(--rhythm-text-inverse);
-    margin: 0;
-    padding: 0;
-    line-height: 1;
-    position: static;
-    transform: none;
-}
-
-.rhythm-theme-toggle .icon.sun {
-    justify-content: center;
-}
-
-.rhythm-theme-toggle .icon.moon {
-    justify-content: flex-end;
-}
-
-.rhythm-theme-toggle .icon.moon i {
-    margin-right: -3px;
-    margin-left: auto;
-    display: block;
-}
-
-/* Ensure the toggle circle uses the dark gray in dark mode */
-[data-theme="dark"] .rhythm-theme-toggle::before {
-    background: var(--rhythm-theme-toggle-active);
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
     .dashboard-header {
@@ -383,7 +349,7 @@ canvas {
 
 [data-theme="dark"] #refresh-all {
     background: var(--rhythm-bg-tertiary) !important;
-    color: var(--rhythm-text-inverse) !important;
+    color: var(--rhythm-on-primary) !important;
     border: 1px solid var(--rhythm-border-color) !important;
     box-shadow: none !important;
 }
@@ -392,14 +358,10 @@ canvas {
 }
 
 [data-theme="dark"] .refresh-widget {
-    color: var(--rhythm-text-inverse) !important;
+    color: var(--rhythm-on-primary) !important;
 }
 [data-theme="dark"] .refresh-widget i {
-    color: var(--rhythm-text-inverse) !important;
-}
-
-[data-theme="dark"] {
-    --rhythm-theme-toggle-active: #64748b; /* or another dark gray */
+    color: var(--rhythm-on-primary) !important;
 }
 
 [data-theme="dark"] .widget-placeholder i {

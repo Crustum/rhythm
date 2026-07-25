@@ -9,6 +9,16 @@ use Cake\ORM\Entity;
  * Metric Value Entity
  *
  * Represents a metric value in the rhythm system.
+ *
+ * @property int $id
+ * @property int $timestamp
+ * @property string $type
+ * @property string $metric_key
+ * @property string $key_hash
+ * @property string $value
+ * @property string|null $key Virtual accessor for metric_key
+ * @property \Cake\I18n\DateTime|null $created
+ * @property \Cake\I18n\DateTime|null $modified
  */
 class MetricValue extends Entity
 {

@@ -67,6 +67,7 @@ class ExceptionsRecorder extends BaseRecorder implements EventListenerInterface
         if (!$data instanceof Throwable) {
             return;
         }
+
         $exception = $data;
         $class = $this->resolveClass($exception);
 
@@ -127,9 +128,7 @@ class ExceptionsRecorder extends BaseRecorder implements EventListenerInterface
     {
         $trace = collection($e->getTrace());
 
-        $frame = $trace->filter(function (array $frame) {
-            return isset($frame['file']) && !$this->isInternalFile($frame['file']);
-        })->first();
+        $frame = $trace->filter(fn(array $frame): bool => isset($frame['file']) && !$this->isInternalFile($frame['file']))->first();
 
         if (!$this->isInternalFile($e->getFile()) || $frame === null) {
             return $this->formatLocation($e->getFile(), $e->getLine());

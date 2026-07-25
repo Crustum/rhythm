@@ -5,20 +5,41 @@
  * @var mixed $currentLayout
  * @var mixed $widgets
  */
+
+use Cake\Core\Configure;
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rhythm Dashboard (New System)</title>
-    <?= $this->AssetCompress->css('Crustum/Rhythm.rhythm-dashboard.css', ['raw' => \Cake\Core\Configure::read('debug')]) ?>
-    <?= $this->AssetCompress->script('Crustum/Rhythm.rhythm-dashboard.js', ['raw' => \Cake\Core\Configure::read('debug')]) ?>
+    <title>Rhythm Dashboard</title>
+    <script>
+        (function () {
+            try {
+                var scheme = localStorage.getItem('rhythmColorScheme');
+                if (scheme !== 'system' && scheme !== 'light' && scheme !== 'dark') {
+                    var legacy = localStorage.getItem('rhythm-theme');
+                    scheme = (legacy === 'light' || legacy === 'dark') ? legacy : 'system';
+                }
+                var theme = scheme === 'system'
+                    ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+                    : scheme;
+                document.documentElement.setAttribute('data-theme', theme);
+                document.documentElement.setAttribute('data-scheme', scheme);
+            } catch (e) {
+            }
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:300,400,500,600" rel="stylesheet" />
+    <?= $this->AssetCompress->css('Crustum/Rhythm.rhythm-dashboard.css', ['raw' => Configure::read('debug')]) ?>
+    <?= $this->AssetCompress->script('Crustum/Rhythm.rhythm-dashboard.js', ['raw' => Configure::read('debug')]) ?>
 </head>
 <body class="dashboard-body">
     <div class="dashboard-header">
         <div class="dashboard-title">
-            <h1><i class="fas fa-heartbeat"></i> Rythm Dashboard</h1>
+            <h1><i class="fas fa-heartbeat"></i> Rhythm Dashboard</h1>
             <p class="dashboard-subtitle">System Monitoring & Performance</p>
         </div>
         <div class="dashboard-controls">
@@ -55,7 +76,7 @@
     </div>
 
     <div class="dashboard-footer">
-        <p>&copy; <?= date('Y') ?> Rhythm Dashboard </span></p>
+        <p>&copy; <?= date('Y') ?> Rhythm Dashboard</p>
     </div>
 
     <script>

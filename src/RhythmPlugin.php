@@ -49,6 +49,7 @@ class RhythmPlugin extends BasePlugin implements ManifestInterface
             if ($name === 'debug_kit') {
                 continue;
             }
+
             $connection = ConnectionManager::get($name);
             $driver = $connection->getDriver();
             if (method_exists($driver, 'getLogger') && method_exists($driver, 'setLogger')) {
@@ -68,6 +69,7 @@ class RhythmPlugin extends BasePlugin implements ManifestInterface
             } else {
                 $container = Configure::read('app.container');
             }
+
             if ($container && $container->has(Rhythm::class)) {
                 $container->get(Rhythm::class);
             }
@@ -79,6 +81,7 @@ class RhythmPlugin extends BasePlugin implements ManifestInterface
             } else {
                 $container = Configure::read('app.container');
             }
+
             if ($container && $container->has(Rhythm::class)) {
                 $rhythm = $container->get(Rhythm::class);
                 $rhythm->ingest();
@@ -98,9 +101,7 @@ class RhythmPlugin extends BasePlugin implements ManifestInterface
 
         $container->addShared(StorageInterface::class, DigestStorage::class);
 
-        $container->addShared('ingest.config.redis', function () {
-            return Configure::read('Rhythm.ingest.redis');
-        });
+        $container->addShared('ingest.config.redis', fn(): mixed => Configure::read('Rhythm.ingest.redis'));
 
         $ingestDriver = Configure::read('Rhythm.ingest.driver', 'redis');
         if ($ingestDriver === 'redis') {
@@ -110,6 +111,7 @@ class RhythmPlugin extends BasePlugin implements ManifestInterface
         } else {
             $container->addShared(IngestInterface::class, NullIngest::class);
         }
+
         $container->addShared(ContainerInterface::class, $container);
 
         $container->addShared(Rhythm::class)
@@ -117,7 +119,7 @@ class RhythmPlugin extends BasePlugin implements ManifestInterface
             ->addArgument(IngestInterface::class)
             ->addArgument(ContainerInterface::class);
 
-        $container->addShared(Rhythm::class, function () use ($container) {
+        $container->addShared(Rhythm::class, function () use ($container): Rhythm {
             $storage = $container->get(StorageInterface::class);
             $ingest = $container->get(IngestInterface::class);
             $rhythm = new Rhythm($storage, $ingest, $container);
@@ -138,9 +140,7 @@ class RhythmPlugin extends BasePlugin implements ManifestInterface
         $container->add(ClearCommand::class)
             ->addArgument(Rhythm::class);
 
-        $container->addShared(RhythmMiddleware::class, function () use ($container) {
-            return new RhythmMiddleware($container->get(Rhythm::class));
-        });
+        $container->addShared(RhythmMiddleware::class, fn(): RhythmMiddleware => new RhythmMiddleware($container->get(Rhythm::class)));
     }
 
     /**
@@ -164,14 +164,16 @@ class RhythmPlugin extends BasePlugin implements ManifestInterface
      */
     public function console(CommandCollection $commands): CommandCollection
     {
-        $commands->add('rhythm clear', ClearCommand::class);
-        $commands->add('rhythm purge', ClearCommand::class);
-        $commands->add('rhythm digest', DigestCommand::class);
-        $commands->add('rhythm work', DigestCommand::class);
-        $commands->add('rhythm check', CheckCommand::class);
-        $commands->add('rhythm restart', RestartCommand::class);
+        $commands = parent::console($commands);
 
-        return $commands->addMany($commands->discoverPlugin($this->getName()));
+        return $commands->addMany([
+            'rhythm clear' => ClearCommand::class,
+            'rhythm purge' => ClearCommand::class,
+            'rhythm digest' => DigestCommand::class,
+            'rhythm work' => DigestCommand::class,
+            'rhythm check' => CheckCommand::class,
+            'rhythm restart' => RestartCommand::class,
+        ]);
     }
 
     /**

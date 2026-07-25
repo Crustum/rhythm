@@ -34,16 +34,12 @@ trait ThresholdsTrait
         $config = $this->config['threshold'] ?? 1000;
 
         if (!is_array($config)) {
-            return (int)$config;
+            return $config;
         }
 
         $patterns = (new Collection($config))
-            ->filter(function ($value, $key) use ($string) {
-                return $key !== 'default' && preg_match($key, $string) === 1;
-            })
-            ->map(function ($value, $key) {
-                return (int)$value;
-            })
+            ->filter(fn($value, $key): bool => $key !== 'default' && preg_match($key, $string) === 1)
+            ->map(fn($value, $key): int => (int)$value)
             ->first();
 
         if ($patterns) {

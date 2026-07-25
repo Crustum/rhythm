@@ -30,7 +30,7 @@ class QueuesWidget extends BaseWidget
     {
         $period = $options['period'] ?? 60;
 
-        return $this->remember(function () use ($period) {
+        return $this->remember(function () use ($period): array {
             try {
                 $queues = $this->rhythm->getStorage()->graph(
                     [
@@ -81,16 +81,14 @@ class QueuesWidget extends BaseWidget
 
                 $transformedChartData = $this->transformChartDataForTemplates($chartData, ['activity', 'statistics']);
 
-                $result = [
+                return [
                     'queues' => $queues,
                     'queueStats' => $queueStats,
                     'summary' => $summary,
                     'period' => $period,
                     'chartData' => $transformedChartData,
                 ];
-
-                return $result;
-            } catch (Exception $e) {
+            } catch (Exception $exception) {
                 return [
                     'queues' => [],
                     'queueStats' => [],
@@ -103,7 +101,7 @@ class QueuesWidget extends BaseWidget
                     ],
                     'period' => $period,
                     'chartData' => [],
-                    'error' => $e->getMessage(),
+                    'error' => $exception->getMessage(),
                 ];
             }
         }, 'queues_' . $period, $this->getRefreshInterval());

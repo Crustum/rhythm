@@ -72,8 +72,8 @@ trait QueueNameTrait
     public function stripQueuePrefix(string $queueName): string
     {
         foreach ($this->queuePrefixes as $prefix) {
-            if (str_starts_with($queueName, $prefix)) {
-                return substr($queueName, strlen($prefix));
+            if (str_starts_with($queueName, (string)$prefix)) {
+                return substr($queueName, strlen((string)$prefix));
             }
         }
 

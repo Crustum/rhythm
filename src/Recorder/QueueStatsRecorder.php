@@ -73,7 +73,7 @@ class QueueStatsRecorder extends BaseRecorder implements EventListenerInterface
         }
 
         $this->redis = RedisConnection::create($redisConfig);
-        if ($this->redis) {
+        if ($this->redis instanceof Redis) {
             $this->redisPrefix = $redisConfig['prefix'] ?? '';
         }
     }
@@ -96,11 +96,12 @@ class QueueStatsRecorder extends BaseRecorder implements EventListenerInterface
      */
     public function record(mixed $data): void
     {
-        if (!$data instanceof SharedBeat || $this->redis === null) {
+        if (!$data instanceof SharedBeat || !$this->redis instanceof Redis) {
             return;
         }
+
         $this->throttle(1, $data, function (SharedBeat $event): void {
-            if ($this->redis === null) {
+            if (!$this->redis instanceof Redis) {
                 return;
             }
 
@@ -111,6 +112,7 @@ class QueueStatsRecorder extends BaseRecorder implements EventListenerInterface
                 if ($this->shouldIgnore($queueData['clean_name'])) {
                     continue;
                 }
+
                 $this->collectQueueStats($queueData['redis_key'], $queueData['clean_name'], $timestamp);
             }
 
@@ -125,7 +127,7 @@ class QueueStatsRecorder extends BaseRecorder implements EventListenerInterface
      */
     protected function getConfiguredQueues(): array
     {
-        if ($this->redis === null) {
+        if (!$this->redis instanceof Redis) {
             return [];
         }
 
@@ -135,7 +137,7 @@ class QueueStatsRecorder extends BaseRecorder implements EventListenerInterface
             foreach ($keys as $key) {
                 $queueName = str_replace($this->redisPrefix, '', $key);
                 $type = $this->redis->type($key);
-                if (in_array($type, [Redis::REDIS_LIST, Redis::REDIS_SET, Redis::REDIS_ZSET])) {
+                if (in_array($type, [Redis::REDIS_LIST, Redis::REDIS_SET, Redis::REDIS_ZSET], true)) {
                     $cleanQueueName = $this->stripQueuePrefix($queueName);
                     $queues[] = [
                         'redis_key' => $key,
@@ -222,7 +224,7 @@ class QueueStatsRecorder extends BaseRecorder implements EventListenerInterface
      */
     protected function getQueueDepth(string $redisKey): int
     {
-        if ($this->redis === null) {
+        if (!$this->redis instanceof Redis) {
             return 0;
         }
 
@@ -256,7 +258,7 @@ class QueueStatsRecorder extends BaseRecorder implements EventListenerInterface
     protected function getQueueWaitTimes(string $redisKey, int $sampleSize = 10): array
     {
         $waitTimes = [];
-        if ($this->redis === null) {
+        if (!$this->redis instanceof Redis) {
             return $waitTimes;
         }
 
@@ -269,11 +271,13 @@ class QueueStatsRecorder extends BaseRecorder implements EventListenerInterface
                     if ($jobJson === false || $jobJson === null) {
                         break;
                     }
+
                     $waitTime = $this->getJobWaitTimeFromJson($jobJson);
                     if ($waitTime > 0) {
                         $waitTimes[] = $waitTime;
                     }
                 }
+
                 break;
             case Redis::REDIS_SET:
                 $jobData = $this->redis->sRandMember($redisKey, $sampleSize);
@@ -285,6 +289,7 @@ class QueueStatsRecorder extends BaseRecorder implements EventListenerInterface
                         }
                     }
                 }
+
                 break;
             case Redis::REDIS_ZSET:
                 $jobData = $this->redis->zRange($redisKey, 0, $sampleSize - 1);
@@ -296,6 +301,7 @@ class QueueStatsRecorder extends BaseRecorder implements EventListenerInterface
                         }
                     }
                 }
+
                 break;
             default:
                 return [];

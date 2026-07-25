@@ -36,11 +36,11 @@ class RhythmTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->container = $this->createMock(ContainerInterface::class);
+        $this->container = $this->createStub(ContainerInterface::class);
 
         $storage = new DigestStorage();
         $ingest = new TransparentIngest($storage);
@@ -91,6 +91,34 @@ class RhythmTest extends TestCase
         $this->assertEquals('user', $value->type);
         $this->assertEquals('active:123', $value->key);
         $this->assertEquals('John Doe', $value->value);
+    }
+
+    /**
+     * Test recording with backed and unit enums.
+     *
+     * @return void
+     */
+    public function testRecordAcceptsEnums(): void
+    {
+        $entry = $this->rhythm->record(TestMetricType::Request, TestMetricKey::UserOne, 100);
+
+        $this->assertSame('request', $entry->type);
+        $this->assertSame('UserOne', $entry->key);
+        $this->assertSame(100, $entry->value);
+    }
+
+    /**
+     * Test setting values with enums.
+     *
+     * @return void
+     */
+    public function testSetAcceptsEnums(): void
+    {
+        $value = $this->rhythm->set(TestMetricType::User, TestMetricKey::Active, 'John Doe');
+
+        $this->assertSame('user', $value->type);
+        $this->assertSame('Active', $value->key);
+        $this->assertSame('John Doe', $value->value);
     }
 
     /**
@@ -151,7 +179,7 @@ class RhythmTest extends TestCase
     {
         $this->rhythm->record('before', 'key1', 100);
 
-        $result = $this->rhythm->ignore(function () {
+        $result = $this->rhythm->ignore(function (): string {
             $this->rhythm->record('ignored', 'key2', 200);
             $this->rhythm->set('ignored', 'key3', 'value');
 
@@ -195,9 +223,7 @@ class RhythmTest extends TestCase
      */
     public function testFilter(): void
     {
-        $this->rhythm->filter(function ($entry) {
-            return $entry->value === null || $entry->value > 150;
-        });
+        $this->rhythm->filter(fn($entry): bool => $entry->value === null || $entry->value > 150);
 
         $this->rhythm->record('test', 'low', 100);
         $this->rhythm->record('test', 'high', 200);
@@ -215,9 +241,7 @@ class RhythmTest extends TestCase
      */
     public function testRescue(): void
     {
-        $result = $this->rhythm->rescue(function () {
-            return 'success';
-        });
+        $result = $this->rhythm->rescue(fn(): string => 'success');
 
         $this->assertEquals('success', $result);
 
@@ -259,13 +283,9 @@ class RhythmTest extends TestCase
      */
     public function testMultipleFilters(): void
     {
-        $this->rhythm->filter(function ($entry) {
-            return $entry->type === 'test';
-        });
+        $this->rhythm->filter(fn($entry): bool => $entry->type === 'test');
 
-        $this->rhythm->filter(function ($entry) {
-            return $entry->value === null || $entry->value > 100;
-        });
+        $this->rhythm->filter(fn($entry): bool => $entry->value === null || $entry->value > 100);
 
         $this->rhythm->record('test', 'key1', 150);
         $this->rhythm->record('test', 'key2', 50);

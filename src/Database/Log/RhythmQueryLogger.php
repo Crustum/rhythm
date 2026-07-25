@@ -105,7 +105,7 @@ class RhythmQueryLogger extends AbstractLogger
         /** @var \Cake\Database\Log\LoggedQuery|object|null $query */
         $query = $context['query'] ?? null;
         $this->_threshold = 3;
-        if ($this->_logger) {
+        if ($this->_logger instanceof LoggerInterface) {
             $this->_logger->log($level, $message, $context);
         }
 

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Crustum\Rhythm\Queue;
 
-use Cake\Core\ContainerInterface;
 use Cake\Queue\Job\Message;
 use Cake\Queue\Queue\Processor;
 use Enqueue\Consumption\Result;
@@ -11,7 +10,6 @@ use Error;
 use Interop\Queue\Context;
 use Interop\Queue\Message as QueueMessage;
 use Interop\Queue\Processor as InteropProcessor;
-use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Throwable;
 
@@ -22,17 +20,6 @@ use Throwable;
  */
 class TimedProcessor extends Processor
 {
-    /**
-     * Constructor
-     *
-     * @param \Psr\Log\LoggerInterface|null $logger Logger instance
-     * @param \Cake\Core\ContainerInterface|null $container DI container instance
-     */
-    public function __construct(?LoggerInterface $logger = null, ?ContainerInterface $container = null)
-    {
-        parent::__construct($logger, $container);
-    }
-
     /**
      * Process message with timing
      *
@@ -47,7 +34,7 @@ class TimedProcessor extends Processor
         $jobMessage = new Message($message, $context, $this->container);
         try {
             $jobMessage->getCallable();
-        } catch (RuntimeException | Error $e) {
+        } catch (RuntimeException | Error) {
             $this->logger->debug('Invalid callable for message. Rejecting message from queue.');
             $this->dispatchEvent('Processor.message.invalid', ['message' => $jobMessage]);
 
@@ -59,13 +46,13 @@ class TimedProcessor extends Processor
 
         try {
             $response = $this->processMessage($jobMessage);
-        } catch (Throwable $e) {
-            $message->setProperty('jobException', $e);
+        } catch (Throwable $throwable) {
+            $message->setProperty('jobException', $throwable);
 
-            $this->logger->debug(sprintf('Message encountered exception: %s', $e->getMessage()));
+            $this->logger->debug(sprintf('Message encountered exception: %s', $throwable->getMessage()));
             $this->dispatchEvent('Processor.message.exception', [
                 'message' => $jobMessage,
-                'exception' => $e,
+                'exception' => $throwable,
                 'duration' => (int)((microtime(true) * 1000) - $startTime),
             ]);
 

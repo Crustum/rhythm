@@ -32,13 +32,9 @@ class RhythmIntegrationTest extends TestCase
 
         $this->assertEquals(2, $collection->count());
 
-        $entries = $collection->filter(function ($item) {
-            return $item instanceof RhythmEntry;
-        });
+        $entries = $collection->filter(fn($item): bool => $item instanceof RhythmEntry);
 
-        $values = $collection->filter(function ($item) {
-            return $item instanceof RhythmValue;
-        });
+        $values = $collection->filter(fn($item): bool => $item instanceof RhythmValue);
 
         $this->assertEquals(1, $entries->count());
         $this->assertEquals(1, $values->count());

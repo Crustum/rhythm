@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Crustum\Rhythm;
 
+use BackedEnum;
 use Cake\Collection\Collection;
 use Cake\Core\Configure;
 use Cake\Core\ContainerInterface;
@@ -15,6 +16,7 @@ use Crustum\Rhythm\Recorder\RecorderResolver;
 use Crustum\Rhythm\Storage\StorageInterface;
 use InvalidArgumentException;
 use Throwable;
+use UnitEnum;
 
 /**
  * Core Rhythm Manager
@@ -147,17 +149,17 @@ class Rhythm
     /**
      * Record a metric entry.
      *
-     * @param string $type Metric type
-     * @param string $key Metric key
+     * @param \UnitEnum|string $type Metric type
+     * @param \UnitEnum|string $key Metric key
      * @param int|null $value Metric value
      * @param int|null $timestamp Timestamp
      * @return \Crustum\Rhythm\RhythmEntry
      */
-    public function record(string $type, string $key, ?int $value = null, ?int $timestamp = null): RhythmEntry
+    public function record(UnitEnum|string $type, UnitEnum|string $key, ?int $value = null, ?int $timestamp = null): RhythmEntry
     {
         $timestamp = $timestamp ?: (new DateTime())->getTimestamp();
 
-        $entry = new RhythmEntry($timestamp, $type, $key, $value);
+        $entry = new RhythmEntry($timestamp, $this->enumToString($type), $this->enumToString($key), $value);
 
         if ($this->shouldRecord) {
             $this->entries[] = $entry;
@@ -170,17 +172,17 @@ class Rhythm
     /**
      * Set a metric value.
      *
-     * @param string $type Metric type
-     * @param string $key Metric key
+     * @param \UnitEnum|string $type Metric type
+     * @param \UnitEnum|string $key Metric key
      * @param string $value Metric value
      * @param int|null $timestamp Timestamp
      * @return \Crustum\Rhythm\RhythmValue
      */
-    public function set(string $type, string $key, string $value, ?int $timestamp = null): RhythmValue
+    public function set(UnitEnum|string $type, UnitEnum|string $key, string $value, ?int $timestamp = null): RhythmValue
     {
         $timestamp = $timestamp ?: (new DateTime())->getTimestamp();
 
-        $metricValue = new RhythmValue($timestamp, $type, $key, $value);
+        $metricValue = new RhythmValue($timestamp, $this->enumToString($type), $this->enumToString($key), $value);
 
         if ($this->shouldRecord) {
             $this->entries[] = $metricValue;
@@ -188,6 +190,25 @@ class Rhythm
         }
 
         return $metricValue;
+    }
+
+    /**
+     * Resolve an enum or string to a string metric identifier.
+     *
+     * @param \UnitEnum|string $value Enum or string value
+     * @return string
+     */
+    protected function enumToString(UnitEnum|string $value): string
+    {
+        if ($value instanceof BackedEnum) {
+            return (string)$value->value;
+        }
+
+        if ($value instanceof UnitEnum) {
+            return $value->name;
+        }
+
+        return $value;
     }
 
     /**
@@ -244,9 +265,9 @@ class Rhythm
             $this->shouldRecord = false;
 
             return $callback();
-        } catch (Throwable $e) {
-            debug($e->getMessage());
-            debug($e->getTraceAsString());
+        } catch (Throwable $throwable) {
+            debug($throwable->getMessage());
+            debug($throwable->getTraceAsString());
         } finally {
             $this->shouldRecord = $cachedRecording;
         }
@@ -290,9 +311,9 @@ class Rhythm
     {
         try {
             return $callback();
-        } catch (Throwable $e) {
+        } catch (Throwable $throwable) {
             if ($this->handleExceptionsUsing) {
-                ($this->handleExceptionsUsing)($e);
+                ($this->handleExceptionsUsing)($throwable);
             }
 
             return null;
@@ -433,9 +454,7 @@ class Rhythm
                 return 0;
             }
 
-            $entries = $this->rescue(function () {
-                return array_filter($this->entries, fn(RhythmEntry|RhythmValue $entry) => $this->shouldRecordEntry($entry));
-            }) ?? [];
+            $entries = $this->rescue(fn(): array => array_filter($this->entries, $this->shouldRecordEntry(...))) ?? [];
 
             if (empty($entries)) {
                 $this->flush();
@@ -443,7 +462,7 @@ class Rhythm
                 return 0;
             }
 
-            $count = $this->rescue(function () use ($entries) {
+            $count = $this->rescue(function () use ($entries): int {
                 $this->ingest->ingest(new Collection($entries));
 
                 return count($entries);
@@ -462,9 +481,7 @@ class Rhythm
      */
     public function digest(): int
     {
-            $count = $this->ingest->digest();
-
-            return $count;
+            return $this->ingest->digest();
     }
 
     /**
@@ -595,7 +612,7 @@ class Rhythm
     public function report(Throwable $exception)
     {
         $this->rescue(function () use ($exception): void {
-            $exceptionClass = get_class($exception);
+            $exceptionClass = $exception::class;
             $this->record('exception', $exceptionClass);
         });
 

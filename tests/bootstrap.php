@@ -21,6 +21,7 @@ $findRoot = function () {
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
+
 define('ROOT', $findRoot());
 define('APP_DIR', 'TestApp');
 define('WEBROOT_DIR', 'webroot');
@@ -43,6 +44,9 @@ use Cake\Core\Configure;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\ErrorTrap;
 use Cake\TestSuite\Fixture\SchemaLoader;
+use Crustum\Rhythm\Recorder\ExceptionsRecorder;
+use Crustum\Rhythm\Recorder\SlowQueriesRecorder;
+use Crustum\Rhythm\Recorder\UserRequestsRecorder;
 
 Configure::write('App', ['namespace' => 'TestApp']);
 Configure::write('debug', true);
@@ -80,6 +84,13 @@ $cache = [
         'serialize' => 'File',
         'duration' => '+10 seconds',
     ],
+    'rhythm' => [
+        'className' => 'File',
+        'prefix' => 'rhythm_test_',
+        'path' => CACHE . 'rhythm' . DS,
+        'serialize' => true,
+        'duration' => '+10 seconds',
+    ],
 ];
 
 Cache::setConfig($cache);
@@ -114,18 +125,18 @@ Configure::write('Rhythm', [
     ],
     'recorders' => [
         'user_requests' => [
-            'className' => 'Crustum\Rhythm\Recorder\UserRequestsRecorder',
+            'className' => UserRequestsRecorder::class,
             'enabled' => true,
             'sample_rate' => 1.0,
         ],
         'slow_queries' => [
-            'className' => 'Crustum\Rhythm\Recorder\SlowQueriesRecorder',
+            'className' => SlowQueriesRecorder::class,
             'enabled' => true,
             'threshold' => 100,
             'sample_rate' => 0.1,
         ],
         'exceptions' => [
-            'className' => 'Crustum\Rhythm\Recorder\ExceptionsRecorder',
+            'className' => ExceptionsRecorder::class,
             'enabled' => true,
             'sample_rate' => 1.0,
         ],

@@ -25,7 +25,7 @@ class SlowOutgoingRequestsWidget extends BaseWidget
     {
         $period = $options['period'] ?? 60;
 
-        return $this->remember(function () use ($period) {
+        return $this->remember(function () use ($period): array {
             try {
                 $requests = $this->rhythm->getStorage()->aggregate(
                     type: 'slow_outgoing_request',
@@ -69,12 +69,12 @@ class SlowOutgoingRequestsWidget extends BaseWidget
                     'is_sampled' => $this->isSamplingEnabled(),
                     'sample_rate' => $this->getSampleRate(),
                 ];
-            } catch (Exception $e) {
+            } catch (Exception $exception) {
                 return [
                     'requests' => [],
                     'total_count' => 0,
                     'max_duration' => 0,
-                    'error' => $e->getMessage(),
+                    'error' => $exception->getMessage(),
                 ];
             }
         }, 'slow_outgoing_requests_' . $period, $this->getRefreshInterval());
@@ -131,6 +131,7 @@ class SlowOutgoingRequestsWidget extends BaseWidget
         if ($duration >= 2000) {
             return 'critical';
         }
+
         if ($duration >= 1000) {
             return 'warning';
         }

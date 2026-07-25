@@ -111,7 +111,7 @@ class IgnoresTraitTest extends TestCase
         $ignoresClass = new TestIgnoresClass([
             'ignore' => [
                 '#^/admin/.*#',
-                '#^/api/v[0-9]+#',
+                '#^/api/v\d+#',
                 '#^/health.*#',
                 '#^/dashboard.*#',
             ],

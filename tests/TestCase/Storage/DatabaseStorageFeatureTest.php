@@ -5,6 +5,7 @@ namespace Crustum\Rhythm\Test\TestCase\Storage;
 
 use Cake\Collection\Collection;
 use Cake\Core\Container;
+use Cake\Datasource\ResultSetInterface;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
 use Crustum\Rhythm\Ingest\TransparentIngest;
@@ -20,13 +21,18 @@ use Crustum\Rhythm\Storage\DigestStorage;
 class DatabaseStorageFeatureTest extends TestCase
 {
     protected Rhythm $rhythm;
+
     protected TransparentIngest $ingest;
+
     protected DigestStorage $storage;
+
     protected RhythmEntriesTable $Entries;
+
     protected RhythmAggregatesTable $Aggregates;
+
     protected RhythmValuesTable $Values;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $container = new Container();
@@ -40,7 +46,7 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->storage->purge();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->ingest->clear();
@@ -348,6 +354,7 @@ class DatabaseStorageFeatureTest extends TestCase
                 'cache_miss' => $row['cache_miss'],
             ];
         }
+
         $this->assertEquals([
             ['key' => 'flight:*', 'cache_hit' => 8, 'cache_miss' => 6],
             ['key' => 'user:*', 'cache_hit' => 4, 'cache_miss' => 2],
@@ -457,7 +464,7 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->rhythm->set('read_counter', 'post:321', '345');
         $this->rhythm->ingest();
 
-        $values = $this->rhythm->ignore(fn() => $this->Values->find()->all());
+        $values = $this->rhythm->ignore(fn(): ResultSetInterface => $this->Values->find()->all());
         $this->assertCount(1, $values);
         $this->assertEquals('345', $values->first()->value);
     }

@@ -9,6 +9,21 @@ use Cake\ORM\Entity;
  * Metric Aggregate Entity
  *
  * Represents an aggregated metric in the rhythm system.
+ *
+ * @property int $id
+ * @property int $bucket
+ * @property int $period
+ * @property string $type
+ * @property string $key_hash
+ * @property string $metric_key
+ * @property string $aggregate
+ * @property float|string|int $value
+ * @property int $entry_count
+ * @property string|null $key Virtual accessor for metric_key
+ * @property int|null $count Virtual accessor for entry_count
+ * @property float|string|int|null $total Virtual select alias used by aggregate queries
+ * @property \Cake\I18n\DateTime|null $created
+ * @property \Cake\I18n\DateTime|null $modified
  */
 class MetricAggregate extends Entity
 {

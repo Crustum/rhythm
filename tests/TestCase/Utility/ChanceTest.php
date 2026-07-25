@@ -69,7 +69,7 @@ class ChanceTest extends TestCase
     {
         Chance::alwaysWin();
         $chance = new Chance(0.5);
-        $chance->withWinner(fn() => 'win')->withLoser(fn() => 'lose');
+        $chance->withWinner(fn(): string => 'win')->withLoser(fn(): string => 'lose');
 
         $result = $chance();
         $this->assertEquals('win', $result);
@@ -156,7 +156,7 @@ class ChanceTest extends TestCase
      */
     public function testChanceWithCustomResultBuilder(): void
     {
-        Chance::setResultBuilder(fn() => true);
+        Chance::setResultBuilder(fn(): bool => true);
         $chance = new Chance(0.1);
 
         $this->assertTrue($chance->isWin());
@@ -218,7 +218,7 @@ class ChanceTest extends TestCase
     {
         Chance::alwaysWin();
         $chance = new Chance(0.5);
-        $chance->withWinner(fn($arg) => "win: {$arg}")->withLoser(fn($arg) => "lose: {$arg}");
+        $chance->withWinner(fn($arg): string => "win: {$arg}")->withLoser(fn($arg): string => "lose: {$arg}");
 
         $result = $chance('test');
         $this->assertEquals('win: test', $result);
@@ -235,7 +235,7 @@ class ChanceTest extends TestCase
     {
         Chance::alwaysWin();
         $chance = new Chance(0.5);
-        $chance->withWinner(fn($a, $b, $c) => "{$a}-{$b}-{$c}")->withLoser(fn($a, $b, $c) => "lose-{$a}-{$b}-{$c}");
+        $chance->withWinner(fn($a, $b, $c): string => "{$a}-{$b}-{$c}")->withLoser(fn($a, $b, $c): string => "lose-{$a}-{$b}-{$c}");
 
         $result = $chance('a', 'b', 'c');
         $this->assertEquals('a-b-c', $result);
@@ -252,7 +252,7 @@ class ChanceTest extends TestCase
     {
         $whenMissingCalled = false;
 
-        Chance::setFixedResults([true, false], function () use (&$whenMissingCalled) {
+        Chance::setFixedResults([true, false], function () use (&$whenMissingCalled): bool {
             $whenMissingCalled = true;
 
             return true;

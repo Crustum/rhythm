@@ -131,9 +131,8 @@ class PostgreSqlMonitorRecorder extends BaseRecorder implements EventListenerInt
         $status = array_merge($status, $bgStats);
 
         $connStats = $this->getConnectionStats($connection);
-        $status = array_merge($status, $connStats);
 
-        return $status;
+        return array_merge($status, $connStats);
     }
 
     /**

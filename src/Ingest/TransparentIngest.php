@@ -21,7 +21,7 @@ class TransparentIngest extends AbstractIngest
      *
      * @return void
      */
-    public function initialize(): void
+    protected function initialize(): void
     {
     }
 

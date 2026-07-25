@@ -1,0 +1,21 @@
+<?php
+declare(strict_types=1);
+
+/**
+ * Rhythm Plugin Configuration
+ *
+ * Default configuration for the Rhythm performance monitoring plugin.
+ * This file will be copied to config/rhythm.php during plugin installation.
+ */
+
+return [
+    'Rhythm' => [
+        'recorders' => [
+
+        ],
+        'widgets' => [
+            
+        ],
+    ],
+];
+

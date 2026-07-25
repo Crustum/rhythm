@@ -29,7 +29,7 @@ class RedisWidget extends BaseWidget
         $period = $options['period'] ?? $this->getConfigValue('period', 60);
         $connections = $options['connections'] ?? $this->getConfigValue('connections', ['default']);
 
-        return $this->remember(function () use ($period) {
+        return $this->remember(function () use ($period): array {
             try {
                 $memory = $this->getEnabledMetrics()['memory_usage'] ?
                     $this->rhythm->getStorage()->graph(['redis_used_memory', 'redis_max_memory'], 'avg', $period)
@@ -70,23 +70,21 @@ class RedisWidget extends BaseWidget
 
                 $empty = empty($memory) && empty($activeKeys) && empty($removedKeys) && empty($ttl) && empty($network);
 
-                $data = [
+                return [
                     'empty' => $empty,
                     'chartData' => $chartData,
                     'colors' => $mappedColors,
                     'metrics' => $this->getEnabledMetrics(),
                     'period' => $period,
                 ];
-
-                return $data;
-            } catch (Exception $e) {
+            } catch (Exception $exception) {
                 return [
                     'empty' => true,
                     'chartData' => [],
                     'colors' => $this->getChartColors(),
                     'metrics' => $this->getEnabledMetrics(),
                     'period' => $period,
-                    'error' => $e->getMessage(),
+                    'error' => $exception->getMessage(),
                 ];
             }
         }, 'redis_widget_' . implode('_', $connections) . '_' . $period, $this->getRefreshInterval());
@@ -107,6 +105,7 @@ class RedisWidget extends BaseWidget
         foreach ($seriesData as $group => $groupData) {
             $allConnections = array_merge($allConnections, array_keys($groupData));
         }
+
         $allConnections = array_unique($allConnections);
 
         foreach ($allConnections as $connection) {
@@ -146,12 +145,15 @@ class RedisWidget extends BaseWidget
         if (!$metrics) {
             return null;
         }
+
         if (is_object($metrics) && method_exists($metrics, 'toArray')) {
             $metrics = $metrics->toArray();
         }
+
         if (empty($metrics)) {
             return null;
         }
+
         $chartData = [];
         $legendData = [];
         foreach ($metrics as $metric => $series) {
@@ -171,6 +173,7 @@ class RedisWidget extends BaseWidget
                     }
                 }
             }
+
             $legendData[$metric] = [
                 'label' => $metricLabels[$metric] ?? $metric,
                 'total' => $group === 'memory' && $latestValue !== null
@@ -178,6 +181,7 @@ class RedisWidget extends BaseWidget
                     : $latestValue,
             ];
         }
+
         $chartId = $prefix . '-' . $group . '-' . str_replace([':', '-', '.'], ['-', '', ''], $connection);
 
         return [

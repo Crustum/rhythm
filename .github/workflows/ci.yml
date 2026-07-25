@@ -5,6 +5,7 @@ on:
     branches:
       - 'main'
       - 'develop'
+      - '1.x'
   pull_request:
     branches:
       - '*'
@@ -33,6 +34,12 @@ jobs:
             db-type: 'mysql'
             dependencies: highest
           - php-version: '8.4'
+            db-type: 'pgsql'
+            dependencies: highest
+          - php-version: '8.5'
+            db-type: 'mysql'
+            dependencies: highest
+          - php-version: '8.5'
             db-type: 'pgsql'
             dependencies: highest
 
@@ -119,7 +126,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.2'
+        php-version: '8.4'
         extensions: mbstring, intl
         coverage: none
         tools: phive
@@ -141,7 +148,7 @@ jobs:
 
     - name: Install PHP tools with phive
       run: |
-        phive install --trust-gpg-keys CF1A108D0E7AE720,51C67305FFC2E5C0,12CE0F1D262429A5
+        phive install --trust-gpg-keys CF1A108D0E7AE720,51C67305FFC2E5C0,12CE0F1D262429A5,99BF4D9A33D65E1E
 
     - name: Run PHP CodeSniffer
       run: composer cs-check

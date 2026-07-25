@@ -66,8 +66,8 @@ class GitRecorder extends BaseRecorder implements EventListenerInterface
                     ], JSON_THROW_ON_ERROR),
                     $timestamp,
                 );
-            } catch (Exception $e) {
-                error_log('GitRecorder Debug - Exception: ' . $e->getMessage());
+            } catch (Exception $exception) {
+                error_log('GitRecorder Debug - Exception: ' . $exception->getMessage());
                 $this->rhythm->set(
                     'git',
                     $slug,
@@ -77,7 +77,7 @@ class GitRecorder extends BaseRecorder implements EventListenerInterface
                         'total_commits' => 0,
                         'last_commit' => null,
                         'repository_status' => 'error',
-                        'error' => $e->getMessage(),
+                        'error' => $exception->getMessage(),
                         'repository_path' => $gitDir,
                     ], JSON_THROW_ON_ERROR),
                     $timestamp,
@@ -396,7 +396,7 @@ class GitRecorder extends BaseRecorder implements EventListenerInterface
             return [];
         }
 
-        $tags = array_filter(array_map('trim', explode("\n", $output)));
+        $tags = array_filter(array_map(trim(...), explode("\n", $output)));
 
         return array_values($tags);
     }

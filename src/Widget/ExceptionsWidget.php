@@ -27,7 +27,7 @@ class ExceptionsWidget extends BaseWidget
     {
         $period = $options['period'] ?? 60;
 
-        return $this->remember(function () use ($period, $options) {
+        return $this->remember(function () use ($period, $options): array {
             try {
                 $sortOrder = $this->getSortOrder($options);
                 $orderBy = match ($sortOrder) {
@@ -74,12 +74,12 @@ class ExceptionsWidget extends BaseWidget
                     'is_sampled' => $this->isSamplingEnabled(),
                     'sample_rate' => $this->getSampleRate(),
                 ];
-            } catch (Exception $e) {
+            } catch (Exception $exception) {
                 return [
                     'exceptions' => [],
                     'total_count' => 0,
                     'unique_count' => 0,
-                    'error' => $e->getMessage(),
+                    'error' => $exception->getMessage(),
                 ];
             }
         }, $this->getSortCacheKey('exceptions_' . $period, $options), $this->getRefreshInterval());

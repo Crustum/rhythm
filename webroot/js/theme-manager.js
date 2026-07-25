@@ -1,83 +1,132 @@
 /**
  * Rhythm Theme Manager
  *
- * Handles theme switching, browser theme detection, and theme persistence.
+ * Three-state scheme: system → dark → light.
+ * Resolved theme is always light|dark via documentElement data-theme.
  */
 
 class RhythmThemeManager {
-    constructor() {
-        this.theme = this.getStoredTheme() || this.getSystemTheme();
+    /**
+     * @param {string} storageKey
+     */
+    constructor(storageKey = 'rhythmColorScheme') {
+        this.storageKey = storageKey;
+        this.legacyStorageKey = 'rhythm-theme';
+        this.scheme = this.getStoredScheme() ?? 'system';
+        this.theme = this.resolveTheme(this.scheme);
         this.init();
     }
 
     /**
-     * Initialize the theme manager
+     * @returns {void}
      */
     init() {
-        this.applyTheme(this.theme);
+        this.applyScheme(this.scheme, false);
         this.setupThemeToggle();
         this.setupSystemThemeListener();
         this.setupKeyboardShortcuts();
     }
 
     /**
-     * Get stored theme from localStorage
+     * @returns {string|null}
      */
-    getStoredTheme() {
+    getStoredScheme() {
         try {
-            return localStorage.getItem('rhythm-theme');
+            const stored = localStorage.getItem(this.storageKey);
+            if (stored === 'system' || stored === 'light' || stored === 'dark') {
+                return stored;
+            }
+
+            const legacy = localStorage.getItem(this.legacyStorageKey);
+            if (legacy === 'light' || legacy === 'dark') {
+                localStorage.setItem(this.storageKey, legacy);
+                localStorage.removeItem(this.legacyStorageKey);
+
+                return legacy;
+            }
         } catch (e) {
             console.warn('Could not read theme from localStorage:', e);
-            return null;
         }
+
+        return null;
     }
 
     /**
-     * Store theme in localStorage
+     * @param {string} scheme
+     * @returns {void}
      */
-    setStoredTheme(theme) {
+    setStoredScheme(scheme) {
         try {
-            localStorage.setItem('rhythm-theme', theme);
+            localStorage.setItem(this.storageKey, scheme);
+            localStorage.removeItem(this.legacyStorageKey);
         } catch (e) {
             console.warn('Could not save theme to localStorage:', e);
         }
     }
 
     /**
-     * Get system theme preference
+     * @returns {'light'|'dark'}
      */
     getSystemTheme() {
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             return 'dark';
         }
+
         return 'light';
     }
 
     /**
-     * Apply theme to the document
+     * @param {string} scheme
+     * @returns {'light'|'dark'}
      */
-    applyTheme(theme) {
-        const root = document.documentElement;
-        root.setAttribute('data-theme', theme);
-        this.updateThemeToggle(theme);
-        this.setStoredTheme(theme);
-        this.updateMetaThemeColor(theme);
-        this.triggerThemeChangeEvent(theme);
-    }
-
-    /**
-     * Update theme toggle button state
-     */
-    updateThemeToggle(theme) {
-        const toggle = document.querySelector('.rhythm-theme-toggle');
-        if (toggle) {
-            toggle.setAttribute('data-theme', theme);
-            toggle.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`);
+    resolveTheme(scheme) {
+        if (scheme === 'system') {
+            return this.getSystemTheme();
         }
+
+        return scheme === 'dark' ? 'dark' : 'light';
     }
 
     /**
-     * Update meta theme-color for mobile browsers
+     * @param {string} scheme
+     * @param {boolean} persist
+     * @returns {void}
+     */
+    applyScheme(scheme, persist = true) {
+        const previousTheme = this.theme;
+        this.scheme = scheme;
+        this.theme = this.resolveTheme(scheme);
+
+        document.documentElement.setAttribute('data-theme', this.theme);
+        document.documentElement.setAttribute('data-scheme', this.scheme);
+
+        if (persist) {
+            this.setStoredScheme(scheme);
+        }
+
+        this.updateThemeToggle();
+        this.updateMetaThemeColor(this.theme);
+        this.triggerThemeChangeEvent(previousTheme);
+    }
+
+    /**
+     * @returns {void}
+     */
+    updateThemeToggle() {
+        const toggle = document.querySelector('.rhythm-theme-toggle');
+        if (!toggle) {
+            return;
+        }
+
+        toggle.setAttribute('data-scheme', this.scheme);
+        toggle.setAttribute('data-theme', this.theme);
+        toggle.setAttribute('aria-label', `Theme: ${this.scheme}. Click to switch`);
+        toggle.setAttribute('title', `Theme: ${this.scheme} (Ctrl+T)`);
+    }
+
+    /**
+     * @param {'light'|'dark'} theme
+     * @returns {void}
      */
     updateMetaThemeColor(theme) {
         let metaThemeColor = document.querySelector('meta[name="theme-color"]');
@@ -86,161 +135,167 @@ class RhythmThemeManager {
             metaThemeColor.name = 'theme-color';
             document.head.appendChild(metaThemeColor);
         }
-        if (theme === 'dark') {
-            metaThemeColor.content = '#0f172a';
-        } else {
-            metaThemeColor.content = '#3b82f6';
-        }
+
+        metaThemeColor.content = theme === 'dark' ? '#111827' : '#f3f4f6';
     }
 
     /**
-     * Trigger theme change event
+     * @param {string} previousTheme
+     * @returns {void}
      */
-    triggerThemeChangeEvent(theme) {
-        const event = new CustomEvent('rhythmThemeChange', {
-            detail: { theme, previousTheme: this.theme }
-        });
-        document.dispatchEvent(event);
+    triggerThemeChangeEvent(previousTheme) {
+        document.dispatchEvent(new CustomEvent('rhythmThemeChange', {
+            detail: {
+                theme: this.theme,
+                scheme: this.scheme,
+                previousTheme: previousTheme,
+            },
+        }));
     }
 
     /**
-     * Setup theme toggle button
+     * @returns {void}
      */
     setupThemeToggle() {
         const toggle = document.querySelector('.rhythm-theme-toggle');
-        if (toggle) {
-            toggle.addEventListener('click', () => {
-                this.toggleTheme();
-            });
-            this.updateThemeToggle(this.theme);
+        if (!toggle) {
+            return;
         }
+
+        toggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.toggleScheme();
+        });
+        this.updateThemeToggle();
     }
 
     /**
-     * Setup system theme change listener
+     * @returns {void}
      */
     setupSystemThemeListener() {
-        if (window.matchMedia) {
-            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-            const handleChange = (e) => {
-                const storedTheme = this.getStoredTheme();
-                if (!storedTheme) {
-                    const newTheme = e.matches ? 'dark' : 'light';
-                    this.theme = newTheme;
-                    this.applyTheme(newTheme);
-                }
-            };
-            if (mediaQuery.addEventListener) {
-                mediaQuery.addEventListener('change', handleChange);
-            } else {
-                mediaQuery.addListener(handleChange);
+        if (!window.matchMedia) {
+            return;
+        }
+
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const handleChange = () => {
+            if (this.scheme === 'system') {
+                this.applyScheme('system', false);
             }
+        };
+
+        if (mediaQuery.addEventListener) {
+            mediaQuery.addEventListener('change', handleChange);
+        } else {
+            mediaQuery.addListener(handleChange);
         }
     }
 
     /**
-     * Setup keyboard shortcuts
+     * @returns {void}
      */
     setupKeyboardShortcuts() {
         document.addEventListener('keydown', (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key === 't') {
                 e.preventDefault();
-                this.toggleTheme();
+                this.toggleScheme();
             }
         });
     }
 
     /**
-     * Toggle between light and dark themes
+     * Cycle system → dark → light → system.
+     *
+     * @returns {void}
+     */
+    toggleScheme() {
+        if (this.scheme === 'system') {
+            this.applyScheme('dark');
+        } else if (this.scheme === 'dark') {
+            this.applyScheme('light');
+        } else {
+            this.applyScheme('system');
+        }
+    }
+
+    /**
+     * @deprecated Use toggleScheme()
+     * @returns {void}
      */
     toggleTheme() {
-        const newTheme = this.theme === 'dark' ? 'light' : 'dark';
-        this.theme = newTheme;
-        this.applyTheme(newTheme);
-        this.showThemeChangeFeedback(newTheme);
+        this.toggleScheme();
     }
 
     /**
-     * Show visual feedback for theme change
-     */
-    showThemeChangeFeedback(theme) {
-        const overlay = document.createElement('div');
-        overlay.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: ${theme === 'dark' ? '#0f172a' : '#ffffff'};
-            opacity: 0;
-            z-index: 9999;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        `;
-        document.body.appendChild(overlay);
-        requestAnimationFrame(() => {
-            overlay.style.opacity = '0.1';
-            setTimeout(() => {
-                overlay.style.opacity = '0';
-                setTimeout(() => {
-                    document.body.removeChild(overlay);
-                }, 300);
-            }, 150);
-        });
-    }
-
-    /**
-     * Get current theme
+     * @returns {'light'|'dark'}
      */
     getCurrentTheme() {
         return this.theme;
     }
 
     /**
-     * Check if dark theme is active
+     * @returns {string}
+     */
+    getCurrentScheme() {
+        return this.scheme;
+    }
+
+    /**
+     * @returns {boolean}
      */
     isDarkTheme() {
         return this.theme === 'dark';
     }
 
     /**
-     * Check if light theme is active
+     * @returns {boolean}
      */
     isLightTheme() {
         return this.theme === 'light';
     }
 
     /**
-     * Force apply a specific theme (for testing)
+     * @param {string} scheme
+     * @returns {void}
+     */
+    forceScheme(scheme) {
+        if (scheme !== 'system' && scheme !== 'light' && scheme !== 'dark') {
+            return;
+        }
+
+        this.applyScheme(scheme);
+    }
+
+    /**
+     * @deprecated Use forceScheme()
+     * @param {string} theme
+     * @returns {void}
      */
     forceTheme(theme) {
-        this.theme = theme;
-        this.applyTheme(theme);
+        this.forceScheme(theme === 'dark' ? 'dark' : 'light');
     }
 
     /**
-     * Reset to system theme
+     * @returns {void}
      */
     resetToSystemTheme() {
-        const systemTheme = this.getSystemTheme();
-        this.theme = systemTheme;
-        this.applyTheme(systemTheme);
-        this.setStoredTheme('');
+        this.applyScheme('system');
     }
 
     /**
-     * Clear stored theme preference (for debugging)
+     * @returns {void}
      */
     clearStoredTheme() {
         try {
-            localStorage.removeItem('rhythm-theme');
+            localStorage.removeItem(this.storageKey);
+            localStorage.removeItem(this.legacyStorageKey);
         } catch (e) {
             console.warn('Could not clear theme from localStorage:', e);
         }
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     window.rhythmThemeManager = new RhythmThemeManager();
 });
 

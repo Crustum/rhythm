@@ -25,15 +25,15 @@ class UsageWidget extends BaseWidget
     {
         $period = $options['period'] ?? 60;
 
-        return $this->remember(function () use ($period) {
+        return $this->remember(function () use ($period): array {
             try {
                 $requestsCountResult = $this->rhythm->getStorage()->aggregateTotal('slow_request', 'count', $period);
                 $avgResponseTimeResult = $this->rhythm->getStorage()->aggregateTotal('slow_request', 'avg', $period);
                 $avgMemoryUsageResult = $this->rhythm->getStorage()->aggregateTotal('memory', 'avg', $period);
 
-                $requestsCount = is_numeric($requestsCountResult) ? (float)$requestsCountResult : 0.0;
-                $avgResponseTime = is_numeric($avgResponseTimeResult) ? (float)$avgResponseTimeResult : 0.0;
-                $avgMemoryUsage = is_numeric($avgMemoryUsageResult) ? (float)$avgMemoryUsageResult : 0.0;
+                $requestsCount = is_numeric($requestsCountResult) ? $requestsCountResult : 0.0;
+                $avgResponseTime = is_numeric($avgResponseTimeResult) ? $avgResponseTimeResult : 0.0;
+                $avgMemoryUsage = is_numeric($avgMemoryUsageResult) ? $avgMemoryUsageResult : 0.0;
 
                 $rawRequestCount = (int)$requestsCount;
                 $magnifiedRequestCount = (int)$this->magnifyValue($rawRequestCount);
@@ -47,24 +47,24 @@ class UsageWidget extends BaseWidget
                         'sample_rate' => $this->getSampleRate(),
                     ],
                     'response_time' => [
-                        'average' => round((float)$avgResponseTime, 2),
+                        'average' => round($avgResponseTime, 2),
                         'unit' => 'ms',
-                        'status' => $this->getResponseTimeStatus((float)$avgResponseTime),
+                        'status' => $this->getResponseTimeStatus($avgResponseTime),
                     ],
                     'memory_usage' => [
-                        'average' => round((float)$avgMemoryUsage, 2),
+                        'average' => round($avgMemoryUsage, 2),
                         'unit' => 'MB',
-                        'status' => $this->getMemoryUsageStatus((float)$avgMemoryUsage),
+                        'status' => $this->getMemoryUsageStatus($avgMemoryUsage),
                     ],
                     'is_sampled' => $this->isSamplingEnabled(),
                     'sample_rate' => $this->getSampleRate(),
                 ];
-            } catch (Exception $e) {
+            } catch (Exception $exception) {
                 return [
                     'requests' => ['count' => 0, 'status' => 'unknown'],
                     'response_time' => ['average' => 0, 'unit' => 'ms', 'status' => 'unknown'],
                     'memory_usage' => ['average' => 0, 'unit' => 'MB', 'status' => 'unknown'],
-                    'error' => $e->getMessage(),
+                    'error' => $exception->getMessage(),
                 ];
             }
         }, 'usage_' . $period, $this->getRefreshInterval());

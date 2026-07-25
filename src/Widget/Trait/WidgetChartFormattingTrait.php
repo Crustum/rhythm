@@ -28,6 +28,7 @@ trait WidgetChartFormattingTrait
         foreach ($seriesData as $group => $groupData) {
             $allConnections = array_merge($allConnections, array_keys($groupData));
         }
+
         $allConnections = array_unique($allConnections);
 
         foreach ($allConnections as $connection) {
@@ -69,12 +70,15 @@ trait WidgetChartFormattingTrait
         if (!$metrics) {
             return null;
         }
+
         if (is_object($metrics) && method_exists($metrics, 'toArray')) {
             $metrics = $metrics->toArray();
         }
+
         if (empty($metrics)) {
             return null;
         }
+
         $chartData = [];
         $legendData = [];
         $chartColors = [];
@@ -89,6 +93,7 @@ trait WidgetChartFormattingTrait
                     $lastValue = (int)$value;
                 }
             }
+
             $legendData[$metric] = [
                 'label' => $label,
                 'total' => $lastValue,
@@ -96,6 +101,7 @@ trait WidgetChartFormattingTrait
 
             $chartColors[$label] = $this->getMetricColor($metric, $colors);
         }
+
         $chartId = $prefix . '-' . $group . '-' . str_replace([':', '-', '.'], ['-', '', ''], $connection);
 
         return [
@@ -136,9 +142,11 @@ trait WidgetChartFormattingTrait
         if ($bytes >= 1073741824) {
             return round($bytes / 1073741824, 2) . ' GB';
         }
+
         if ($bytes >= 1048576) {
             return round($bytes / 1048576, 2) . ' MB';
         }
+
         if ($bytes >= 1024) {
             return round($bytes / 1024, 2) . ' KB';
         }
@@ -274,6 +282,7 @@ trait WidgetChartFormattingTrait
         foreach ($seriesData as $group => $groupData) {
             $allConnections = array_merge($allConnections, array_keys($groupData));
         }
+
         $allConnections = array_unique($allConnections);
 
         foreach ($allConnections as $connection) {
@@ -305,12 +314,14 @@ trait WidgetChartFormattingTrait
                                 $legendItem['total'] = (int)$this->magnifyValue($legendItem['total'], $groupSampleRate);
                             }
                         }
+
                         $chartConfig['sample_rate'] = $groupSampleRate;
                         $chartConfig['is_sampled'] = true;
                     } else {
                         $chartConfig['sample_rate'] = 1.0;
                         $chartConfig['is_sampled'] = false;
                     }
+
                     $chartData[$connection][$group] = $chartConfig;
                 }
             }

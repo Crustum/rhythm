@@ -73,6 +73,7 @@ abstract class RhythmTestCase extends TestCase
         if (!$conn instanceof Connection) {
             $this->markTestSkipped('Test connection is not a Cake\Database\Connection');
         }
+
         $this->connection = $conn;
         $this->setupRhythmComponents();
 
@@ -99,7 +100,7 @@ abstract class RhythmTestCase extends TestCase
      */
     protected function setupRhythmComponents(): void
     {
-        $this->container = $this->createMock(ContainerInterface::class);
+        $this->container = $this->createStub(ContainerInterface::class);
 
         Configure::write('Rhythm.default_aggregations', ['count', 'min', 'max', 'sum', 'avg']);
 

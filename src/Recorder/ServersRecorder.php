@@ -59,7 +59,7 @@ class ServersRecorder extends BaseRecorder implements EventListenerInterface
                 ->onlyBuckets();
 
             $storage = (new Collection($this->config['directories'] ?? ['/']))
-                ->map(function (string $directory) {
+                ->map(function (string $directory): ?array {
                     if ($this->shouldIgnore($directory)) {
                         return null;
                     }
@@ -107,10 +107,10 @@ class ServersRecorder extends BaseRecorder implements EventListenerInterface
     protected function getCpuUsage(): int
     {
         return match (PHP_OS_FAMILY) {
-            'Darwin' => (int)`top -l 1 | grep -E "^CPU" | tail -1 | awk '{ print $3 + $5 }'`,
-            'Linux' => (int)`top -bn1 | grep -E '^(%Cpu|CPU)' | awk '{ print $2 + $4 }'`,
-            'Windows' => (int)(trim(`wmic cpu get loadpercentage | more +1` ?? '')),
-            'BSD' => (int)`top -b -d 2| grep 'CPU: ' | tail -1 | awk '{print$10}' | grep -Eo '[0-9]+\.[0-9]+' | awk '{ print 100 - $1 }'`,
+            'Darwin' => (int)shell_exec("top -l 1 | grep -E \"^CPU\" | tail -1 | awk '{ print $3 + $5 }'"),
+            'Linux' => (int)shell_exec("top -bn1 | grep -E '^(%Cpu|CPU)' | awk '{ print $2 + $4 }'"),
+            'Windows' => (int)trim((string)shell_exec('wmic cpu get loadpercentage | more +1')),
+            'BSD' => (int)shell_exec("top -b -d 2| grep 'CPU: ' | tail -1 | awk '{print$10}' | grep -Eo '[0-9]+\.[0-9]+' | awk '{ print 100 - $1 }'"),
             default => throw new RuntimeException('The ServersRecorder does not currently support ' . PHP_OS_FAMILY),
         };
     }
@@ -123,18 +123,18 @@ class ServersRecorder extends BaseRecorder implements EventListenerInterface
     protected function getMemoryUsage(): array
     {
         $memoryTotal = match (PHP_OS_FAMILY) {
-            'Darwin' => (int)(`sysctl hw.memsize | grep -Eo '[0-9]+'` / 1024 / 1024),
-            'Linux' => (int)(`cat /proc/meminfo | grep MemTotal | grep -E -o '[0-9]+'` / 1024),
-            'Windows' => (int)((int)trim(`wmic ComputerSystem get TotalPhysicalMemory | more +1`) / 1024 / 1024),
-            'BSD' => (int)(`sysctl hw.physmem | grep -Eo '[0-9]+'` / 1024 / 1024),
+            'Darwin' => (int)((int)shell_exec("sysctl hw.memsize | grep -Eo '[0-9]+'") / 1024 / 1024),
+            'Linux' => (int)((int)shell_exec("cat /proc/meminfo | grep MemTotal | grep -E -o '[0-9]+'") / 1024),
+            'Windows' => (int)((int)trim((string)shell_exec('wmic ComputerSystem get TotalPhysicalMemory | more +1')) / 1024 / 1024),
+            'BSD' => (int)((int)shell_exec("sysctl hw.physmem | grep -Eo '[0-9]+'") / 1024 / 1024),
             default => throw new RuntimeException('The ServersRecorder does not currently support ' . PHP_OS_FAMILY),
         };
 
         $memoryUsed = match (PHP_OS_FAMILY) {
-            'Darwin' => $memoryTotal - (int)((int)(`vm_stat | grep 'Pages free' | grep -Eo '[0-9]+'`) * (int)(`pagesize`) / 1024 / 1024),
-            'Linux' => $memoryTotal - (int)(`cat /proc/meminfo | grep MemAvailable | grep -E -o '[0-9]+'` / 1024),
-            'Windows' => $memoryTotal - (int)((int)trim(`wmic OS get FreePhysicalMemory | more +1`) / 1024),
-            'BSD' => (int)((int)(`( sysctl vm.stats.vm.v_cache_count | grep -Eo '[0-9]+' ; sysctl vm.stats.vm.v_inactive_count | grep -Eo '[0-9]+' ; sysctl vm.stats.vm.v_active_count | grep -Eo '[0-9]+' ) | awk '{s+=$1} END {print s}'`) * (int)(`pagesize`) / 1024 / 1024),
+            'Darwin' => $memoryTotal - (int)((int)shell_exec("vm_stat | grep 'Pages free' | grep -Eo '[0-9]+'") * (int)shell_exec('pagesize') / 1024 / 1024),
+            'Linux' => $memoryTotal - (int)((int)shell_exec("cat /proc/meminfo | grep MemAvailable | grep -E -o '[0-9]+'") / 1024),
+            'Windows' => $memoryTotal - (int)((int)trim((string)shell_exec('wmic OS get FreePhysicalMemory | more +1')) / 1024),
+            'BSD' => (int)((int)shell_exec("( sysctl vm.stats.vm.v_cache_count | grep -Eo '[0-9]+' ; sysctl vm.stats.vm.v_inactive_count | grep -Eo '[0-9]+' ; sysctl vm.stats.vm.v_active_count | grep -Eo '[0-9]+' ) | awk '{s+=$1} END {print s}'") * (int)shell_exec('pagesize') / 1024 / 1024),
             default => throw new RuntimeException('The ServersRecorder does not currently support ' . PHP_OS_FAMILY),
         };
 

@@ -19,13 +19,18 @@ use Crustum\Rhythm\Storage\DigestStorage;
 class DatabaseIngestTest extends TestCase
 {
     protected Rhythm $rhythm;
+
     protected TransparentIngest $ingest;
+
     protected DigestStorage $storage;
+
     protected RhythmEntriesTable $Entries;
+
     protected RhythmAggregatesTable $Aggregates;
+
     protected RhythmValuesTable $Values;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $container = new Container();
@@ -37,7 +42,7 @@ class DatabaseIngestTest extends TestCase
         $this->Values = $this->getTableLocator()->get('Crustum/Rhythm.RhythmValues');
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->ingest->clear();

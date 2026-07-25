@@ -293,7 +293,7 @@ class SlowQueryMiddlewareTest extends TestCase
 
         $entries = $this->rhythm->entries()->toArray();
 
-        $testEntries = array_filter($entries, function ($entry) use ($queries) {
+        $testEntries = array_filter($entries, function ($entry) use ($queries): bool {
             $expectedDurations = array_column($queries, 'duration');
 
             return in_array($entry->value, $expectedDurations);

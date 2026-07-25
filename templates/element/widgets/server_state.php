@@ -20,6 +20,14 @@ $sort = $this->get('sort');
 if ($sort !== null) {
     $options['sort'] = $sort;
 }
+$sortBy = $this->getRequest()->getQuery('sortBy');
+if ($sortBy !== null && $sortBy !== '') {
+    $options['sortBy'] = $sortBy;
+}
+$sortDirection = $this->getRequest()->getQuery('sortDirection');
+if ($sortDirection !== null && $sortDirection !== '') {
+    $options['sortDirection'] = $sortDirection;
+}
 $data = $widget->getData($options);
 $this->set('data', $data);
 

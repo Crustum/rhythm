@@ -172,7 +172,9 @@ class RhythmAggregatesTable extends Table
             ->groupBy(['key_hash', 'metric_key', 'type'])
             ->limit($limit * count($types));
 
-        foreach ($query->all() as $row) {
+        /** @var iterable<\Crustum\Rhythm\Model\Entity\MetricAggregate> $aggregateRows */
+        $aggregateRows = $query->all();
+        foreach ($aggregateRows as $row) {
             $keyHash = $row->key_hash;
             if (!isset($aggregatedResults[$keyHash])) {
                 $aggregatedResults[$keyHash] = [
@@ -183,6 +185,7 @@ class RhythmAggregatesTable extends Table
                     $aggregatedResults[$keyHash][$type] = 0;
                 }
             }
+
             $aggregatedResults[$keyHash][$row->type] = (float)$row->total;
         }
 
@@ -194,7 +197,9 @@ class RhythmAggregatesTable extends Table
             ]);
 
         $tailData = [];
-        foreach ($tailQuery->all() as $entry) {
+        /** @var iterable<\Crustum\Rhythm\Model\Entity\MetricEntry> $tailEntries */
+        $tailEntries = $tailQuery->all();
+        foreach ($tailEntries as $entry) {
             $keyHash = $entry->key_hash;
             $type = $entry->type;
 
@@ -207,7 +212,8 @@ class RhythmAggregatesTable extends Table
                     $tailData[$keyHash]['values'][$t] = [];
                 }
             }
-            $tailData[$keyHash]['values'][$type][] = $entry->value;
+
+            $tailData[$keyHash]['values'][$type][] = (float)($entry->value ?? 0);
         }
 
         foreach ($tailData as $keyHash => $data) {
@@ -219,13 +225,14 @@ class RhythmAggregatesTable extends Table
             }
 
             foreach ($types as $type) {
+                /** @var list<float> $values */
                 $values = $data['values'][$type] ?? [];
                 $tailValue = match ($aggregate) {
                     'count' => count($values),
-                    'min' => $values === [] ? 0 : min($values),
-                    'max' => $values === [] ? 0 : max($values),
+                    'min' => $values === [] ? 0.0 : min($values),
+                    'max' => $values === [] ? 0.0 : max($values),
                     'sum' => array_sum($values),
-                    'avg' => $values === [] ? 0 : array_sum($values) / count($values),
+                    'avg' => $values === [] ? 0.0 : array_sum($values) / count($values),
                     default => throw new InvalidArgumentException("Invalid aggregate: {$aggregate}"),
                 };
 
@@ -233,9 +240,11 @@ class RhythmAggregatesTable extends Table
             }
         }
 
+        /** @var array<string, array<string, float|int|string>> $aggregatedResults */
+        /** @var list<array<string, float|int|string>> $results */
         $results = array_values($aggregatedResults);
         if ($orderBy && isset($results[0][$orderBy])) {
-            usort($results, function (array $a, array $b) use ($orderBy, $direction) {
+            usort($results, function (array $a, array $b) use ($orderBy, $direction): int {
                 $aVal = $a[$orderBy] ?? 0;
                 $bVal = $b[$orderBy] ?? 0;
 
@@ -297,7 +306,9 @@ class RhythmAggregatesTable extends Table
             ])
             ->groupBy(['type']);
 
-        foreach ($aggregateQuery->all() as $row) {
+        /** @var iterable<\Crustum\Rhythm\Model\Entity\MetricAggregate> $aggregateTotalRows */
+        $aggregateTotalRows = $aggregateQuery->all();
+        foreach ($aggregateTotalRows as $row) {
             $results[$row->type] += (float)$row->total;
         }
 
@@ -319,7 +330,9 @@ class RhythmAggregatesTable extends Table
             ])
             ->groupBy(['type']);
 
-        foreach ($tailQuery->all() as $row) {
+        /** @var iterable<\Crustum\Rhythm\Model\Entity\MetricEntry> $tailTotalRows */
+        $tailTotalRows = $tailQuery->all();
+        foreach ($tailTotalRows as $row) {
             if ($aggregate === 'min') {
                 $results[$row->type] = $results[$row->type] === 0 ?
                     (float)$row->total :
@@ -401,6 +414,7 @@ class RhythmAggregatesTable extends Table
                     $time = Chronos::createFromTimestamp($reading->bucket)->toDateTimeString();
                     $valuesByBucket[$time] = $reading->value;
                 }
+
                 $merged = $valuesByBucket + $padding;
                 $mapped[$type] = array_slice($merged, 0, $maxDataPoints, true);
             }
@@ -501,7 +515,7 @@ class RhythmAggregatesTable extends Table
                         default => throw new InvalidArgumentException("Invalid aggregate: {$aggregate}"),
                     };
                 } else {
-                    $bucketSelectFields[$aggregate] = $bucketQuery->newExpr('NULL');
+                    $bucketSelectFields[$aggregate] = $bucketQuery->expr('NULL');
                 }
             }
 
@@ -548,14 +562,12 @@ class RhythmAggregatesTable extends Table
 
         $keySubquery = $this->find()
             ->select(['metric_key'])
-            ->where(function ($exp, $q) {
-                return $exp->equalFields('key_hash', 'aggregated.key_hash');
-            })
+            ->where(fn($exp, $q) => $exp->equalFields('key_hash', 'aggregated.key_hash'))
             ->limit(1);
 
         $outerSelectFields['metric_key'] = $keySubquery;
         foreach ($aggregates as $aggregate) {
-            $outerSelectFields[$aggregate] = $finalQuery->newExpr($aggregate);
+            $outerSelectFields[$aggregate] = $finalQuery->expr($aggregate);
         }
 
         $finalQuery = $finalQuery
@@ -630,7 +642,7 @@ class RhythmAggregatesTable extends Table
         $allowed = ['count', 'min', 'max', 'sum', 'avg'];
 
         $invalid = array_diff($aggregates, $allowed);
-        if ($invalid) {
+        if ($invalid !== []) {
             throw new InvalidArgumentException(
                 'Invalid aggregate type(s) [' . implode(', ', $invalid) . '], ' .
                 'allowed types: [' . implode(', ', $allowed) . '].',

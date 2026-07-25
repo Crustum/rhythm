@@ -6,6 +6,8 @@ namespace Crustum\Rhythm\Ingest;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Crustum\Rhythm\Datasource\RedisConnection;
+use Crustum\Rhythm\RhythmEntry;
+use Crustum\Rhythm\RhythmValue;
 use Redis;
 use RuntimeException;
 
@@ -62,9 +64,10 @@ class RedisIngest extends AbstractIngest
         ];
 
         $redis = RedisConnection::create($config);
-        if (!$redis) {
+        if (!$redis instanceof Redis) {
             throw new RuntimeException('Failed to create Redis connection for RedisIngest');
         }
+
         $this->redis = $redis;
     }
 
@@ -80,6 +83,7 @@ class RedisIngest extends AbstractIngest
         foreach ($items as $item) {
             $pipe->lPush($this->queueKey, serialize($item));
         }
+
         $pipe->exec();
     }
 
@@ -111,11 +115,14 @@ class RedisIngest extends AbstractIngest
                     break;
                 }
 
-                $entry = unserialize($result);
-                if ($entry) {
+                $entry = unserialize($result, [
+                    'allowed_classes' => [RhythmEntry::class, RhythmValue::class],
+                ]);
+                if ($entry instanceof RhythmEntry || $entry instanceof RhythmValue) {
                     $batch[] = $entry;
                 }
             }
+
             if ($batch === []) {
                 return $total;
             }
@@ -154,7 +161,7 @@ class RedisIngest extends AbstractIngest
     {
         $processingItems = $this->redis->lRange($this->processingKey, 0, -1);
         foreach ($processingItems as $item) {
-            $data = json_decode($item, true);
+            $data = json_decode((string)$item, true);
             if ($data && $data['created'] < $cutoff) {
                 $this->redis->lRem($this->processingKey, $item, 1);
             }

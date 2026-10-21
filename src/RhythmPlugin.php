@@ -13,8 +13,6 @@ use Cake\Core\PluginApplicationInterface;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\MiddlewareQueue;
-use Crustum\PluginManifest\Manifest\ManifestInterface;
-use Crustum\PluginManifest\Manifest\ManifestTrait;
 use Crustum\Rhythm\Command\CheckCommand;
 use Crustum\Rhythm\Command\ClearCommand;
 use Crustum\Rhythm\Command\DigestCommand;
@@ -32,10 +30,8 @@ use Crustum\Rhythm\Storage\StorageInterface;
  *
  * @uses \Crustum\PluginManifest\Manifest\ManifestTrait
  */
-class RhythmPlugin extends BasePlugin implements ManifestInterface
+class RhythmPlugin extends BasePlugin
 {
-    use ManifestTrait;
-
     /**
      * Load all the plugin configuration and bootstrap logic.
      *
@@ -174,36 +170,5 @@ class RhythmPlugin extends BasePlugin implements ManifestInterface
             'rhythm check' => CheckCommand::class,
             'rhythm restart' => RestartCommand::class,
         ]);
-    }
-
-    /**
-     * Get the manifest for the plugin.
-     *
-     * @return array<int, array<string, mixed>>
-     */
-    public static function manifest(): array
-    {
-        $pluginPath = dirname(__DIR__);
-
-        return array_merge(
-            static::manifestMigrations(
-                $pluginPath . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'Migrations',
-            ),
-            static::manifestConfig(
-                $pluginPath . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'rhythm.php.default',
-                CONFIG . 'rhythm.php',
-                false,
-            ),
-            static::manifestConfig(
-                $pluginPath . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'rhythm_layouts.php.default',
-                CONFIG . 'rhythm_layouts.php',
-                false,
-            ),
-            static::manifestBootstrapAppend(
-                "Configure::write('Rhythm.config', ['rhythm', 'rhythm_layouts' => false]);",
-                '// Rhythm Plugin Configuration',
-            ),
-            static::manifestStarRepo('Crustum/rhythm'),
-        );
     }
 }

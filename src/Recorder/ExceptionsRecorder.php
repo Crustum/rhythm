@@ -100,7 +100,7 @@ class ExceptionsRecorder extends BaseRecorder implements EventListenerInterface
     {
         $previous = $e->getPrevious();
 
-        if ($e instanceof FatalErrorException && $previous) {
+        if ($e instanceof FatalErrorException && $previous instanceof Throwable) {
             return $previous::class;
         }
 

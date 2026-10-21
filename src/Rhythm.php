@@ -10,6 +10,7 @@ use Cake\Core\ContainerInterface;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
 use Cake\I18n\DateTime;
+use Cake\Log\Log;
 use Crustum\Rhythm\Ingest\IngestInterface;
 use Crustum\Rhythm\Recorder\RecorderInterface;
 use Crustum\Rhythm\Recorder\RecorderResolver;
@@ -266,8 +267,8 @@ class Rhythm
 
             return $callback();
         } catch (Throwable $throwable) {
-            debug($throwable->getMessage());
-            debug($throwable->getTraceAsString());
+            Log::error($throwable->getMessage());
+            Log::error($throwable->getTraceAsString());
         } finally {
             $this->shouldRecord = $cachedRecording;
         }

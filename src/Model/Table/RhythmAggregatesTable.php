@@ -227,14 +227,18 @@ class RhythmAggregatesTable extends Table
             foreach ($types as $type) {
                 /** @var list<float> $values */
                 $values = $data['values'][$type] ?? [];
-                $tailValue = match ($aggregate) {
-                    'count' => count($values),
-                    'min' => $values === [] ? 0.0 : min($values),
-                    'max' => $values === [] ? 0.0 : max($values),
-                    'sum' => array_sum($values),
-                    'avg' => $values === [] ? 0.0 : array_sum($values) / count($values),
-                    default => throw new InvalidArgumentException("Invalid aggregate: {$aggregate}"),
-                };
+                if ($aggregate === 'count') {
+                    $tailValue = count($values);
+                } elseif ($aggregate === 'min') {
+                    $tailValue = $values === [] ? 0.0 : min($values);
+                } elseif ($aggregate === 'max') {
+                    $tailValue = $values === [] ? 0.0 : max($values);
+                } elseif ($aggregate === 'sum') {
+                    $tailValue = array_sum($values);
+                } else {
+                    // Validated upstream via _validateAggregates(); remaining case is avg.
+                    $tailValue = $values === [] ? 0.0 : array_sum($values) / count($values);
+                }
 
                 $aggregatedResults[$keyHash][$type] += $tailValue;
             }
@@ -286,17 +290,20 @@ class RhythmAggregatesTable extends Table
             $results[$type] = 0;
         }
 
+        $aggregateSqlMap = [
+            'count' => 'SUM(value)',
+            'min' => 'MIN(value)',
+            'max' => 'MAX(value)',
+            'sum' => 'SUM(value)',
+            'avg' => 'AVG(value)',
+        ];
+        // Validated upstream via _validateAggregates(); key always exists.
+        $aggregateSql = $aggregateSqlMap[$aggregate];
+
         $aggregateQuery = $this->find()
             ->select([
                 'type',
-                'total' => match ($aggregate) {
-                    'count' => 'SUM(value)',
-                    'min' => 'MIN(value)',
-                    'max' => 'MAX(value)',
-                    'sum' => 'SUM(value)',
-                    'avg' => 'AVG(value)',
-                    default => throw new InvalidArgumentException("Invalid aggregate: {$aggregate}"),
-                },
+                'total' => $aggregateSql,
             ])
             ->where([
                 'type IN' => $types,
@@ -312,17 +319,20 @@ class RhythmAggregatesTable extends Table
             $results[$row->type] += (float)$row->total;
         }
 
+        $tailSqlMap = [
+            'count' => 'COUNT(*)',
+            'min' => 'MIN(value)',
+            'max' => 'MAX(value)',
+            'sum' => 'SUM(value)',
+            'avg' => 'AVG(value)',
+        ];
+        // Validated upstream via _validateAggregates(); key always exists.
+        $tailSql = $tailSqlMap[$aggregate];
+
         $tailQuery = $RhythmEntries->find()
             ->select([
                 'type',
-                'total' => match ($aggregate) {
-                    'count' => 'COUNT(*)',
-                    'min' => 'MIN(value)',
-                    'max' => 'MAX(value)',
-                    'sum' => 'SUM(value)',
-                    'avg' => 'AVG(value)',
-                    default => throw new InvalidArgumentException("Invalid aggregate: {$aggregate}"),
-                },
+                'total' => $tailSql,
             ])
             ->where([
                 'type IN' => $types,
@@ -480,14 +490,18 @@ class RhythmAggregatesTable extends Table
 
         $tailSelectFields = ['key_hash' => $entriesTable->aliasField('key_hash')];
         foreach ($aggregates as $aggregate) {
-            $tailSelectFields[$aggregate] = match ($aggregate) {
-                'count' => $tailQuery->func()->count('*'),
-                'min' => $tailQuery->func()->min('value'),
-                'max' => $tailQuery->func()->max('value'),
-                'sum' => $tailQuery->func()->sum('value'),
-                'avg' => $tailQuery->func()->avg('value'),
-                default => throw new InvalidArgumentException("Invalid aggregate: {$aggregate}"),
-            };
+            if ($aggregate === 'count') {
+                $tailSelectFields[$aggregate] = $tailQuery->func()->count('*');
+            } elseif ($aggregate === 'min') {
+                $tailSelectFields[$aggregate] = $tailQuery->func()->min('value');
+            } elseif ($aggregate === 'max') {
+                $tailSelectFields[$aggregate] = $tailQuery->func()->max('value');
+            } elseif ($aggregate === 'sum') {
+                $tailSelectFields[$aggregate] = $tailQuery->func()->sum('value');
+            } else {
+                // Validated upstream via _validateAggregates(); remaining case is avg.
+                $tailSelectFields[$aggregate] = $tailQuery->func()->avg('value');
+            }
         }
 
         $tailQuery = $tailQuery
@@ -506,14 +520,18 @@ class RhythmAggregatesTable extends Table
             $bucketSelectFields = ['key_hash' => $this->aliasField('key_hash')];
             foreach ($aggregates as $aggregate) {
                 if ($aggregate === $currentAggregate) {
-                    $bucketSelectFields[$aggregate] = match ($aggregate) {
-                        'count' => $bucketQuery->func()->sum('value'),
-                        'min' => $bucketQuery->func()->min('value'),
-                        'max' => $bucketQuery->func()->max('value'),
-                        'sum' => $bucketQuery->func()->sum('value'),
-                        'avg' => $bucketQuery->func()->avg('value'),
-                        default => throw new InvalidArgumentException("Invalid aggregate: {$aggregate}"),
-                    };
+                    if ($aggregate === 'count') {
+                        $bucketSelectFields[$aggregate] = $bucketQuery->func()->sum('value');
+                    } elseif ($aggregate === 'min') {
+                        $bucketSelectFields[$aggregate] = $bucketQuery->func()->min('value');
+                    } elseif ($aggregate === 'max') {
+                        $bucketSelectFields[$aggregate] = $bucketQuery->func()->max('value');
+                    } elseif ($aggregate === 'sum') {
+                        $bucketSelectFields[$aggregate] = $bucketQuery->func()->sum('value');
+                    } else {
+                        // Validated upstream via _validateAggregates(); remaining case is avg.
+                        $bucketSelectFields[$aggregate] = $bucketQuery->func()->avg('value');
+                    }
                 } else {
                     $bucketSelectFields[$aggregate] = $bucketQuery->expr('NULL');
                 }
@@ -540,14 +558,18 @@ class RhythmAggregatesTable extends Table
         $middleQuery = $this->find();
         $middleSelectFields = ['key_hash' => 'key_hash'];
         foreach ($aggregates as $aggregate) {
-            $middleSelectFields[$aggregate] = match ($aggregate) {
-                'count' => $middleQuery->func()->sum(new IdentifierExpression($aggregate)),
-                'min' => $middleQuery->func()->min(new IdentifierExpression($aggregate)),
-                'max' => $middleQuery->func()->max(new IdentifierExpression($aggregate)),
-                'sum' => $middleQuery->func()->sum(new IdentifierExpression($aggregate)),
-                'avg' => $middleQuery->func()->avg(new IdentifierExpression($aggregate)),
-                default => throw new InvalidArgumentException("Invalid aggregate: {$aggregate}"),
-            };
+            if ($aggregate === 'count') {
+                $middleSelectFields[$aggregate] = $middleQuery->func()->sum(new IdentifierExpression($aggregate));
+            } elseif ($aggregate === 'min') {
+                $middleSelectFields[$aggregate] = $middleQuery->func()->min(new IdentifierExpression($aggregate));
+            } elseif ($aggregate === 'max') {
+                $middleSelectFields[$aggregate] = $middleQuery->func()->max(new IdentifierExpression($aggregate));
+            } elseif ($aggregate === 'sum') {
+                $middleSelectFields[$aggregate] = $middleQuery->func()->sum(new IdentifierExpression($aggregate));
+            } else {
+                // Validated upstream via _validateAggregates(); remaining case is avg.
+                $middleSelectFields[$aggregate] = $middleQuery->func()->avg(new IdentifierExpression($aggregate));
+            }
         }
 
         $middleQuery = $middleQuery
@@ -575,6 +597,7 @@ class RhythmAggregatesTable extends Table
             ->from(['aggregated' => $middleQuery])
             ->enableHydration(false);
 
+        /** @var list<array<string, mixed>> $results */
         $results = $finalQuery->toArray();
 
         foreach ($results as &$result) {
@@ -582,8 +605,7 @@ class RhythmAggregatesTable extends Table
                 if (isset($result[$aggregate])) {
                     $result[$aggregate] = match ($aggregate) {
                         'count' => (int)$result[$aggregate],
-                        'min', 'max', 'sum', 'avg' => (float)$result[$aggregate],
-                        default => $result[$aggregate],
+                        default => (float)$result[$aggregate],
                     };
                 }
             }

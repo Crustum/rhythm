@@ -93,7 +93,7 @@ class RhythmEntriesTable extends Table
     /**
      * Find entries within a time range.
      *
-     * @param \Cake\ORM\Query\SelectQuery $query Query   object
+     * @param \Cake\ORM\Query\SelectQuery<\Crustum\Rhythm\Model\Entity\MetricEntry> $query Query   object
      * @param array $options Options array
      * @return \Cake\ORM\Query\SelectQuery
      */

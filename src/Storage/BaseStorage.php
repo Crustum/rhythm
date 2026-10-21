@@ -8,6 +8,7 @@ use Cake\Collection\CollectionInterface;
 use Cake\Core\Configure;
 use Cake\Database\Connection;
 use Cake\I18n\DateTime;
+use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
 use Crustum\Rhythm\Model\Entity\MetricValue;
 use Crustum\Rhythm\Model\Table\RhythmAggregatesTable;
@@ -304,8 +305,8 @@ abstract class BaseStorage implements StorageInterface
                 $this->upsertValues($rows);
             }
         } catch (Exception $exception) {
-            debug($exception->getMessage());
-            debug($exception->getTraceAsString());
+            Log::error($exception->getMessage());
+            Log::error($exception->getTraceAsString());
         }
     }
 

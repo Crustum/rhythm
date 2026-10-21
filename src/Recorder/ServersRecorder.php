@@ -134,8 +134,9 @@ class ServersRecorder extends BaseRecorder implements EventListenerInterface
             'Darwin' => $memoryTotal - (int)((int)shell_exec("vm_stat | grep 'Pages free' | grep -Eo '[0-9]+'") * (int)shell_exec('pagesize') / 1024 / 1024),
             'Linux' => $memoryTotal - (int)((int)shell_exec("cat /proc/meminfo | grep MemAvailable | grep -E -o '[0-9]+'") / 1024),
             'Windows' => $memoryTotal - (int)((int)trim((string)shell_exec('wmic OS get FreePhysicalMemory | more +1')) / 1024),
+            // No default: $memoryTotal match above already throws on unsupported OS,
+            // so PHP_OS_FAMILY is narrowed to the four handled values here.
             'BSD' => (int)((int)shell_exec("( sysctl vm.stats.vm.v_cache_count | grep -Eo '[0-9]+' ; sysctl vm.stats.vm.v_inactive_count | grep -Eo '[0-9]+' ; sysctl vm.stats.vm.v_active_count | grep -Eo '[0-9]+' ) | awk '{s+=$1} END {print s}'") * (int)shell_exec('pagesize') / 1024 / 1024),
-            default => throw new RuntimeException('The ServersRecorder does not currently support ' . PHP_OS_FAMILY),
         };
 
         return [

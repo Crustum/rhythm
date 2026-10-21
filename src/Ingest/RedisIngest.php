@@ -23,9 +23,9 @@ class RedisIngest extends AbstractIngest
     /**
      * Redis connection.
      *
-     * @var \Redis|null
+     * @var \Redis
      */
-    protected ?Redis $redis = null;
+    protected Redis $redis;
 
     /**
      * Queue key for metric entries.

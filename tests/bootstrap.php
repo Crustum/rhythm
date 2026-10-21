@@ -108,6 +108,7 @@ ConnectionManager::setConfig('test', [
     'url' => getenv('db_dsn'),
     'timezone' => 'UTC',
 ]);
+date_default_timezone_set('UTC');
 
 ConnectionManager::alias('test', 'default');
 

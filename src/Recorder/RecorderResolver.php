@@ -43,16 +43,46 @@ class RecorderResolver
     }
 
     /**
+     * Whether resolve() may fetch the recorder itself from the container.
+     *
+     * Disabled while Rhythm is being constructed: a container-registered
+     * recorder whose definition (transitively) depends on Rhythm would
+     * re-enter Rhythm construction and recurse until memory is exhausted.
+     * Rhythm flips this off around its constructor-time
+     * loadRecordersFromConfig() call. BaseRecorder dependencies are still
+     * pulled from the container (see createRecorder()).
+     *
+     * @var bool
+     */
+    protected bool $resolveFromContainer = true;
+
+    /**
+     * Toggle container-first resolution of the recorder class itself.
+     *
+     * @param bool $resolve True to consult the container first (default), false to always build directly.
+     * @return void
+     */
+    public function setResolveFromContainer(bool $resolve): void
+    {
+        $this->resolveFromContainer = $resolve;
+    }
+
+    /**
      * Resolve recorder class name to a recorder instance.
      *
+     * When container-first resolution is enabled and the container holds the
+     * recorder class, the container instance wins (shared identity, custom
+     * wiring). Otherwise recorders are built directly so the `Rhythm`
+     * dependency is satisfied by the already-constructed live instance.
+     *
      * @param string $recorderClass Recorder class name
-     * @param array $config Recorder configuration
+     * @param array<string, mixed> $config Recorder configuration
      * @return \Crustum\Rhythm\Recorder\RecorderInterface
      * @throws \InvalidArgumentException If recorder not found or cannot be instantiated
      */
     public function resolve(string $recorderClass, array $config = []): RecorderInterface
     {
-        if ($this->container->has($recorderClass)) {
+        if ($this->resolveFromContainer && $this->container->has($recorderClass)) {
             $recorder = $this->container->get($recorderClass);
 
             if ($recorder instanceof RecorderInterface) {
@@ -71,8 +101,12 @@ class RecorderResolver
     /**
      * Create a recorder with auto-injected dependencies.
      *
+     * The `Rhythm` dependency is injected from the resolver's live instance;
+     * every other typed dependency is pulled from the container, and a `config`
+     * array parameter receives the recorder configuration.
+     *
      * @param string $recorderClass Recorder class name
-     * @param array $config Recorder configuration
+     * @param array<string, mixed> $config Recorder configuration
      * @return \Crustum\Rhythm\Recorder\RecorderInterface
      * @throws \InvalidArgumentException If recorder cannot be created
      */

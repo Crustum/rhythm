@@ -144,7 +144,16 @@ class Rhythm
         $this->config = $config ?: Configure::read('Rhythm', []);
         $this->eventManager = EventManager::instance();
         $this->recorderResolver = new RecorderResolver($container, $this);
-        $this->loadRecordersFromConfig();
+        // Boot-configured recorders must not be pulled from the container here:
+        // their definitions may (transitively) depend on Rhythm, which is still
+        // being built, and re-entering the container would recurse. Direct-built
+        // recorders still get their other dependencies from the container.
+        $this->recorderResolver->setResolveFromContainer(false);
+        try {
+            $this->loadRecordersFromConfig();
+        } finally {
+            $this->recorderResolver->setResolveFromContainer(true);
+        }
     }
 
     /**

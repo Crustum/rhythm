@@ -253,15 +253,15 @@ abstract class BaseStorage implements StorageInterface
             return;
         }
 
-        $entries = (new Collection($items))->filter(fn($item): bool => $item instanceof RhythmEntry);
-        $values = (new Collection($items))->filter(fn($item): bool => $item instanceof RhythmValue);
+        $entries = new Collection($items)->filter(fn($item): bool => $item instanceof RhythmEntry);
+        $values = new Collection($items)->filter(fn($item): bool => $item instanceof RhythmValue);
 
         $entriesForStorage = $entries->filter(
             fn(RhythmEntry $entry): bool => !$entry->isOnlyBuckets(),
         );
         $entriesForAggregation = $entries;
 
-        $entryChunks = (new Collection($entriesForStorage))
+        $entryChunks = new Collection($entriesForStorage)
             ->map(fn(RhythmEntry $entry): array => [
                 'timestamp' => $entry->timestamp,
                 'type' => $entry->type,
@@ -273,7 +273,7 @@ abstract class BaseStorage implements StorageInterface
 
         $aggregationData = $this->prepareAggregationData($entriesForAggregation);
 
-        $valueChunks = (new Collection($this->collapseValues($values)))
+        $valueChunks = new Collection($this->collapseValues($values))
             ->map(fn(RhythmValue $value): array => [
                 'timestamp' => $value->timestamp,
                 'type' => $value->type,
@@ -331,7 +331,7 @@ abstract class BaseStorage implements StorageInterface
             }
 
             foreach ((Configure::read('Rhythm.aggregation.periods') ?? [60, 360, 1440, 10080]) as $period) {
-                if ($entry->timestamp < (new DateTime())->getTimestamp() - $period * 60) {
+                if ($entry->timestamp < new DateTime()->getTimestamp() - $period * 60) {
                     continue;
                 }
 
@@ -384,7 +384,7 @@ abstract class BaseStorage implements StorageInterface
      */
     protected function getCurrentBucket(int $period, ?int $timestamp = null): int
     {
-        $timestamp = $timestamp ?: (new DateTime())->getTimestamp();
+        $timestamp = $timestamp ?: new DateTime()->getTimestamp();
 
         return (int)($timestamp / $period) * $period;
     }

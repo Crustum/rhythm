@@ -86,7 +86,7 @@ class ExceptionsRecorder extends BaseRecorder implements EventListenerInterface
             return;
         }
 
-        $timestamp = (new DateTime())->getTimestamp();
+        $timestamp = new DateTime()->getTimestamp();
         $this->rhythm->record('exception', $key, $timestamp)->max()->count();
     }
 

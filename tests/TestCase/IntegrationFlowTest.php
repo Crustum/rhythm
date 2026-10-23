@@ -131,7 +131,7 @@ class IntegrationFlowTest extends RhythmTestCase
      */
     public function testRealWorldAggregation(): void
     {
-        $baseTime = (new DateTime())->getTimestamp() - 3600;
+        $baseTime = new DateTime()->getTimestamp() - 3600;
         $metrics = [
             'user_requests' => [100, 150, 200, 120, 180],
             'db_queries' => [50, 75, 100, 60, 90],

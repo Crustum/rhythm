@@ -6,7 +6,7 @@ namespace Crustum\Rhythm\Test\TestCase;
 /**
  * Backed enum for Rhythm metric type tests.
  */
-enum TestMetricType: string
+enum TestMetricTypeEnum: string
 {
     case Request = 'request';
     case User = 'user';

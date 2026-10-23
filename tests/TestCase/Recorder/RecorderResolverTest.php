@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Crustum\Rhythm\Test\TestCase\Recorder;
 
-use Cake\Core\Container;
+use Cake\Container\Container;
 use Cake\TestSuite\TestCase;
 use Crustum\Rhythm\Ingest\IngestInterface;
 use Crustum\Rhythm\Recorder\RecorderInterface;
@@ -29,7 +29,7 @@ class RecorderResolverTest extends TestCase
     /**
      * Real container
      *
-     * @var \Cake\Core\Container
+     * @var \Cake\Container\Container
      */
     protected Container $container;
 

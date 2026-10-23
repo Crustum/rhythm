@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Crustum\Rhythm\Test\TestCase;
 
-use Cake\Core\ContainerInterface;
+use Cake\Container\ContainerInterface;
 use Cake\TestSuite\TestCase;
 use Crustum\Rhythm\Ingest\TransparentIngest;
 use Crustum\Rhythm\Rhythm;
@@ -100,7 +100,7 @@ class RhythmTest extends TestCase
      */
     public function testRecordAcceptsEnums(): void
     {
-        $entry = $this->rhythm->record(TestMetricType::Request, TestMetricKey::UserOne, 100);
+        $entry = $this->rhythm->record(TestMetricTypeEnum::Request, TestMetricKeyEnum::UserOne, 100);
 
         $this->assertSame('request', $entry->type);
         $this->assertSame('UserOne', $entry->key);
@@ -114,7 +114,7 @@ class RhythmTest extends TestCase
      */
     public function testSetAcceptsEnums(): void
     {
-        $value = $this->rhythm->set(TestMetricType::User, TestMetricKey::Active, 'John Doe');
+        $value = $this->rhythm->set(TestMetricTypeEnum::User, TestMetricKeyEnum::Active, 'John Doe');
 
         $this->assertSame('user', $value->type);
         $this->assertSame('Active', $value->key);

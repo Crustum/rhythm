@@ -173,7 +173,7 @@ class CoreFlowTest extends RhythmTestCase
     {
         $this->setupStorage($storageClass, $config);
 
-        $fixedTimestamp = (new DateTime())->getTimestamp() - 30;
+        $fixedTimestamp = new DateTime()->getTimestamp() - 30;
 
         $this->rhythm->record('agg_test', 'key_1', 10, $fixedTimestamp);
         $this->rhythm->record('agg_test', 'key_1', 20, $fixedTimestamp);

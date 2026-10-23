@@ -65,7 +65,7 @@ class NullIngestTest extends TestCase
         $storage = $this->createMock(StorageInterface::class);
         $storage->expects($this->never())->method('store');
 
-        $timestamp = (new DateTime())->getTimestamp();
+        $timestamp = new DateTime()->getTimestamp();
         $items = new Collection([
             new RhythmEntry($timestamp, 'request', 'user:456', 200),
         ]);

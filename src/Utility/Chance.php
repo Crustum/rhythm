@@ -101,7 +101,7 @@ class Chance
      * @param callable $callback The callback to execute when chance wins
      * @return $this
      */
-    public function withWinner(callable $callback)
+    public function withWinner(callable $callback): static
     {
         $this->winner = $callback;
 
@@ -114,7 +114,7 @@ class Chance
      * @param callable $callback The callback to execute when chance loses
      * @return $this
      */
-    public function withLoser(callable $callback)
+    public function withLoser(callable $callback): static
     {
         $this->loser = $callback;
 

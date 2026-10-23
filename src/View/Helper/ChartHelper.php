@@ -15,7 +15,7 @@ class ChartHelper extends Helper
     /**
      * @var array<string, mixed>
      */
-    protected array $_defaultConfig = [
+    protected array $defaultConfig = [
         'defaultColor' => '#4A5568',
         'sparkline' => [
             'color' => '#888888',

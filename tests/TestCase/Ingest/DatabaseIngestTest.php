@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Crustum\Rhythm\Test\TestCase\Ingest;
 
-use Cake\Core\Container;
+use Cake\Container\Container;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
 use Crustum\Rhythm\Ingest\TransparentIngest;

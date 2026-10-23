@@ -232,7 +232,7 @@ abstract class BaseWidget
         }
 
         $result = $query();
-        $currentTimestamp = (new DateTime())->format('Y-m-d H:i:s');
+        $currentTimestamp = new DateTime()->format('Y-m-d H:i:s');
 
         Cache::write($cacheKey, $result, 'rhythm');
         Cache::write($timeKey, $currentTimestamp, 'rhythm');

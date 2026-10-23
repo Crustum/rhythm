@@ -19,7 +19,7 @@ trait SamplingTrait
     {
         $sampleRate = $this->getSampleRate();
 
-        return (new Chance($sampleRate))->isWin();
+        return new Chance($sampleRate)->isWin();
     }
 
     /**

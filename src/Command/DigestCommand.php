@@ -5,9 +5,7 @@ namespace Crustum\Rhythm\Command;
 
 use Cake\Cache\Cache;
 use Cake\Command\Command;
-use Cake\Console\Arguments;
 use Cake\Console\CommandFactoryInterface;
-use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\DateTime;
 use Crustum\Rhythm\Rhythm;
@@ -71,27 +69,25 @@ class DigestCommand extends Command
     /**
      * Execute the command.
      *
-     * @param \Cake\Console\Arguments $args The command arguments.
-     * @param \Cake\Console\ConsoleIo $io The console io
      * @return int|null The exit code or null for success
      */
-    public function execute(Arguments $args, ConsoleIo $io): ?int
+    public function execute(): ?int
     {
-        $io->info('Starting Rhythm digest worker...');
+        $this->io->info('Starting Rhythm digest worker...');
 
-        $this->bindGracefulTermination(function (int $signal) use ($io): void {
-            $io->info('Received termination signal, finishing current digest cycle...');
+        $this->bindGracefulTermination(function (int $signal): void {
+            $this->io->info('Received termination signal, finishing current digest cycle...');
             $this->isRunning = false;
         });
 
         $lastRestart = Cache::read('rhythm:restart', 'default');
-        $lastTrimmedStorageAt = (new DateTime())->getTimestamp();
+        $lastTrimmedStorageAt = new DateTime()->getTimestamp();
 
         while ($this->isRunning) {
-            $now = (new DateTime())->getTimestamp();
+            $now = new DateTime()->getTimestamp();
 
             if ($lastRestart !== Cache::read('rhythm:restart', 'default')) {
-                $io->info('Restart signal detected, stopping worker...');
+                $this->io->info('Restart signal detected, stopping worker...');
 
                 return self::CODE_SUCCESS;
             }
@@ -99,18 +95,18 @@ class DigestCommand extends Command
             $count = $this->rhythm->digest();
 
             if ($count > 0) {
-                $io->success("Digested {$count} metrics successfully.");
+                $this->io->success("Digested {$count} metrics successfully.");
             }
 
             if ($now - $lastTrimmedStorageAt >= 600) {
-                $io->info('Trimming old data...');
+                $this->io->info('Trimming old data...');
                 $this->rhythm->trim();
                 $lastTrimmedStorageAt = $now;
-                $io->success('Trim completed.');
+                $this->io->success('Trim completed.');
             }
 
-            if ($args->getOption('stop-when-empty')) {
-                $io->info('Stop when empty option enabled, exiting...');
+            if ($this->args->getOption('stop-when-empty')) {
+                $this->io->info('Stop when empty option enabled, exiting...');
 
                 return self::CODE_SUCCESS;
             }

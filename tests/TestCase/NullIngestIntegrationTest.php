@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Crustum\Rhythm\Test\TestCase;
 
+use Cake\Container\Container;
+use Cake\Container\ContainerInterface;
 use Cake\Core\Configure;
-use Cake\Core\Container;
-use Cake\Core\ContainerInterface;
 use Cake\TestSuite\TestCase;
 use Crustum\Rhythm\Ingest\IngestInterface;
 use Crustum\Rhythm\Ingest\NullIngest;
@@ -133,7 +133,7 @@ class NullIngestIntegrationTest extends TestCase
     /**
      * Helper method to get a container instance
      *
-     * @return \Cake\Core\ContainerInterface
+     * @return \Cake\Container\ContainerInterface
      */
     protected function getContainer(): ContainerInterface
     {

@@ -5,10 +5,10 @@ namespace Crustum\Rhythm;
 
 use Cake\Console\CommandCollection;
 use Cake\Console\CommandFactoryInterface;
+use Cake\Container\ContainerInterface;
 use Cake\Core\BasePlugin;
 use Cake\Core\Configure;
 use Cake\Core\ContainerApplicationInterface;
-use Cake\Core\ContainerInterface;
 use Cake\Core\PluginApplicationInterface;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
@@ -88,7 +88,7 @@ class RhythmPlugin extends BasePlugin
     /**
      * Register container services.
      *
-     * @param \Cake\Core\ContainerInterface $container The container to register services with
+     * @param \Cake\Container\ContainerInterface $container The container to register services with
      * @return void
      */
     public function services(ContainerInterface $container): void

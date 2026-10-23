@@ -5,11 +5,10 @@ namespace Crustum\Rhythm\Command;
 
 use Cake\Cache\Cache;
 use Cake\Command\Command;
-use Cake\Console\Arguments;
 use Cake\Console\CommandFactoryInterface;
-use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Event\EventManager;
+use Cake\Event\EventManagerInterface;
 use Cake\I18n\DateTime;
 use Crustum\Rhythm\Event\SharedBeat;
 use Crustum\Rhythm\Rhythm;
@@ -34,9 +33,9 @@ class CheckCommand extends Command
     /**
      * Event manager instance.
      *
-     * @var \Cake\Event\EventManager
+     * @var \Cake\Event\EventManagerInterface
      */
-    protected EventManager $eventManager;
+    protected EventManagerInterface $eventManager;
 
     /**
      * Whether the command should continue running.
@@ -85,22 +84,20 @@ class CheckCommand extends Command
     /**
      * Execute the command.
      *
-     * @param \Cake\Console\Arguments $args The command arguments.
-     * @param \Cake\Console\ConsoleIo $io The console io
      * @return int|null The exit code or null for success
      */
-    public function execute(Arguments $args, ConsoleIo $io): ?int
+    public function execute(): ?int
     {
-        $once = $args->getOption('once');
-        $interval = (int)$args->getOption('interval');
+        $once = $this->args->getOption('once');
+        $interval = (int)$this->args->getOption('interval');
 
         $this->rhythm->loadRecordersFromConfig();
 
-        $io->info('Starting Rhythm server tracking...');
-        $io->info('Press Ctrl+C to stop');
+        $this->io->info('Starting Rhythm server tracking...');
+        $this->io->info('Press Ctrl+C to stop');
 
-        $this->bindGracefulTermination(function (int $signal) use ($io): void {
-            $io->info('Rhythm Check received termination signal, shutting down gracefully...');
+        $this->bindGracefulTermination(function (int $signal): void {
+            $this->io->info('Rhythm Check received termination signal, shutting down gracefully...');
             $this->isRunning = false;
         });
 
@@ -108,7 +105,7 @@ class CheckCommand extends Command
         while ($this->isRunning) {
             usleep(100000);
             if ($lastRestart !== Cache::read('rhythm:restart', 'default')) {
-                $io->info('Restart signal detected, exiting...');
+                $this->io->info('Restart signal detected, exiting...');
 
                 return self::CODE_SUCCESS;
             }
@@ -120,11 +117,11 @@ class CheckCommand extends Command
 
             $ingested = $this->rhythm->ingest();
             if ($ingested > 0) {
-                $io->verbose("Ingested {$ingested} metrics");
+                $this->io->verbose("Ingested {$ingested} metrics");
             }
 
             if ($once) {
-                $io->info('Single snapshot completed');
+                $this->io->info('Single snapshot completed');
 
                 return self::CODE_SUCCESS;
             }

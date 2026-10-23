@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Crustum\Rhythm\Recorder;
 
-use Cake\Core\ContainerInterface;
+use Cake\Container\ContainerInterface;
 use Crustum\Rhythm\Rhythm;
 use InvalidArgumentException;
 use ReflectionClass;
@@ -19,7 +19,7 @@ class RecorderResolver
     /**
      * Container instance.
      *
-     * @var \Cake\Core\ContainerInterface
+     * @var \Cake\Container\ContainerInterface
      */
     protected ContainerInterface $container;
 
@@ -33,7 +33,7 @@ class RecorderResolver
     /**
      * Constructor.
      *
-     * @param \Cake\Core\ContainerInterface $container Container interface
+     * @param \Cake\Container\ContainerInterface $container Container interface
      * @param \Crustum\Rhythm\Rhythm $rhythm Rhythm instance
      */
     public function __construct(ContainerInterface $container, Rhythm $rhythm)
@@ -82,7 +82,7 @@ class RecorderResolver
      */
     public function resolve(string $recorderClass, array $config = []): RecorderInterface
     {
-        if ($this->resolveFromContainer && $this->container->has($recorderClass)) {
+        if ($this->resolveFromContainer && $this->hasExplicitDefinition($recorderClass)) {
             $recorder = $this->container->get($recorderClass);
 
             if ($recorder instanceof RecorderInterface) {
@@ -96,6 +96,22 @@ class RecorderResolver
         }
 
         return $this->createRecorder($recorderClass, $config);
+    }
+
+    /**
+     * Check for an explicit container definition without triggering auto-wiring.
+     *
+     * CakePHP 6 `Container::has()` delegates to `ReflectionContainer`, returning
+     * true for any existing class. Using it here would route unregistered
+     * recorders through auto-wiring (which re-enters `Rhythm` construction).
+     * `hasDefinition()` only checks explicit definitions.
+     *
+     * @param string $id Service id
+     * @return bool
+     */
+    protected function hasExplicitDefinition(string $id): bool
+    {
+        return $this->container->hasDefinition($id);
     }
 
     /**

@@ -5,8 +5,8 @@ namespace Crustum\Rhythm;
 
 use BackedEnum;
 use Cake\Collection\Collection;
+use Cake\Container\ContainerInterface;
 use Cake\Core\Configure;
-use Cake\Core\ContainerInterface;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
 use Cake\I18n\DateTime;
@@ -113,7 +113,7 @@ class Rhythm
     /**
      * Container interface for dependency injection.
      *
-     * @var \Cake\Core\ContainerInterface
+     * @var \Cake\Container\ContainerInterface
      */
     protected ContainerInterface $container;
 
@@ -129,7 +129,7 @@ class Rhythm
      *
      * @param \Crustum\Rhythm\Storage\StorageInterface $storage Storage interface
      * @param \Crustum\Rhythm\Ingest\IngestInterface $ingest Ingest interface
-     * @param \Cake\Core\ContainerInterface $container Container interface
+     * @param \Cake\Container\ContainerInterface $container Container interface
      * @param array<string, mixed> $config Configuration array
      */
     public function __construct(
@@ -167,7 +167,7 @@ class Rhythm
      */
     public function record(UnitEnum|string $type, UnitEnum|string $key, ?int $value = null, ?int $timestamp = null): RhythmEntry
     {
-        $timestamp = $timestamp ?: (new DateTime())->getTimestamp();
+        $timestamp = $timestamp ?: new DateTime()->getTimestamp();
 
         $entry = new RhythmEntry($timestamp, $this->enumToString($type), $this->enumToString($key), $value);
 
@@ -190,7 +190,7 @@ class Rhythm
      */
     public function set(UnitEnum|string $type, UnitEnum|string $key, string $value, ?int $timestamp = null): RhythmValue
     {
-        $timestamp = $timestamp ?: (new DateTime())->getTimestamp();
+        $timestamp = $timestamp ?: new DateTime()->getTimestamp();
 
         $metricValue = new RhythmValue($timestamp, $this->enumToString($type), $this->enumToString($key), $value);
 
@@ -227,7 +227,7 @@ class Rhythm
      * @param callable $closure Closure to execute for lazy entry creation
      * @return $this
      */
-    public function lazy(callable $closure)
+    public function lazy(callable $closure): static
     {
         if ($this->shouldRecord) {
             $this->lazy[] = $closure;
@@ -242,7 +242,7 @@ class Rhythm
      *
      * @return $this
      */
-    public function startRecording()
+    public function startRecording(): static
     {
         $this->shouldRecord = true;
 
@@ -254,7 +254,7 @@ class Rhythm
      *
      * @return $this
      */
-    public function stopRecording()
+    public function stopRecording(): static
     {
         $this->shouldRecord = false;
 
@@ -291,7 +291,7 @@ class Rhythm
      * @param callable $filter Filter function that returns bool
      * @return $this
      */
-    public function filter(callable $filter)
+    public function filter(callable $filter): static
     {
         $this->filters[] = $filter;
 
@@ -304,7 +304,7 @@ class Rhythm
      * @param callable $callback Exception handler
      * @return $this
      */
-    public function handleExceptionsUsing(callable $callback)
+    public function handleExceptionsUsing(callable $callback): static
     {
         $this->handleExceptionsUsing = $callback;
 
@@ -338,13 +338,7 @@ class Rhythm
      */
     protected function shouldRecordEntry(RhythmEntry|RhythmValue $entry): bool
     {
-        foreach ($this->filters as $filter) {
-            if (!$filter($entry)) {
-                return false;
-            }
-        }
-
-        return true;
+        return array_all($this->filters, fn(callable $filter) => $filter($entry));
     }
 
     /**
@@ -369,7 +363,7 @@ class Rhythm
      * @param array<string, array<string, mixed>> $recorders Array of recorder configurations with className
      * @return $this
      */
-    public function register(array $recorders)
+    public function register(array $recorders): static
     {
         foreach ($recorders as $recorderName => $config) {
             if (array_key_exists($recorderName, $this->recorders)) {
@@ -402,7 +396,7 @@ class Rhythm
      *
      * @return $this
      */
-    public function unregister()
+    public function unregister(): static
     {
         foreach ($this->recorders as $recorder) {
             if ($recorder instanceof EventListenerInterface) {
@@ -418,7 +412,7 @@ class Rhythm
      *
      * @return $this
      */
-    public function loadRecordersFromConfig()
+    public function loadRecordersFromConfig(): static
     {
         $recorders = $this->config['recorders'] ?? [];
 
@@ -619,7 +613,7 @@ class Rhythm
      * @param \Throwable $exception Exception to report
      * @return $this
      */
-    public function report(Throwable $exception)
+    public function report(Throwable $exception): static
     {
         $this->rescue(function () use ($exception): void {
             $exceptionClass = $exception::class;

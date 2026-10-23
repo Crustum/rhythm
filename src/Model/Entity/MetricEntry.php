@@ -28,7 +28,7 @@ class MetricEntry extends Entity
      *
      * @var array<string, bool>
      */
-    protected array $_accessible = [
+    protected array $patchable = [
         'timestamp' => true,
         'type' => true,
         'metric_key' => true,
@@ -44,7 +44,7 @@ class MetricEntry extends Entity
      */
     protected function _getKey(): ?string
     {
-        return $this->_fields['metric_key'] ?? null;
+        return $this->get('metric_key');
     }
 
     /**
@@ -54,7 +54,7 @@ class MetricEntry extends Entity
      */
     protected function _setKey(?string $value): void
     {
-        $this->_fields['metric_key'] = $value;
+        $this->set('metric_key', $value);
     }
 
     /**
@@ -62,7 +62,7 @@ class MetricEntry extends Entity
      *
      * @var array<string>
      */
-    protected array $_virtual = [
+    protected array $virtual = [
         'key',
     ];
 
@@ -71,7 +71,7 @@ class MetricEntry extends Entity
      *
      * @var array<string>
      */
-    protected array $_hidden = [
+    protected array $hidden = [
         'id',
     ];
 }

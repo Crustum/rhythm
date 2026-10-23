@@ -324,7 +324,7 @@ class QueueStatsRecorder extends BaseRecorder implements EventListenerInterface
         }
 
         $createdAt = (int)$jobData['headers']['timestamp'];
-        $currentTime = (new DateTime())->getTimestamp();
+        $currentTime = new DateTime()->getTimestamp();
 
         return (float)($currentTime - $createdAt);
     }

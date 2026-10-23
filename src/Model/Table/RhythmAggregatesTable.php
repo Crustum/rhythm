@@ -141,7 +141,7 @@ class RhythmAggregatesTable extends Table
         string $direction = 'desc',
         int $limit = 101,
     ): Collection {
-        $this->_validateAggregates($aggregate);
+        $this->validateAggregates($aggregate);
 
         /** @var \Crustum\Rhythm\Model\Table\RhythmEntriesTable $RhythmEntries */
         $RhythmEntries = $this->fetchTable('Crustum/Rhythm.RhythmEntries');
@@ -152,7 +152,7 @@ class RhythmAggregatesTable extends Table
             'windowStart' => $windowStart,
             'period' => $period,
             'oldestBucket' => $oldestBucket,
-        ] = $this->_getTimeScope($intervalMinutes);
+        ] = $this->getTimeScope($intervalMinutes);
 
         $aggregatedResults = [];
 
@@ -236,7 +236,7 @@ class RhythmAggregatesTable extends Table
                 } elseif ($aggregate === 'sum') {
                     $tailValue = array_sum($values);
                 } else {
-                    // Validated upstream via _validateAggregates(); remaining case is avg.
+                    // Validated upstream via validateAggregates(); remaining case is avg.
                     $tailValue = $values === [] ? 0.0 : array_sum($values) / count($values);
                 }
 
@@ -272,7 +272,7 @@ class RhythmAggregatesTable extends Table
         string $aggregate,
         int $intervalMinutes,
     ): float|Collection {
-        $this->_validateAggregates($aggregate);
+        $this->validateAggregates($aggregate);
 
         /** @var \Crustum\Rhythm\Model\Table\RhythmEntriesTable $RhythmEntries */
         $RhythmEntries = $this->fetchTable('Crustum/Rhythm.RhythmEntries');
@@ -283,7 +283,7 @@ class RhythmAggregatesTable extends Table
             'windowStart' => $windowStart,
             'period' => $period,
             'oldestBucket' => $oldestBucket,
-        ] = $this->_getTimeScope($intervalMinutes);
+        ] = $this->getTimeScope($intervalMinutes);
 
         $results = [];
         foreach ($types as $type) {
@@ -297,7 +297,7 @@ class RhythmAggregatesTable extends Table
             'sum' => 'SUM(value)',
             'avg' => 'AVG(value)',
         ];
-        // Validated upstream via _validateAggregates(); key always exists.
+        // Validated upstream via validateAggregates(); key always exists.
         $aggregateSql = $aggregateSqlMap[$aggregate];
 
         $aggregateQuery = $this->find()
@@ -326,7 +326,7 @@ class RhythmAggregatesTable extends Table
             'sum' => 'SUM(value)',
             'avg' => 'AVG(value)',
         ];
-        // Validated upstream via _validateAggregates(); key always exists.
+        // Validated upstream via validateAggregates(); key always exists.
         $tailSql = $tailSqlMap[$aggregate];
 
         $tailQuery = $RhythmEntries->find()
@@ -371,7 +371,7 @@ class RhythmAggregatesTable extends Table
      */
     public function graph(array $types, string $aggregate, int $intervalMinutes): Collection
     {
-        $this->_validateAggregates($aggregate);
+        $this->validateAggregates($aggregate);
 
         if ($intervalMinutes <= 0) {
             return new Collection([]);
@@ -379,7 +379,7 @@ class RhythmAggregatesTable extends Table
 
         [
             'period' => $period,
-        ] = $this->_getTimeScope($intervalMinutes);
+        ] = $this->getTimeScope($intervalMinutes);
 
         $maxDataPoints = 60;
         $intervalSeconds = $intervalMinutes * 60;
@@ -411,25 +411,32 @@ class RhythmAggregatesTable extends Table
             ->orderBy(['bucket'])
             ->all();
 
-        $groupedByKey = (new Collection($queryResults))->groupBy('metric_key')->toArray();
+        /** @var array<string, list<\Crustum\Rhythm\Model\Entity\MetricAggregate>> $groupedByKey */
+        $groupedByKey = new Collection($queryResults)->groupBy('metric_key')->toArray();
 
+        /** @var array<string, mixed> $finalResult */
         $finalResult = [];
         foreach ($groupedByKey as $key => $readings) {
-            $readingsByType = (new Collection($readings))->groupBy('type')->toArray();
+            /** @var array<string, list<\Crustum\Rhythm\Model\Entity\MetricAggregate>> $readingsByType */
+            $readingsByType = new Collection($readings)->groupBy('type')->toArray();
 
+            /** @var array<string, array<string, mixed>> $mapped */
             $mapped = [];
             foreach ($readingsByType as $type => $typeReadings) {
+                /** @var array<string, mixed> $valuesByBucket */
                 $valuesByBucket = [];
                 foreach ($typeReadings as $reading) {
-                    $time = Chronos::createFromTimestamp($reading->bucket)->toDateTimeString();
-                    $valuesByBucket[$time] = $reading->value;
+                    $time = Chronos::createFromTimestamp((int)$reading->get('bucket'))->toDateTimeString();
+                    $valuesByBucket[$time] = $reading->get('value');
                 }
 
                 $merged = $valuesByBucket + $padding;
                 $mapped[$type] = array_slice($merged, 0, $maxDataPoints, true);
             }
 
-            $finalResult[$key] = new Collection($mapped + $structure);
+            /** @var array<string, mixed> $combined */
+            $combined = $mapped + $structure;
+            $finalResult[$key] = new Collection($combined);
         }
 
         ksort($finalResult, SORT_NATURAL);
@@ -476,14 +483,14 @@ class RhythmAggregatesTable extends Table
         string $direction = 'desc',
         int $limit = 101,
     ): Collection {
-        $aggregates = $this->_validateAggregates($aggregates);
+        $aggregates = $this->validateAggregates($aggregates);
 
         $orderBy = $orderBy ?: $aggregates[0];
         [
             'windowStart' => $windowStart,
             'period' => $period,
             'oldestBucket' => $oldestBucket,
-        ] = $this->_getTimeScope($intervalMinutes);
+        ] = $this->getTimeScope($intervalMinutes);
 
         $entriesTable = TableRegistry::getTableLocator()->get('Crustum/Rhythm.RhythmEntries');
         $tailQuery = $entriesTable->find();
@@ -499,7 +506,7 @@ class RhythmAggregatesTable extends Table
             } elseif ($aggregate === 'sum') {
                 $tailSelectFields[$aggregate] = $tailQuery->func()->sum('value');
             } else {
-                // Validated upstream via _validateAggregates(); remaining case is avg.
+                // Validated upstream via validateAggregates(); remaining case is avg.
                 $tailSelectFields[$aggregate] = $tailQuery->func()->avg('value');
             }
         }
@@ -529,7 +536,7 @@ class RhythmAggregatesTable extends Table
                     } elseif ($aggregate === 'sum') {
                         $bucketSelectFields[$aggregate] = $bucketQuery->func()->sum('value');
                     } else {
-                        // Validated upstream via _validateAggregates(); remaining case is avg.
+                        // Validated upstream via validateAggregates(); remaining case is avg.
                         $bucketSelectFields[$aggregate] = $bucketQuery->func()->avg('value');
                     }
                 } else {
@@ -567,7 +574,7 @@ class RhythmAggregatesTable extends Table
             } elseif ($aggregate === 'sum') {
                 $middleSelectFields[$aggregate] = $middleQuery->func()->sum(new IdentifierExpression($aggregate));
             } else {
-                // Validated upstream via _validateAggregates(); remaining case is avg.
+                // Validated upstream via validateAggregates(); remaining case is avg.
                 $middleSelectFields[$aggregate] = $middleQuery->func()->avg(new IdentifierExpression($aggregate));
             }
         }
@@ -631,9 +638,9 @@ class RhythmAggregatesTable extends Table
      * @param int $intervalMinutes Interval in minutes.
      * @return array{windowStart: int, period: int, oldestBucket: int}
      */
-    private function _getTimeScope(int $intervalMinutes): array
+    private function getTimeScope(int $intervalMinutes): array
     {
-        $now = (new DateTime())->getTimestamp();
+        $now = new DateTime()->getTimestamp();
         $intervalSeconds = $intervalMinutes * 60;
         $windowStart = $now - $intervalSeconds + 1;
 
@@ -658,7 +665,7 @@ class RhythmAggregatesTable extends Table
      * @return array<string> Validated aggregate types as array.
      * @throws \InvalidArgumentException When invalid aggregate types are provided.
      */
-    private function _validateAggregates(array|string $aggregates): array
+    private function validateAggregates(array|string $aggregates): array
     {
         $aggregates = is_array($aggregates) ? $aggregates : [$aggregates];
         $allowed = ['count', 'min', 'max', 'sum', 'avg'];

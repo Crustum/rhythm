@@ -4,9 +4,7 @@ declare(strict_types=1);
 namespace Crustum\Rhythm\Command;
 
 use Cake\Command\Command;
-use Cake\Console\Arguments;
 use Cake\Console\CommandFactoryInterface;
-use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Crustum\Rhythm\Rhythm;
 
@@ -59,27 +57,22 @@ class TestIngestCommand extends Command
     /**
      * Execute the command.
      *
-     * @param \Cake\Console\Arguments $args The command arguments.
-     * @param \Cake\Console\ConsoleIo $io The console io
      * @return int|null The exit code or null for success
      */
-    public function execute(Arguments $args, ConsoleIo $io): ?int
+    public function execute(): ?int
     {
-        $metricCount = (int)$args->getOption('metrics');
-
-        $io->info('Testing automatic ingest functionality...');
-        $io->info("Recording {$metricCount} metrics...");
-
+        $metricCount = (int)$this->args->getOption('metrics');
+        $this->io->info('Testing automatic ingest functionality...');
+        $this->io->info("Recording {$metricCount} metrics...");
         /** @var \Crustum\Rhythm\Rhythm $rhythm */
         $rhythm = $this->rhythm;
-
         for ($i = 1; $i <= $metricCount; $i++) {
             $rhythm->record('test_metric', "metric_{$i}", $i * 100);
-            $io->verbose("Recorded metric_{$i} = " . ($i * 100));
+            $this->io->verbose("Recorded metric_{$i} = " . ($i * 100));
         }
 
-        $io->info('Metrics recorded. Check if they are automatically ingested before command exit.');
-        $io->info("You should see 'Rhythm: Ingested X metrics before command exit' in the output.");
+        $this->io->info('Metrics recorded. Check if they are automatically ingested before command exit.');
+        $this->io->info("You should see 'Rhythm: Ingested X metrics before command exit' in the output.");
 
         return self::CODE_SUCCESS;
     }

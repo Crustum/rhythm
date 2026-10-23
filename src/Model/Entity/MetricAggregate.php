@@ -32,7 +32,7 @@ class MetricAggregate extends Entity
      *
      * @var array<string, bool>
      */
-    protected array $_accessible = [
+    protected array $patchable = [
         'bucket' => true,
         'period' => true,
         'type' => true,
@@ -52,7 +52,7 @@ class MetricAggregate extends Entity
      */
     protected function _getKey(): ?string
     {
-        return $this->_fields['metric_key'] ?? null;
+        return $this->get('metric_key');
     }
 
     /**
@@ -62,7 +62,7 @@ class MetricAggregate extends Entity
      */
     protected function _setKey(?string $value): void
     {
-        $this->_fields['metric_key'] = $value;
+        $this->set('metric_key', $value);
     }
 
     /**
@@ -72,7 +72,7 @@ class MetricAggregate extends Entity
      */
     protected function _getCount(): ?int
     {
-        return $this->_fields['entry_count'] ?? null;
+        return $this->get('entry_count');
     }
 
     /**
@@ -82,7 +82,7 @@ class MetricAggregate extends Entity
      */
     protected function _setCount(?int $value): void
     {
-        $this->_fields['entry_count'] = $value;
+        $this->set('entry_count', $value);
     }
 
     /**
@@ -90,7 +90,7 @@ class MetricAggregate extends Entity
      *
      * @var array<string>
      */
-    protected array $_virtual = [
+    protected array $virtual = [
         'key',
         'count',
     ];
@@ -100,7 +100,7 @@ class MetricAggregate extends Entity
      *
      * @var array<string>
      */
-    protected array $_hidden = [
+    protected array $hidden = [
         'id',
     ];
 }

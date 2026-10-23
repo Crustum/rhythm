@@ -58,7 +58,7 @@ class ServersRecorder extends BaseRecorder implements EventListenerInterface
                 ->avg()
                 ->onlyBuckets();
 
-            $storage = (new Collection($this->config['directories'] ?? ['/']))
+            $storage = new Collection($this->config['directories'] ?? ['/'])
                 ->map(function (string $directory): ?array {
                     if ($this->shouldIgnore($directory)) {
                         return null;

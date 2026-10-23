@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Crustum\Rhythm\Test\TestCase\Middleware;
 
-use Cake\Core\Container;
+use Cake\Container\Container;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
 use Cake\TestSuite\TestCase;

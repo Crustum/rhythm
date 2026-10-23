@@ -113,7 +113,7 @@ class DatabaseWidget extends BaseWidget
                 'chartData' => $chartData[$connectionName] ?? [],
                 'mappedGraphs' => $mappedColors,
                 'updated_at' => $latestValue->timestamp,
-                'recently_reported' => (new DateTime())->getTimestamp() - $latestValue->timestamp < 30,
+                'recently_reported' => new DateTime()->getTimestamp() - $latestValue->timestamp < 30,
             ];
         }
 

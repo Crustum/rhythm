@@ -57,7 +57,7 @@ trait IgnoresTrait
             return false;
         }
 
-        return (new Collection($ignorePatterns))
+        return new Collection($ignorePatterns)
             ->some(fn(string $pattern): bool => preg_match($pattern, $value) > 0);
     }
 

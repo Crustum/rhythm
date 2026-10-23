@@ -31,7 +31,7 @@ class RedisIngestTest extends RhythmTestCase
      */
     public function testBasicIngest(): void
     {
-        $timestamp = (new DateTime())->getTimestamp();
+        $timestamp = new DateTime()->getTimestamp();
         $items = new Collection([
             new RhythmEntry($timestamp, 'request', 'user:123', 100),
             new RhythmValue($timestamp, 'user', 'active:123', 'John Doe'),

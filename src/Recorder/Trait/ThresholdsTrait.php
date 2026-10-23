@@ -37,7 +37,7 @@ trait ThresholdsTrait
             return $config;
         }
 
-        $patterns = (new Collection($config))
+        $patterns = new Collection($config)
             ->filter(fn($value, $key): bool => $key !== 'default' && preg_match($key, $string) === 1)
             ->map(fn($value, $key): int => (int)$value)
             ->first();

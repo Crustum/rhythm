@@ -6,7 +6,7 @@ namespace Crustum\Rhythm\Test\TestCase;
 /**
  * Unit enum for Rhythm metric key tests.
  */
-enum TestMetricKey
+enum TestMetricKeyEnum
 {
     case UserOne;
     case Active;

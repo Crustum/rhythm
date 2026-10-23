@@ -46,7 +46,7 @@ class ServerStateWidget extends BaseWidget
                 }
 
                 $serverName = $values['name'] ?? $serverKey;
-                $currentTime = (new DateTime())->getTimestamp();
+                $currentTime = new DateTime()->getTimestamp();
                 $recentlyReported = $currentTime - $systemData->timestamp < 300;
 
                 $serverGraphData = $graphs[$serverKey] ?? null;
@@ -175,7 +175,7 @@ class ServerStateWidget extends BaseWidget
     {
         $sortType = $sortBy === 'name' ? SORT_NATURAL : SORT_NUMERIC;
 
-        $sorted = (new Collection($servers))
+        $sorted = new Collection($servers)
             ->sortBy($sortBy, $sortDirection === 'desc' ? SORT_DESC : SORT_ASC, $sortType)
             ->toArray();
 

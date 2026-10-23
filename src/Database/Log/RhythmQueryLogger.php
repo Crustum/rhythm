@@ -23,21 +23,21 @@ class RhythmQueryLogger extends AbstractLogger
      *
      * @var \Psr\Log\LoggerInterface|null
      */
-    protected ?LoggerInterface $_logger = null;
+    protected ?LoggerInterface $logger = null;
 
     /**
      * Name of the connection being logged.
      *
      * @var string
      */
-    protected string $_connectionName;
+    protected string $connectionName;
 
     /**
      * Slow query threshold in milliseconds.
      *
      * @var int
      */
-    protected int $_threshold;
+    protected int $threshold;
 
     /**
      * Event manager instance.
@@ -58,9 +58,9 @@ class RhythmQueryLogger extends AbstractLogger
         string $name,
         int $threshold = 1000,
     ) {
-        $this->_logger = $logger;
-        $this->_connectionName = $name;
-        $this->_threshold = $threshold;
+        $this->logger = $logger;
+        $this->connectionName = $name;
+        $this->threshold = $threshold;
         $this->eventManager = EventManager::instance();
     }
 
@@ -71,7 +71,7 @@ class RhythmQueryLogger extends AbstractLogger
      */
     public function name(): string
     {
-        return $this->_connectionName;
+        return $this->connectionName;
     }
 
     /**
@@ -81,7 +81,7 @@ class RhythmQueryLogger extends AbstractLogger
      */
     public function getThreshold(): int
     {
-        return $this->_threshold;
+        return $this->threshold;
     }
 
     /**
@@ -90,9 +90,9 @@ class RhythmQueryLogger extends AbstractLogger
      * @param int $threshold Threshold in milliseconds
      * @return $this
      */
-    public function setThreshold(int $threshold)
+    public function setThreshold(int $threshold): static
     {
-        $this->_threshold = $threshold;
+        $this->threshold = $threshold;
 
         return $this;
     }
@@ -104,9 +104,8 @@ class RhythmQueryLogger extends AbstractLogger
     {
         /** @var \Cake\Database\Log\LoggedQuery|object|null $query */
         $query = $context['query'] ?? null;
-        $this->_threshold = 3;
-        if ($this->_logger instanceof LoggerInterface) {
-            $this->_logger->log($level, $message, $context);
+        if ($this->logger instanceof LoggerInterface) {
+            $this->logger->log($level, $message, $context);
         }
 
         if (!$query instanceof LoggedQuery) {
@@ -116,7 +115,7 @@ class RhythmQueryLogger extends AbstractLogger
         $data = $query->jsonSerialize();
         $duration = (int)$data['took'];
 
-        if ($duration >= $this->_threshold) {
+        if ($duration >= $this->threshold) {
             $sql = (string)$query;
             $location = $this->resolveLocation();
 
@@ -166,13 +165,7 @@ class RhythmQueryLogger extends AbstractLogger
             'plugins' . DIRECTORY_SEPARATOR . 'Rhythm',
         ];
 
-        foreach ($internalPaths as $path) {
-            if (str_contains($file, $path)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($internalPaths, fn(string $path): bool => str_contains($file, $path));
     }
 
     /**

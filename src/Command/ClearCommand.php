@@ -4,9 +4,7 @@ declare(strict_types=1);
 namespace Crustum\Rhythm\Command;
 
 use Cake\Command\Command;
-use Cake\Console\Arguments;
 use Cake\Console\CommandFactoryInterface;
-use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\Configure;
 use Crustum\Rhythm\Rhythm;
@@ -64,30 +62,27 @@ class ClearCommand extends Command
     /**
      * Execute the command.
      *
-     * @param \Cake\Console\Arguments $args The command arguments
-     * @param \Cake\Console\ConsoleIo $io The console I/O
      * @return int|null|void The exit code or null for success
      */
-    public function execute(Arguments $args, ConsoleIo $io)
+    public function execute()
     {
-        if (Configure::read('debug') === false && !$args->getOption('force')) {
-            $io->error('This command cannot be run in production without the --force option.');
+        if (Configure::read('debug') === false && !$this->args->getOption('force')) {
+            $this->io->error('This command cannot be run in production without the --force option.');
 
             return Command::CODE_ERROR;
         }
 
-        $types = $args->getOption('type');
-
+        $types = $this->args->getOption('type');
         if (!empty($types) && is_string($types)) {
-            $io->info('Purging Rhythm data for [' . $types . ']');
+            $this->io->info('Purging Rhythm data for [' . $types . ']');
             $types = explode(',', $types);
             $this->rhythm->purge($types);
         } else {
-            $io->info('Purging all Rhythm data');
+            $this->io->info('Purging all Rhythm data');
             $this->rhythm->purge();
         }
 
-        $io->success('Rhythm data cleared successfully.');
+        $this->io->success('Rhythm data cleared successfully.');
 
         return Command::CODE_SUCCESS;
     }

@@ -264,13 +264,7 @@ class GitRecorder extends BaseRecorder implements EventListenerInterface
             '/^merge/i',
         ];
 
-        foreach ($mergePatterns as $pattern) {
-            if (preg_match($pattern, $message)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($mergePatterns, fn(string $pattern): bool => preg_match($pattern, $message) === 1);
     }
 
     /**

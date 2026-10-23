@@ -41,7 +41,7 @@ class DatabaseStorageTest extends TestCase
      */
     public function testStoreRhythmEntries(): void
     {
-        $timestamp = (new DateTime())->getTimestamp();
+        $timestamp = new DateTime()->getTimestamp();
         $entries = new Collection([
             new RhythmEntry($timestamp, 'request', 'user:123', 100),
             new RhythmEntry($timestamp, 'request', 'user:456', 200),
@@ -62,7 +62,7 @@ class DatabaseStorageTest extends TestCase
      */
     public function testStoreRhythmValues(): void
     {
-        $timestamp = (new DateTime())->getTimestamp();
+        $timestamp = new DateTime()->getTimestamp();
         $values = new Collection([
             new RhythmValue($timestamp, 'user', 'active:123', 'John Doe'),
             new RhythmValue($timestamp, 'user', 'active:456', 'Jane Smith'),
@@ -83,7 +83,7 @@ class DatabaseStorageTest extends TestCase
      */
     public function testStoreMixedData(): void
     {
-        $timestamp = (new DateTime())->getTimestamp();
+        $timestamp = new DateTime()->getTimestamp();
         $items = new Collection([
             new RhythmEntry($timestamp, 'request', 'user:123', 100),
             new RhythmValue($timestamp, 'user', 'active:123', 'John Doe'),
@@ -105,7 +105,7 @@ class DatabaseStorageTest extends TestCase
      */
     public function testAggregation(): void
     {
-        $timestamp = (new DateTime())->getTimestamp();
+        $timestamp = new DateTime()->getTimestamp();
         $entries = new Collection([
             new RhythmEntry($timestamp, 'request', 'test', 100),
             new RhythmEntry($timestamp, 'request', 'test', 200),

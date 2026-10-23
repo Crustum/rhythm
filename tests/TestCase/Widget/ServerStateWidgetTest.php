@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Crustum\Rhythm\Test\TestCase\Widget;
 
 use Cake\Collection\Collection;
-use Cake\Core\ContainerInterface;
+use Cake\Container\ContainerInterface;
 use Cake\TestSuite\TestCase;
 use Crustum\Rhythm\Ingest\NullIngest;
 use Crustum\Rhythm\Rhythm;

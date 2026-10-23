@@ -4,17 +4,18 @@
     "type": "cakephp-plugin",
     "license": "MIT",
     "require": {
-        "php": ">=8.1",
-        "skie/signal_handler": "^1.0"
+        "php": ">=8.5",
+        "cakephp/cakephp": "6.x-dev",
+        "skie/signal_handler": "2.x-dev"
     },
     "require-dev": {
         "boundwize/structarmed": "0.19",
-        "cakedc/cakephp-phpstan": "^4.3",
-        "phpunit/phpunit": "^10.5 | ^12.5 | ^13.0",
-        "crustum/plugin-manifest": "^1.2",
-        "cakephp/queue": "^2.0",
-        "rector/rector": "^2.7",
-        "cakephp/cakephp-codesniffer": "^5.3"
+        "cakedc/cakephp-phpstan": "5.next-cake6-dev",
+        "cakephp/cakephp-codesniffer": "6.x-dev",
+        "cakephp/queue": "4.x-dev",
+        "crustum/plugin-manifest": "2.x-dev",
+        "phpunit/phpunit": "^13.0",
+        "rector/rector": "^2.7"
     },
     "suggest": {
         "crustum/plugin-manifest": "CakePHP plugin installer"
@@ -32,7 +33,14 @@
     "scripts": {
         "check": [
             "@cs-check",
+            "@rector-check",
             "@test",
+            "@analyse"
+        ],
+        "fix": [
+            "@cs-fix",
+            "@rector-fix",
+            "@cs-fix",
             "@analyse"
         ],
         "analyse": [
@@ -60,5 +68,13 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:skie/cakephp-queue.git"
+        }
+    ]
 }

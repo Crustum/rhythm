@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Crustum\Rhythm\Test\TestCase\Storage;
 
 use Cake\Collection\Collection;
-use Cake\Core\Container;
+use Cake\Container\Container;
 use Cake\Datasource\ResultSetInterface;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
@@ -65,13 +65,13 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->rhythm->record('type', 'key2', 400)->count()->min()->max()->sum()->avg();
         $this->rhythm->ingest();
 
-        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
+        $entries = $this->rhythm->ignore(fn(): ResultSetInterface => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
         $this->assertCount(3, $entries);
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1', 'value' => 200], $entries->first()->extract(['type', 'metric_key', 'value']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1', 'value' => 100], $entries->skip(1)->first()->extract(['type', 'metric_key', 'value']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key2', 'value' => 400], $entries->skip(2)->first()->extract(['type', 'metric_key', 'value']));
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->orderBy(['period' => 'ASC', 'aggregate' => 'ASC', 'metric_key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn(): ResultSetInterface => $this->Aggregates->find()->orderBy(['period' => 'ASC', 'aggregate' => 'ASC', 'metric_key' => 'ASC'])->all());
         $this->assertCount(40, $aggregates);
         $agg = fn($i) => $aggregates->skip($i)->first();
         // period 60
@@ -122,14 +122,14 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->rhythm->record('type', 'key1', 600)->count()->min()->max()->sum()->avg();
         $this->rhythm->ingest();
 
-        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
+        $entries = $this->rhythm->ignore(fn(): ResultSetInterface => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
         $this->assertCount(4, $entries);
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1', 'value' => 200], $entries->first()->extract(['type', 'metric_key', 'value']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1', 'value' => 100], $entries->skip(1)->first()->extract(['type', 'metric_key', 'value']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key2', 'value' => 400], $entries->skip(2)->first()->extract(['type', 'metric_key', 'value']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1', 'value' => 600], $entries->skip(3)->first()->extract(['type', 'metric_key', 'value']));
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->orderBy(['period' => 'ASC', 'aggregate' => 'ASC', 'metric_key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn(): ResultSetInterface => $this->Aggregates->find()->orderBy(['period' => 'ASC', 'aggregate' => 'ASC', 'metric_key' => 'ASC'])->all());
         $agg = fn($i) => $aggregates->skip($i)->first();
 
         $this->assertEquals(['type' => 'type', 'period' => 60, 'aggregate' => 'avg', 'metric_key' => 'key1', 'value' => 300], $agg(0)->extract(['type','period','aggregate','metric_key','value']));
@@ -190,12 +190,12 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->rhythm->record('type', 'key2')->count();
         $this->rhythm->ingest();
 
-        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
+        $entries = $this->rhythm->ignore(fn(): ResultSetInterface => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
         $this->assertCount(4, $entries);
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1'], $entries->first()->extract(['type', 'metric_key']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key2'], $entries->last()->extract(['type', 'metric_key']));
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn(): ResultSetInterface => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
         $this->assertEquals(3, $aggregates->first()->value);
         $this->assertEquals(1, $aggregates->last()->value);
     }
@@ -213,12 +213,12 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->rhythm->record('type', 'key2', 100)->min();
         $this->rhythm->ingest();
 
-        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
+        $entries = $this->rhythm->ignore(fn(): ResultSetInterface => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
         $this->assertCount(4, $entries);
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1'], $entries->first()->extract(['type', 'metric_key']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key2'], $entries->last()->extract(['type', 'metric_key']));
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn(): ResultSetInterface => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
         $this->assertEquals(100, $aggregates->first()->value);
         $this->assertEquals(100, $aggregates->last()->value);
     }
@@ -236,12 +236,12 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->rhythm->record('type', 'key2', 100)->max();
         $this->rhythm->ingest();
 
-        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
+        $entries = $this->rhythm->ignore(fn(): ResultSetInterface => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
         $this->assertCount(4, $entries);
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1'], $entries->first()->extract(['type', 'metric_key']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key2'], $entries->last()->extract(['type', 'metric_key']));
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn(): ResultSetInterface => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
         $this->assertEquals(300, $aggregates->first()->value);
         $this->assertEquals(100, $aggregates->last()->value);
     }
@@ -259,12 +259,12 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->rhythm->record('type', 'key2', 100)->sum();
         $this->rhythm->ingest();
 
-        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
+        $entries = $this->rhythm->ignore(fn(): ResultSetInterface => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
         $this->assertCount(4, $entries);
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1'], $entries->first()->extract(['type', 'metric_key']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key2'], $entries->last()->extract(['type', 'metric_key']));
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn(): ResultSetInterface => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
         $this->assertEquals(600, $aggregates->first()->value);
         $this->assertEquals(100, $aggregates->last()->value);
     }
@@ -282,14 +282,14 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->rhythm->record('type', 'key2', 100)->avg();
         $this->rhythm->ingest();
 
-        $entries = $this->rhythm->ignore(fn() => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
+        $entries = $this->rhythm->ignore(fn(): ResultSetInterface => $this->Entries->find()->orderBy(['id' => 'ASC'])->all());
         $this->assertCount(4, $entries);
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key1'], $entries->first()->extract(['type', 'metric_key']));
         $this->assertEquals(['type' => 'type', 'metric_key' => 'key2'], $entries->last()->extract(['type', 'metric_key']));
         // Aggregate assertion placeholder
 
 
-        $aggregates = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
+        $aggregates = $this->rhythm->ignore(fn(): ResultSetInterface => $this->Aggregates->find()->where(['period' => 60])->orderBy(['metric_key' => 'ASC'])->all());
         $this->assertEquals(200, $aggregates->first()->value);
         $this->assertEquals(100, $aggregates->last()->value);
         $this->assertEquals(3, $aggregates->first()->entry_count);
@@ -299,7 +299,7 @@ class DatabaseStorageFeatureTest extends TestCase
         $this->rhythm->record('type', 'key1', 400)->avg();
         $this->rhythm->record('type', 'key1', 400)->avg();
         $this->rhythm->ingest();
-        $aggregate = $this->rhythm->ignore(fn() => $this->Aggregates->find()->where(['period' => 60, 'metric_key' => 'key1'])->first());
+        $aggregate = $this->rhythm->ignore(fn(): mixed => $this->Aggregates->find()->where(['period' => 60, 'metric_key' => 'key1'])->first());
         $this->assertEquals(6, $aggregate->entry_count);
         $this->assertEquals(300, $aggregate->value);
     }

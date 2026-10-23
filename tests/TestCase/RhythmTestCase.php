@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Crustum\Rhythm\Test\TestCase;
 
 use Cake\Collection\Collection;
+use Cake\Container\ContainerInterface;
 use Cake\Core\Configure;
-use Cake\Core\ContainerInterface;
 use Cake\Database\Connection;
 use Cake\Datasource\ConnectionManager;
 use Cake\I18n\DateTime;
@@ -150,19 +150,19 @@ abstract class RhythmTestCase extends TestCase
     {
         $entries = [
             new RhythmEntry(
-                timestamp: (new DateTime())->getTimestamp() - 3600,
+                timestamp: new DateTime()->getTimestamp() - 3600,
                 type: 'user_requests',
                 key: 'GET /users',
                 value: 150,
             ),
             new RhythmEntry(
-                timestamp: (new DateTime())->getTimestamp() - 1800,
+                timestamp: new DateTime()->getTimestamp() - 1800,
                 type: 'user_requests',
                 key: 'POST /users',
                 value: 200,
             ),
             new RhythmEntry(
-                timestamp: (new DateTime())->getTimestamp() - 900,
+                timestamp: new DateTime()->getTimestamp() - 900,
                 type: 'slow_queries',
                 key: 'SELECT * FROM users',
                 value: 250,
@@ -198,7 +198,7 @@ abstract class RhythmTestCase extends TestCase
     protected function createTestEntry(string $type, string $key, ?int $value = null, ?int $timestamp = null): RhythmEntry
     {
         return new RhythmEntry(
-            timestamp: $timestamp ?? (new DateTime())->getTimestamp(),
+            timestamp: $timestamp ?? new DateTime()->getTimestamp(),
             type: $type,
             key: $key,
             value: $value,
@@ -217,7 +217,7 @@ abstract class RhythmTestCase extends TestCase
     protected function createTestValue(string $type, string $key, string $value, ?int $timestamp = null): RhythmValue
     {
         return new RhythmValue(
-            timestamp: $timestamp ?? (new DateTime())->getTimestamp(),
+            timestamp: $timestamp ?? new DateTime()->getTimestamp(),
             type: $type,
             key: $key,
             value: $value,

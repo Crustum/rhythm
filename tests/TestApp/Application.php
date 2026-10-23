@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace TestApp;
 
+use Cake\Container\ContainerInterface;
 use Cake\Core\Configure;
-use Cake\Core\ContainerInterface;
 use Cake\Core\Exception\MissingPluginException;
 use Cake\Core\PluginApplicationInterface;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
@@ -72,7 +72,7 @@ class Application extends BaseApplication implements PluginApplicationInterface
     /**
      * Register application container services.
      *
-     * @param \Cake\Core\ContainerInterface $container The container to add services to.
+     * @param \Cake\Container\ContainerInterface $container The container to add services to.
      * @return void
      */
     public function services(ContainerInterface $container): void

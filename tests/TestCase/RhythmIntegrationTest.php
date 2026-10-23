@@ -23,7 +23,7 @@ class RhythmIntegrationTest extends TestCase
      */
     public function testMixedRhythmData(): void
     {
-        $timestamp = (new DateTime())->getTimestamp();
+        $timestamp = new DateTime()->getTimestamp();
 
         $entry = new RhythmEntry($timestamp, 'request', 'user:123', 100);
         $value = new RhythmValue($timestamp, 'user', 'active:123', 'John Doe');
@@ -47,7 +47,7 @@ class RhythmIntegrationTest extends TestCase
      */
     public function testConvertToArrays(): void
     {
-        $timestamp = (new DateTime())->getTimestamp();
+        $timestamp = new DateTime()->getTimestamp();
 
         $entry = new RhythmEntry($timestamp, 'request', 'test', 200);
         $value = new RhythmValue($timestamp, 'cache', 'status', 'connected');
@@ -75,7 +75,7 @@ class RhythmIntegrationTest extends TestCase
      */
     public function testBulkCreation(): void
     {
-        $timestamp = (new DateTime())->getTimestamp();
+        $timestamp = new DateTime()->getTimestamp();
         $entries = [];
 
         for ($i = 1; $i <= 100; $i++) {

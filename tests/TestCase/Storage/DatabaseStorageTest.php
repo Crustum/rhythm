@@ -97,7 +97,7 @@ class DatabaseStorageTest extends TestCase
      */
     protected function generateTestData(): void
     {
-        $now = (new DateTime())->getTimestamp();
+        $now = new DateTime()->getTimestamp();
         $oneHourAgo = $now - 3600;
         $twoHoursAgo = $now - 7200;
 
@@ -597,7 +597,7 @@ class DatabaseStorageTest extends TestCase
     public function testAggregateWithAllAggregates(): void
     {
         $this->aggregatesTable->updateAll(
-            ['bucket' => (new DateTime())->getTimestamp() - 100],
+            ['bucket' => new DateTime()->getTimestamp() - 100],
             ['type' => 'request', 'metric_key' => '/api/users'],
         );
 
@@ -619,7 +619,7 @@ class DatabaseStorageTest extends TestCase
     public function testAggregateAvgMaxOnly(): void
     {
         $this->aggregatesTable->updateAll(
-            ['bucket' => (new DateTime())->getTimestamp() - 100],
+            ['bucket' => new DateTime()->getTimestamp() - 100],
             ['type' => 'request', 'metric_key' => '/api/users'],
         );
 
@@ -638,7 +638,7 @@ class DatabaseStorageTest extends TestCase
     public function testGraph(): void
     {
         $this->aggregatesTable->updateAll(
-            ['bucket' => (new DateTime())->getTimestamp() - 100],
+            ['bucket' => new DateTime()->getTimestamp() - 100],
             ['type IN' => ['request', 'database']],
         );
 
@@ -654,7 +654,7 @@ class DatabaseStorageTest extends TestCase
         $this->assertCount(2, $apiUsersGraph);
         $this->assertCount(60, $apiUsersGraph['request']);
 
-        $requestPoints = (new Collection($apiUsersGraph['request']))->filter(fn($val): bool => $val !== null);
+        $requestPoints = new Collection($apiUsersGraph['request'])->filter(fn($val): bool => $val !== null);
         $this->assertGreaterThan(0, $requestPoints->count());
     }
 }
